@@ -1,0 +1,653 @@
+Difference for src_0:
+---
+http://rdata2graph.sap.com/hilti_erp/#3a799970-cea9-42d4-bdfc-fd134949cb0a (9984)
+not (3066)
+yet (2496)
+defin (2496)
+tool (2026)
+saw (1761)
+cordless (844)
+es (325)
+g01 (211)
+bulk (32)
+cutout (23)
+http://rdata2graph.sap.com/hilti_erp/cordless_cut_out_tool_sco_a22_bulk#1458df9d-b5c1-4996-9e09-96ac87688541 (15)
+http://rdata2graph.sap.com/hilti_erp/#3ce009af-6e85-4a82-a8b1-4055b9792951 (4)
+scoa22 (3)
+
+
+------------------
+Difference for src_1:
+and (4055)
+part (2171)
+z001 (2078)
+accessori (1764)
+wall (1006)
+http://rdata2graph.sap.com/hilti_erp/#56c17318-d28c-4d22-8751-5116acbb7fa4 (736)
+spare (712)
+incl (349)
+posit (188)
+mm (167)
+184 (92)
+mount (55)
+pra (54)
+adaptor (39)
+72 (16)
+http://rdata2graph.sap.com/hilti_erp/wall_mount_pra_72#b81df8c6-4493-48bd-9eeb-212a1f62ab4f (15)
+http://rdata2graph.sap.com/hilti_erp/#a74f31da-9ef1-4c3d-a45a-971a53a08a34 (12)
+---
+
+
+------------------
+Difference for src_2:
+---
+
+
+------------------
+Difference for src_3:
+---
+
+
+------------------
+Difference for src_4:
+---
+part (2171)
+z001 (2078)
+
+
+------------------
+Difference for src_5:
+---
+
+
+------------------
+Difference for src_6:
+---
+
+
+------------------
+Difference for src_7:
+z001 (2078)
+saw (1761)
+034 (141)
+---
+http://rdata2graph.sap.com/hilti_erp/#0e08a169-a93c-4c44-a608-820a1543aa56 (10060)
+http://rdata2graph.sap.com/hilti_erp/#3a799970-cea9-42d4-bdfc-fd134949cb0a (9984)
+not (3066)
+befestigungsindustri (2515)
+yet (2496)
+defin (2496)
+
+
+------------------
+Difference for src_8:
+http://rdata2graph.sap.com/hilti_erp/#0e08a169-a93c-4c44-a608-820a1543aa56 (10060)
+befestigungsindustri (2515)
+z001 (2078)
+---
+
+
+------------------
+Difference for src_9:
+---
+http://rdata2graph.sap.com/hilti_erp/#0e08a169-a93c-4c44-a608-820a1543aa56 (10060)
+befestigungsindustri (2515)
+
+
+------------------
+Difference for src_10:
+z001 (2078)
+---
+
+
+------------------
+Difference for src_11:
+---
+z001 (2078)
+
+
+------------------
+Difference for src_12:
+---
+http://rdata2graph.sap.com/hilti_erp/#3a799970-cea9-42d4-bdfc-fd134949cb0a (9984)
+not (3066)
+yet (2496)
+defin (2496)
+nail (460)
+xg (255)
+pack (186)
+magazin (77)
+g2 (18)
+x120 (18)
+http://rdata2graph.sap.com/hilti_erp/nail_magazine_x_m30s_g2_packed#0422eed0-83a8-4fd2-85eb-eb1777f1e0d7 (15)
+gm (10)
+http://rdata2graph.sap.com/hilti_erp/#9aa12970-5b12-4a5a-b411-f456b110795d (6)
+xm30 (1)
+
+
+------------------
+Difference for src_13:
+and (4055)
+part (2171)
+z001 (2078)
+accessori (1764)
+screw (933)
+spare (712)
+dx (427)
+incl (349)
+si (214)
+2 (133)
+magazin (77)
+485 (56)
+http://rdata2graph.sap.com/hilti_erp/#a235b85c-2064-41ee-b212-b3b43d5d3080 (48)
+http://rdata2graph.sap.com/hilti_erp/screw_magazine_sd_m_2#c185d145-7cb3-4935-a625-d7bbe0977dd1 (15)
+sdm (10)
+http://rdata2graph.sap.com/hilti_erp/#db2a726e-464b-4352-844d-a58057b48b0f (4)
+---
+
+
+------------------
+Difference for src_14:
+z001 (2078)
+---
+http://rdata2graph.sap.com/hilti_erp/#0e08a169-a93c-4c44-a608-820a1543aa56 (10060)
+http://rdata2graph.sap.com/hilti_erp/#3a799970-cea9-42d4-bdfc-fd134949cb0a (9984)
+not (3066)
+befestigungsindustri (2515)
+yet (2496)
+defin (2496)
+box (169)
+cordl (95)
+
+
+------------------
+Difference for src_15:
+---
+
+
+------------------
+Difference for src_16:
+z001 (2078)
+---
+
+
+------------------
+Difference for src_17:
+---
+z001 (2078)
+
+
+------------------
+Difference for src_18:
+---
+
+
+------------------
+Difference for src_19:
+other (1810)
+---
+
+
+------------------
+Difference for tgt_0:
+for (4274)
+---
+me (2003)
+show (1988)
+cordless (844)
+
+
+------------------
+Difference for tgt_1:
+---
+saw (1761)
+concret (1604)
+demolit (1276)
+design (1251)
+wall (1006)
+diamond (857)
+servic (384)
+set (379)
+heavyduti (340)
+wire (323)
+hilti (235)
+http://rdata2graph.sap.com/hilti_web/diamond_wire___wall_saws#2f0b0940-db42-4b84-9be9-ca95dce9de3f (148)
+structur (133)
+wheel (120)
+alter (79)
+drive (56)
+pr (54)
+replac (43)
+pulley (36)
+dsww (24)
+360 (6)
+http://rdata2graph.sap.com/hilti_web/drive_wheel_dsw_w_360_pr_servicing_set#676e3876-a8b5-4c18-82e8-4702ccfa953d (5)
+20946630 (1)
+
+
+------------------
+Difference for tgt_2:
+saw (1761)
+in (1308)
+design (1251)
+cut (924)
+metal (874)
+cordless (844)
+with (726)
+wood (480)
+a (378)
+perform (144)
+when (126)
+22v (112)
+power (106)
+jig (97)
+control (52)
+comfort (36)
+superior (18)
+grip (15)
+6a22 (7)
+top (6)
+http://rdata2graph.sap.com/hilti_web/cordless_jig_saws#f664366c-fe14-46f3-851c-cd8f6858da27 (6)
+http://rdata2graph.sap.com/hilti_web/sjd_6_a22#1941a150-6922-43ef-b670-b071eef4dc1f (5)
+user (5)
+sjd (3)
+dhandl (3)
+21336720 (1)
+---
+fasten (1081)
+stud (358)
+
+
+------------------
+Difference for tgt_3:
+accessori (1764)
+design (1251)
+cut (924)
+metal (874)
+with (726)
+grind (365)
+disc (324)
+grinder (289)
+angl (266)
+as (171)
+wrench (101)
+diamet (85)
+switch (67)
+well (58)
+http://rdata2graph.sap.com/hilti_web/grinders___sanders#2ae4c91b-6e60-4da4-9e6a-1209b8c09155 (54)
+sander (45)
+variou (39)
+---
+hammer (1386)
+breaker (1350)
+in (1308)
+demolit (1276)
+http://rdata2graph.sap.com/hilti_web/demolition_hammers___breakers#8480278b-fdd4-4cf2-8bb0-fd976ad0bdf0 (1128)
+wall (1006)
+cord (970)
+masonri (925)
+floor (738)
+none (648)
+
+
+------------------
+Difference for tgt_4:
+---
+concret (1604)
+hammer (1386)
+breaker (1350)
+in (1308)
+demolit (1276)
+http://rdata2graph.sap.com/hilti_web/demolition_hammers___breakers#8480278b-fdd4-4cf2-8bb0-fd976ad0bdf0 (1128)
+wall (1006)
+cord (970)
+masonri (925)
+floor (738)
+none (648)
+
+
+------------------
+Difference for tgt_5:
+metal (874)
+wood (480)
+---
+
+
+------------------
+Difference for tgt_6:
+for (4274)
+and (4055)
+accessori (1764)
+---
+me (2003)
+show (1988)
+
+
+------------------
+Difference for tgt_7:
+---
+
+
+------------------
+Difference for tgt_8:
+other (1810)
+in (1308)
+drill (1052)
+masonri (925)
+metal (874)
+cordless (844)
+with (726)
+materi (527)
+wood (480)
+applic (349)
+driver (278)
+gear (205)
+perform (144)
+22v (112)
+sf (100)
+ultim (79)
+control (52)
+12v (46)
+high (44)
+class (34)
+torqu (34)
+activ (14)
+http://rdata2graph.sap.com/hilti_web/cordless_drill_drivers#f676a6d1-6081-48de-b21f-d63bd2a9f3b6 (12)
+atc (11)
+http://rdata2graph.sap.com/hilti_web/sf_10w_a_atc#43d70524-d995-4007-a7ec-12263882fea0 (5)
+demand (2)
+fourspe (1)
+10wa (1)
+21098290 (1)
+---
+tool (2026)
+accessori (1764)
+to (893)
+none (648)
+measur (356)
+rod (353)
+http://rdata2graph.sap.com/hilti_web/accessories_for_measuring_tools_and_scanners#8d5328e7-96ab-42c5-bb5d-f3a56d6dfd3e (274)
+level (195)
+tripod (175)
+scanner (166)
+staff (158)
+keep (156)
+accur (145)
+steadi (137)
+read (137)
+adapt (111)
+50 (47)
+reflector (39)
+poaw (7)
+http://rdata2graph.sap.com/hilti_web/reflector_rod_poaw_50_adapter#657f08be-4833-4389-9b1c-af4de6307050 (5)
+21262370 (1)
+
+
+------------------
+Difference for tgt_9:
+---
+
+
+------------------
+Difference for tgt_10:
+---
+me (2003)
+show (1988)
+concret (1604)
+hammer (1386)
+breaker (1350)
+in (1308)
+demolit (1276)
+http://rdata2graph.sap.com/hilti_web/demolition_hammers___breakers#8480278b-fdd4-4cf2-8bb0-fd976ad0bdf0 (1128)
+wall (1006)
+cord (970)
+masonri (925)
+floor (738)
+none (648)
+assi (273)
+pack (186)
+drive (56)
+cylind (7)
+
+
+------------------
+Difference for tgt_11:
+accessori (1764)
+use (876)
+with (726)
+more (597)
+firestop (509)
+all (279)
+hilti (235)
+solut (205)
+fire (161)
+protect (148)
+foam (134)
+sealant (134)
+see (87)
+http://rdata2graph.sap.com/hilti_web/accessories_for_firestop___fire_protection#0763ca39-003f-4130-8e66-c1c146bc5b4e (74)
+gun (52)
+like (50)
+dispenserscaulk (37)
+---
+part (2171)
+tool (2026)
+me (2003)
+show (1988)
+saw (1761)
+design (1251)
+cord (970)
+cut (924)
+metal (874)
+cordless (844)
+spare (712)
+wood (480)
+http://rdata2graph.sap.com/hilti_web/saws#1ccce829-55db-4be8-acb6-f73f16febd03 (450)
+circular (385)
+grind (365)
+both (241)
+cuttingsaw (215)
+
+
+------------------
+Difference for tgt_12:
+concret (1604)
+hammer (1386)
+design (1251)
+drill (1052)
+cord (970)
+rotari (531)
+chisel (444)
+sd (275)
+light (189)
+plu (143)
+tec (140)
+power (106)
+compact (69)
+chuck (59)
+http://rdata2graph.sap.com/hilti_web/rotary_hammers_sds_plus#5a9f051a-5b79-422c-8d6e-2a727bee0dd1 (36)
+sdsplu (26)
+---
+other (1810)
+fasten (1081)
+screw (933)
+to (893)
+metal (874)
+materi (527)
+wood (480)
+stud (358)
+or (240)
+singl (235)
+drywal (214)
+collat (137)
+magazin (77)
+board (58)
+substructur (34)
+http://rdata2graph.sap.com/hilti_web/drywall_screws#4f1166f5-e6c7-48c5-b9e4-54946d3064b9 (26)
+
+
+------------------
+Difference for tgt_13:
+for (4274)
+tool (2026)
+me (2003)
+show (1988)
+accessori (1764)
+design (1251)
+to (893)
+none (648)
+measur (356)
+http://rdata2graph.sap.com/hilti_web/accessories_for_measuring_tools_and_scanners#8d5328e7-96ab-42c5-bb5d-f3a56d6dfd3e (274)
+level (195)
+tripod (175)
+scanner (166)
+staff (158)
+keep (156)
+accur (145)
+steadi (137)
+read (137)
+imp (18)
+pa (18)
+http://rdata2graph.sap.com/hilti_web/leveling_staff___imp_ft_tenths_pa_962#884fb596-66d0-42ea-b1b8-3724dbc6f03d (5)
+962 (2)
+fttenth (1)
+3396710 (1)
+---
+
+
+------------------
+Difference for tgt_14:
+saw (1761)
+design (1251)
+diamond (857)
+blade (535)
+heavyduti (340)
+wire (323)
+hilti (235)
+http://rdata2graph.sap.com/hilti_web/diamond_wire___wall_saws#2f0b0940-db42-4b84-9be9-ca95dce9de3f (148)
+structur (133)
+guard (86)
+alter (79)
+center (30)
+section (28)
+---
+hammer (1386)
+breaker (1350)
+in (1308)
+http://rdata2graph.sap.com/hilti_web/demolition_hammers___breakers#8480278b-fdd4-4cf2-8bb0-fd976ad0bdf0 (1128)
+cord (970)
+masonri (925)
+floor (738)
+none (648)
+torxsoc (66)
+
+
+------------------
+Difference for tgt_15:
+saw (1761)
+demolit (1276)
+wall (1006)
+cut (924)
+diamond (857)
+ds (395)
+the (352)
+heavyduti (340)
+wire (323)
+http://rdata2graph.sap.com/hilti_web/diamond_wire___wall_saws#2f0b0940-db42-4b84-9be9-ca95dce9de3f (148)
+structur (133)
+alter (79)
+flush (78)
+ts20e (23)
+flang (18)
+dst (18)
+flushcut (10)
+10ca (8)
+http://rdata2graph.sap.com/hilti_web/flush_cutting_flange_ds_fca_110ff#92dce39d-12f9-4b5b-b618-27c9ee6b2e82 (5)
+ts32lp32 (4)
+dsfca110ff (2)
+4161890 (1)
+---
+tool (2026)
+hammer (1386)
+drill (1052)
+cord (970)
+te (766)
+rotari (531)
+chisel (444)
+sd (275)
+combihamm (219)
+case (191)
+light (189)
+plu (143)
+037 (140)
+tec (140)
+power (106)
+compact (69)
+http://rdata2graph.sap.com/hilti_web/rotary_hammers_sds_plus#5a9f051a-5b79-422c-8d6e-2a727bee0dd1 (36)
+40 (34)
+sdsplu (26)
+typ (17)
+http://rdata2graph.sap.com/hilti_web/case_te_40___typ_037#7dddad27-d408-47e9-997d-1d68d4802489 (5)
+20846930 (1)
+
+
+------------------
+Difference for tgt_16:
+---
+tool (2026)
+me (2003)
+show (1988)
+accessori (1764)
+fasten (1081)
+direct (283)
+http://rdata2graph.sap.com/hilti_web/accessories_for_direct_fastening#c4036c64-8631-4f28-b59b-bf473b394fc3 (204)
+piston (175)
+brake (104)
+buffer (102)
+
+
+------------------
+Difference for tgt_17:
+and (4055)
+me (2003)
+show (1988)
+concret (1604)
+in (1308)
+masonri (925)
+---
+tool (2026)
+
+
+------------------
+Difference for tgt_18:
+---
+me (2003)
+show (1988)
+
+
+------------------
+Difference for tgt_19:
+floor (738)
+---
+and (4055)
+me (2003)
+show (1988)
+hammer (1386)
+design (1251)
+drill (1052)
+cord (970)
+rotari (531)
+chisel (444)
+sd (275)
+light (189)
+pack (186)
+plu (143)
+tec (140)
+power (106)
+compact (69)
+chuck (59)
+http://rdata2graph.sap.com/hilti_web/rotary_hammers_sds_plus#5a9f051a-5b79-422c-8d6e-2a727bee0dd1 (36)
+sdsplu (26)
+quickreleas (6)
+http://rdata2graph.sap.com/hilti_web/quick_release_chuck_packed#c7ce6753-05ba-43b9-82b7-4b5675e2fffc (5)
+21231660 (1)
