@@ -1,0 +1,52 @@
+
+cross lingual embedding:
+
+http://ruder.io/cross-lingual-embeddings/
+
+another survey:
+https://arxiv.org/pdf/1604.00425.pdf
+http://www.manaalfaruqui.com
+
+von robert
+https://dl.acm.org/citation.cfm?id=2767752
+https://github.com/facebookresearch/MUSE
+
+https://github.com/artetxem/vecmap
+https://github.com/g-laz77/Cross-Lingual-Word-Embeddings
+
+
+
+https://anligentile.github.io/presentations/ESWC2018-PhDSymposiumKeynote.pdf
+
+RDF2Vec-based Classification of Ontology Alignment Changes:
+https://arxiv.org/abs/1805.09145
+http://ceur-ws.org/Vol-2106/paper5.pdf
+
+
+ Ansatz für DBkWik,um Typen zu matchen.
+http://ceur-ws.org/Vol-2106/paper9.pdf
+
+
+
+Knowledge Graph Track
+wie dbpedia endpoint
+
+
+-------------------
+RDF2Vec-based Classification of Ontology Alignment Changes:
+angeschaut, aber eval zeigt nicht auf welche verteilung der klassen etc., 
+
+- erstellung oaei track webpage
+- erstellung der datensets (konvertierung in rdf/xml)
+- download der datensets über seals (server mit sebastian eingerichtet)
+- Klausuraufsicht (korrigeiren)
+- Paper OM mitgeschrieben (umstellung seals hobbit)
+- mit Robert gesprochen wegen Cross lingual embeddings (MUSE)
+- embeddings ausprobiert:
+    - erzeugung der walks (random, all, exact amounf of walks, random with labels)
+    - erzeugung der initial mappings mit label equality
+    - learn whole embeddings (not prune anything)
+    
+    - versucht MUSE auszuprobieren (benutzt fasttext und dies benutzt ngrams) wird noch auf server ausprobbiert
+    - für cross lingual mappings (sehr interessant) braucht man matlab - oder halt umschreiben (dauert..)
+    - svn->git

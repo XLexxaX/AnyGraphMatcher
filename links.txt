@@ -1,0 +1,32 @@
+https://freedict.org
+
+https://web.stanford.edu/~jurafsky/li15/lec3.vector.pdf
+
+
+https://gist.github.com/mommi84/07f7c044fa18aaaa7b5133230207d8d4
+https://github.com/thunlp/KB2E
+
+
+
+
+word word co occurrence matrix gensim python
+
+
+https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjd_u7YgczbAhWOUlAKHX8bD7QQFggoMAA&url=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F49431270%2Fword-co-occurrence-matrix-from-gensim&usg=AOvVaw2hoo4sYaYJ5MifdGhnytk8
+https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0ahUKEwjd_u7YgczbAhWOUlAKHX8bD7QQFgg2MAE&url=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F35562789%2Fword-word-co-occurrence-matrix%2F35565098&usg=AOvVaw3Kz9sEXnSL2M1nIaLc3--E
+https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&uact=8&ved=0ahUKEwjd_u7YgczbAhWOUlAKHX8bD7QQFgg-MAI&url=https%3A%2F%2Fradimrehurek.com%2Fgensim%2Ftopic_coherence%2Ftext_analysis.html&usg=AOvVaw01NDSxLMzbdiGaZUUcHv2F
+
+
+
+https://stackoverflow.com/questions/49431270/word-co-occurrence-matrix-from-gensim
+
+
+
+- word co ocurance matrix mit dem moving window immer abflachend werte hinzufügen siehe: https://multithreaded.stitchfix.com/blog/2017/10/18/stop-using-word2vec/#3
+
+https://www.kaggle.com/alexklibisz/simple-word-vectors-with-co-occurrence-pmi-and-svd
+
+
+
+
+https://github.com/facebookresearch/SentEval

@@ -1,0 +1,7 @@
+xopen
+gensim
+sklearn
+pandas
+nltk
+pytorch
+rdflib

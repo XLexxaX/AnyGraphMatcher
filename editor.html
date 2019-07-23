@@ -1,0 +1,238 @@
+<html lang="en"><head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>AnyGraphMatch Web Interface</title>
+        <meta name="generator" content="Bootply">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="description" content="Bootstrap How to create a form with steps like a wizard in Bootstrap example.">
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+        <!-- CSS code from Bootply.com editor -->
+
+        <style type="text/css">
+      #msg {
+      position: fixed;
+      height: 100%;
+      margin-left: auto;
+  width: 100%;
+  text-align: center;
+  background-color: white;
+   }
+            body {
+    margin-top:40px;
+}
+#mainbox {
+  padding: 10px 10px 20px 10px;
+  border: 1px solid #aaaaaa;
+  background-color: #eeeeee;
+  box-shadow: 10px 10px 5px #aaaaaa;
+}
+.stepwizard-step p {
+    margin-top: 10px;
+}
+.stepwizard-row {
+    display: table-row;
+}
+.stepwizard {
+    display: table;
+    width: 50%;
+    position: relative;
+}
+.stepwizard-step button[disabled] {
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important;
+}
+.stepwizard-row:before {
+    top: 25px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    z-order: 0;
+}
+.stepwizard-step {
+    display: table-cell;
+    text-align: center;
+    position: relative;
+}
+.btn-circle {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 22px;
+    line-height: 1.428571429;
+    border-radius: 25px;
+}
+        </style>
+    </head>
+
+    <!-- HTML code from Bootply.com editor -->
+
+    <body>
+    <div id="msg" style="z-index: 100">
+        <img src="load.gif" style="align: center">
+
+    </div>
+<div id="content" style="z-index: 1">
+        <div class="container"></div>,<div class="container" id="mainbox">
+
+<div class="stepwizard col-md-offset-3">
+    <div class="stepwizard-row setup-panel">
+      <div class="stepwizard-step">
+        <a href="#step-1" type="button" class="btn btn-circle btn-default btn-outline-primary">1</a>
+
+      </div>
+      <div class="stepwizard-step">
+        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+        <p>Step 2</p>
+      </div>
+      <div class="stepwizard-step">
+        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+        <p>Step 3</p>
+      </div>
+    </div>
+  </div>
+
+  <form role="form" action="" method="post">
+    <div class="row setup-content" id="step-1" style="display: block;">
+      <div class="col-xs-6 col-md-offset-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="control-label">Source data</label>
+            <input id="source_dataset" maxlength="1000" type="text" required="required" class="form-control" placeholder="C:/dataset1.nt">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Target data</label>
+            <input id="target_dataset" maxlength="1000" type="text" required="required" class="form-control" placeholder="C:/dataset2.nt">
+          </div>
+          <button class="btn btn-outline-primary nextBtn btn-lg pull-right" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+    <div class="row setup-content" id="step-2" style="display: none;">
+      <div class="col-xs-6 col-md-offset-3">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="control-label">Company Name</label>
+            <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Name">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Company Address</label>
+            <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Address">
+          </div>
+          <button class="btn btn-outline-primary prevBtn btn-lg pull-left" type="button">Previous</button>
+          <button class="btn btn-outline-primary nextBtn btn-lg pull-right" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+    <div class="row setup-content" id="step-3" style="display: none;">
+      <div class="col-xs-6 col-md-offset-3">
+        <div class="col-md-12">
+          <button class="btn btn-outline-primary prevBtn btn-lg pull-left" type="button">Previous</button>
+          <button class="btn btn-success btn-lg pull-right" type="submit">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+</div>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+
+
+        <!-- JavaScript jQuery code from Bootply.com editor  -->
+
+        <script type="text/javascript">
+
+    $('#content').hide();
+            $(document).ready(function () {
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+sleep(1).then(() => {
+    $('#msg').hide();
+
+$('#content').fadeIn(300);
+$('body').css('background-image','url(bg.png)');
+});
+
+  var navListItems = $('div.setup-panel div a'),
+          allWells = $('.setup-content'),
+          allNextBtn = $('.nextBtn'),
+  		  allPrevBtn = $('.prevBtn');
+
+  allWells.hide();
+
+  navListItems.click(function (e) {
+      e.preventDefault();
+      var $target = $($(this).attr('href')),
+              $item = $(this);
+
+      if (!$item.hasClass('disabled')) {
+          navListItems.removeClass('btn-outline-primary').addClass('btn-default');
+          $item.addClass('btn-outline-primary');
+          allWells.hide();
+          $target.show();
+          $target.find('input:eq(0)').focus();
+      }
+  });
+
+  allPrevBtn.click(function(){
+      var curStep = $(this).closest(".setup-content"),
+          curStepBtn = curStep.attr("id"),
+          prevStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
+
+          prevStepWizard.removeAttr('disabled').trigger('click');
+  });
+
+  allNextBtn.click(function(){
+      var curStep = $(this).closest(".setup-content"),
+          curStepBtn = curStep.attr("id"),
+          nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+          curInputs = curStep.find("input[type='text'],input[type='url']"),
+          isValid = true;
+
+      $(".form-group").removeClass("has-error");
+      for(var i=0; i<curInputs.length; i++){
+          if (!curInputs[i].validity.valid){
+              $(curInputs[i]).closest(".form-group").addClass("has-error");
+              curInputs[i].value = curInputs[i].placeholder;
+              console.log(curInputs[i].value)
+              nextStepWizard.removeAttr('disabled').trigger('click');
+          } else {
+            nextStepWizard.removeAttr('disabled').trigger('click');
+          }
+      }
+
+
+  });
+
+  $('div.setup-panel div a.btn-outline-primary').trigger('click');
+});
+
+        </script>
+
+
+
+
+</body></html>

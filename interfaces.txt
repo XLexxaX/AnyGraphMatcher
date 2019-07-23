@@ -1,0 +1,4 @@
+KG is represeted as object KG
+sentences are represented with a list of a list (same as generator which yield every time one line)
+embeddings?
+lexicon: iterable of (source_word, target_word)
