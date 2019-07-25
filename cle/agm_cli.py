@@ -83,6 +83,7 @@ def main(source, target, possible_matches):
     #copy
 
 if __name__ == '__main__':
+    #python agm_cli.py -s "../data/oaei_data/graph_triples_darkscape.nt" -t "../data/oaei_data/graph_triples_oldschoolrunescape.nt" -p "../data/oaei_data/possible_matches.csv"
     main("../data/oaei_data/graph_triples_darkscape.nt", "../data/oaei_data/graph_triples_oldschoolrunescape.nt", "../data/oaei_data/possible_matches.csv")
 #        from optparse import OptionParser, OptionGroup
 #
@@ -90,11 +91,11 @@ if __name__ == '__main__':
 #            description="An integrated, fully automatic, semantic identity resolution system")
 #        optparser.add_option("-s", "--source", default=None, dest="source", help="Path to the source .nt-file")
 #        optparser.add_option("-t", "--target", default=None, dest="target", help="Path to the target .nt-file")
-#        optparser.add_option("-p", "--possible_matches", default=None, dest="possible_matches", help="Path to the .csv-file with possible matches")
+#        optparser.add_option("-p", "--possible_matches", default=None, dest="possible_matches", help="Path to t#he .csv-file with possible matches")
 #        (options, args) = optparser.parse_args()
-#
+
 #        assert options.source, "A source data set must be provided"
 #        assert options.target, "A target data set must be provided"
 #        assert options.possible_matches, "A data set with possible matches must be provided"
-#
+
 #        main(options.source, options.target, options.possible_matches)
