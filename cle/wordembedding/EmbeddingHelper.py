@@ -119,6 +119,7 @@ def literalize(documents):
 def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
 
 
+
     sentences = prepare_training_data(sentences, CONFIGURATION, ngrams)
 
     import gensim.models.word2vec as w2v
@@ -162,6 +163,9 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
         ns_exponent=0.1
     )
     model.build_vocab(sentences)
-    model.train(sentences, total_examples=model.corpus_count, epochs=1)
+
+    print("      --> Training embeddings: 0% (no progress updates here... please wait)", end="\r")
+    model.train(sentences, total_examples=model.corpus_count, epochs=2)
     model.save(CONFIGURATION.rundir+"w2v.model")
+    print("      --> Training embeddings: 100%")
     return model

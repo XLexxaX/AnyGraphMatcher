@@ -32,7 +32,7 @@ def exec(graph1, graph2, matchings_filename):
             f.write(create_elem(str(row.src_id).replace("&","&amp;"), str(row.tgt_id).replace("&","&amp;"))+"\n")
         f.write(endtag)
 
-    return PipelineDataTuple(graph1, graph2)
+    return graph1, graph2
 
 
 def create_elem(src_id, tgt_id):
