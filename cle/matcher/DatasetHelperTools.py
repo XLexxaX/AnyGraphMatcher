@@ -24,7 +24,7 @@ warnings.warn = warn
 def get_schema_data_from_graph(graph1, graph2):
     pd.options.mode.chained_assignment = None
 
-    print("     --> Preparing data for matching ...")
+    CONFIGURATION.log("     --> Preparing data for matching ...")
 
     # extract the relevant data from the graph
     tmp = list()
@@ -63,7 +63,7 @@ def get_schema_data_from_graph(graph1, graph2):
 
 def batch_prepare_data_from_graph(graph1, graph2, gold_path, src_properties=None, tgt_properties=None, calc_PLUS_SCORE=True, syntactic_cache_file = None, n_samples=100000, config=None):
 
-    print("         Reading embeddings, progress: 0%", end='\r')
+    CONFIGURATION.log("         Reading embeddings, progress: 0%", end='\r')
 
     gold_mapping = pd.read_csv(gold_path, delimiter="\t", header=None, skiprows=1)
     gold_mapping = gold_mapping.applymap(lambda s:s.lower() if type(s) == str else s)
@@ -98,7 +98,7 @@ def batch_prepare_data_from_graph(graph1, graph2, gold_path, src_properties=None
     #negative_samples = combined_samples.loc[combined_samples.label == 0]
 
 
-    print("         Reading embeddings, progress: 100%")
+    CONFIGURATION.log("         Reading embeddings, progress: 100%")
 
 
     # Add syntactic similarity scores.
@@ -120,10 +120,10 @@ def batch_prepare_data_from_graph(graph1, graph2, gold_path, src_properties=None
 
 
 
-    print("         Computing implicit embedding-properties, progress: 0%", end='\r')
+    CONFIGURATION.log("         Computing implicit embedding-properties, progress: 0%", end='\r')
     #positive_samples, negative_samples, combined_samples = extend_features(positive_samples), extend_features(negative_samples), extend_features(combined_samples)
     combined_samples = extend_features(combined_samples)
-    print("         Computing implicit embedding-properties, progress: 100%")
+    CONFIGURATION.log("         Computing implicit embedding-properties, progress: 100%")
 
     combined_samples = DatasetPostHelperTools.exec(combined_samples, config, graph1, graph2)
 
@@ -147,9 +147,9 @@ def stream_prepare_data_from_graph(graph1, graph2, gold_mapping_path, calc_PLUS_
     if syntactic_cache_file is not None:
         syntactic_cache_file = pd.read_csv(syntactic_cache_file, index_col=['Unnamed: 0'])
         syntactic_cache_file.columns = ['src_id2', 'tgt_id2', 'syntactic_diff', 'plus_diff']
-        print('Cache found')
+        CONFIGURATION.log('Cache found')
     else:
-        print('No cache found.')
+        CONFIGURATION.log('No cache found.')
 
     i = 0
     for index, row in gold_mapping.iterrows():
@@ -280,7 +280,7 @@ def stream_cross_product(graph1, graph2):
 def prepare_data_from_file(src_path, tgt_path, gold_path, n_positive_samples=1000, n_negative_samples=1000):
     pd.options.mode.chained_assignment = None
 
-    print("     --> Preparing data for matching ...")
+    CONFIGURATION.log("     --> Preparing data for matching ...")
 
     # Load the data from csv
     src = pd.read_csv(src_path, delimiter=" ", header=None, skiprows=1)
@@ -489,17 +489,17 @@ def extract_non_trivial_matches(graph1, graph2, matching_ids, src_properties, tg
 
 
 def append_syntactic_similarity_score(df, syntactics_cache_file):
-    #print("         (Cached file found. Loading ...)")
+    #CONFIGURATION.log("         (Cached file found. Loading ...)")
     syntactics = syntactics_cache_file
 
     df = pd.merge(df, syntactics, left_on=['src_id', 'tgt_id'], right_on=['src_id2', 'tgt_id2'], how='left')
     df = df.drop(['src_id2', 'tgt_id2'], axis=1)
-    #print("         Complete.")
+    #CONFIGURATION.log("         Complete.")
     return df
 
 
 def compute_append_syntactic_similarity_score(graph1, graph2, df, method='levenshtein', properties = None, plus_differentiator=False):
-    #print("         (No cached files. Starting computation for a file.)")
+    #CONFIGURATION.log("         (No cached files. Starting computation for a file.)")
     global syntaxprogress
     syntaxprogress = 0
     if plus_differentiator is True:
@@ -508,7 +508,7 @@ def compute_append_syntactic_similarity_score(graph1, graph2, df, method='levens
         attname = 'syntactic_diff'
 
     if method == 'levenshtein':
-        print('         Levenshtein computation, progress: 0%', end="\r")
+        CONFIGURATION.log('         Levenshtein computation, progress: 0%', end="\r")
         total_size = len(df)
         ''' Here we have a problem: levenshtein distance is sensitive to the order how items are added. Thats why we
         must not iterate through the outgoing edges, but keep the order by iterating over all possible properties
@@ -516,7 +516,7 @@ def compute_append_syntactic_similarity_score(graph1, graph2, df, method='levens
         for index, row in df.iterrows():
             syntaxprogress=syntaxprogress+1
             if syntaxprogress%20==0:
-                print('         Levenshtein computation, progress: '+str(int((100*syntaxprogress/(total_size))))+'%', end="\r")
+                CONFIGURATION.log('         Levenshtein computation, progress: '+str(int((100*syntaxprogress/(total_size))))+'%', end="\r")
             txt1 = ""
             for property in [p for p in graph1.literal_properties if p in graph1.elements[row['src_id']].literals.keys()]:
                 if properties is not None:# and plus_differentiator is False:
@@ -533,17 +533,17 @@ def compute_append_syntactic_similarity_score(graph1, graph2, df, method='levens
                  df.loc[index, attname] = 1.0
             else:
                  df.loc[index, attname] = 1.0 - float(ngrams_intersection) / float(max(len(ngrams1),len(ngrams2)))
-        #print("         Complete.")
-        print('         Levenshtein computation, progress: 100%')
+        #CONFIGURATION.log("         Complete.")
+        CONFIGURATION.log('         Levenshtein computation, progress: 100%')
         return df
 
     elif method == 'jaccard':
-        print('         Jaccard computation, progress: 0%', end="\r")
+        CONFIGURATION.log('         Jaccard computation, progress: 0%', end="\r")
         total_size = len(df)
         for index, row in df.iterrows():
             syntaxprogress=syntaxprogress+1
             if syntaxprogress%20==0:
-                print('         Jaccard computation, progress: '+str(int((100*syntaxprogress/(total_size))))+'%', end="\r")
+                CONFIGURATION.log('         Jaccard computation, progress: '+str(int((100*syntaxprogress/(total_size))))+'%', end="\r")
             txt1 = ""
             for property in [p for p in graph1.literal_properties if
                              p in graph1.elements[row['src_id']].literals.keys()]:
@@ -563,8 +563,8 @@ def compute_append_syntactic_similarity_score(graph1, graph2, df, method='levens
             ngrams_intersection = len([value for value in ngrams1 if value in ngrams2])
             val = 1.0 - float(ngrams_intersection) / float(max(len(ngrams1),len(ngrams2)))
             df.loc[index, attname] = 1.0 - float(ngrams_intersection) / float(max(len(ngrams1),len(ngrams2)))
-        print('         Jaccard computation, progress: 100%')
-        #print("         Complete.")
+        CONFIGURATION.log('         Jaccard computation, progress: 100%')
+        #CONFIGURATION.log("         Complete.")
         return df
 
 

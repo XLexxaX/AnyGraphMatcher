@@ -29,11 +29,19 @@ class Configuration:
         self.logs_ = None
         self.cachedir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..','cache')) + str(os.sep)
         self.match_cross_product = len(self.gold_mapping.raw_testsets) == 0
+        self.LOGMEMORY = ""
 
 
-    def log(self, text):
-        if self.logs_ is not None:
-            self.logs_.write(str(text))
+    def log(self, text, end=""):
+        if not (text+end)==(self.LOGMEMORY):
+            self.LOGMEMORY = (text+end)
+
+            if self.logs_ is not None and end == "":
+                self.logs_.write(str(text))
+                print(text)
+            else:
+                print(text, end=end)
+
 
 
     def to_string(self):

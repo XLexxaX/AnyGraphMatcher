@@ -29,10 +29,10 @@ def exec(graph1, graph2):
 def prepare(graph1, graph2):
 
         EmbeddingSaver.interface(PipelineDataTuple(graph1, graph2), None, CONFIGURATION)
-        print("      --> Cleaning memory: 0%", end="\r")
+        CONFIGURATION.log("      --> Cleaning memory: 0% [inactive]", end="\r")
         RAMCleaner.interface(PipelineDataTuple(graph1, graph2), None, CONFIGURATION)
 
-        print("      --> Cleaning memory: 100%")
+        CONFIGURATION.log("      --> Cleaning memory: 100% [inactive]")
 
         basedir = CONFIGURATION.rundir
 
@@ -46,7 +46,7 @@ def prepare(graph1, graph2):
         gs = gs.merge(embs, left_on=['tgt_id'], right_on=['label'])
 
 
-        print("      --> Applying ontology restrictions: 0%", end="\r")
+        CONFIGURATION.log("      --> Applying ontology restrictions: 0% [inactive]", end="\r")
 
         labels1 = dict()
         categories1 = dict()
@@ -96,10 +96,10 @@ def prepare(graph1, graph2):
         gs = gs.loc[gs.src_category == gs.tgt_category]
 
 
-        print("      --> Applying ontology restrictions: 100%")
+        CONFIGURATION.log("      --> Applying ontology restrictions: 100% [inactive]")
 
 
-        print("      --> Calculating implicit features: 0%", end="\r")
+        CONFIGURATION.log("      --> Calculating implicit features: 0% [inactive]", end="\r")
 
 
         def extend_features(df):
@@ -185,7 +185,7 @@ def prepare(graph1, graph2):
         gs['plus_diff'] = gs.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
 
 
-        print("      --> Calculating implicit features: 100%")
+        CONFIGURATION.log("      --> Calculating implicit features: 100% [inactive]")
 
 
         gs.loc[:, 'total_score'] = 0
@@ -228,7 +228,7 @@ def prepare(graph1, graph2):
                             x = gs.loc[inds].to_frame().transpose()
 
                         progress += 1
-                        print("      --> Calculating final scores: " + str(int(100*progress/total)) + "%", end="\r")
+                        CONFIGURATION.log("      --> Calculating final scores: " + str(int(100*progress/total)) + "% [active]", end="\r")
 
 
                         ctr = 1
@@ -279,7 +279,7 @@ def prepare(graph1, graph2):
                             x = gs.loc[inds].to_frame().transpose()
 
                         progress += 1
-                        print("      --> Calculating final scores: " + str(int(100*progress/total)) + "%", end="\r")
+                        CONFIGURATION.log("      --> Calculating final scores: " + str(int(100*progress/total)) + "% [active]", end="\r")
 
 
                         ctr = 1
@@ -311,7 +311,7 @@ def prepare(graph1, graph2):
         gs.loc[:, 'total_score'] = gs['syntax_score'] + gs['euclid_score'] + gs['probability_score'] + gs['confidence_score'] + \
                                   gs['cos_score']
 
-        print("      --> Calculating final scores: 100%")
+        CONFIGURATION.log("      --> Calculating final scores: 100% [active]")
         return gs
 
 def match(gs, graph1, graph2):
@@ -331,8 +331,8 @@ def match(gs, graph1, graph2):
 #
     #gs.sort_values(by=['total_score', 'src_tgt_angle'], ascending=[False, True], inplace=True
     #married_matchings = list()
-    #print("sort done")
-    #print(len(gs)))
+    #CONFIGURATION.log("sort done")
+    #CONFIGURATION.log(len(gs)))
     #gs.loc[:, 'married'] = False
     #smallergs = gs["married"]
     #while len(smallergs.loc[smallergs == False]) > 0:
@@ -348,7 +348,7 @@ def match(gs, graph1, graph2):
     #    #    negated_select_on_gs[i] = 1
     #    # negated_select_on_gs = negated_select_on_gs==0
     #    smallergs.loc[l3] = True
-    #    print(str(len(smallergs.loc[smallergs == False])) + " left     ", end="\r")
+    #    CONFIGURATION.log(str(len(smallergs.loc[smallergs == False])) + " left     ", end="\r")
 #
     #married_matchings = pd.DataFrame(married_matchings)
     #married_matchings.columns = ['src_id', 'tgt_id']
@@ -358,7 +358,7 @@ def match(gs, graph1, graph2):
     #PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
 
 
-    print("      --> Peforming stable marriage: 0%", end="\r")
+    CONFIGURATION.log("      --> Peforming stable marriage: 0% [active]", end="\r")
 
     d2 = dict()
     d3 = dict()
@@ -403,19 +403,19 @@ def match(gs, graph1, graph2):
             if x in left_for_mapping:
                 left_for_mapping.remove(x)
         if mem - len(left_for_mapping) > 100:
-            print("      --> Peforming stable marriage: "+int(100*(total-len(left_for_mapping))/total)+"%", end="\r")
+            CONFIGURATION.log("      --> Peforming stable marriage: "+str(int(100*(total-len(left_for_mapping))/total))+"% [active]", end="\r")
             mem = len(left_for_mapping)
 
-    print("      --> Peforming stable marriage: 100%")
+    CONFIGURATION.log("      --> Peforming stable marriage: 100% [active]")
     married_matchings = pd.DataFrame(married_matchings)
     married_matchings.columns = ['src_id', 'tgt_id']
     married_matchings.head()
 
-    print("      --> Storing results: 0%", end="\r")
+    CONFIGURATION.log("      --> Storing results: 0% [inactive]", end="\r")
     married_matchings[['src_id','tgt_id']].to_csv(CONFIGURATION.rundir+"married_matchings.csv", encoding="UTF-8", sep="\t")
-    PredictionToXMLConverter.interface(graph1, graph2, PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
+    PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
 
-    print("      --> Storing results: 100%")
+    CONFIGURATION.log("      --> Storing results: 100% [inactive]")
 
 
 def interface(main_input, args, configuration):

@@ -50,7 +50,7 @@ def main(source, target, possible_matches):
     use_streams = False
 
 
-    name = "test"
+    name = "cli_task"
     pipeline = Pipeline()
     line_a = pipeline.append_step(load_kg_with_rdflib_ttl_interface, None, PipelineDataTuple(src_triples))
     line_a = pipeline.append_step(GraphToolbox.interface, PipelineDataTuple(line_a), PipelineDataTuple(src_triples))

@@ -15,7 +15,7 @@ def tokenize(text, lowercase=True):
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
     #logging.info("Start")
-    # print(list(tokenize("""
+    # CONFIGURATION.log(list(tokenize("""
     # A convention, in the sense of a meeting, is a gathering of individuals who meet at an arranged place and time in order to discuss or engage in some common interest.
     # The most common conventions are based upon industry, profession, and fandom.
     # Trade conventions typically focus on a particular industry or industry segment, and feature keynote speakers, vendor displays, and other information and activities of interest to the event organizers and attendees.
@@ -23,8 +23,8 @@ if __name__ == '__main__':
     # """)))
     #
     # for i in tokenize("ThisIsATest and so on and so furth."):
-    #     print(i)
+    #     CONFIGURATION.log(i)
 
-    print(list(tokenize("Meta-Gutachater (Gutachter der Gutachten begutachtet)")))
+    CONFIGURATION.log(list(tokenize("Meta-Gutachater (Gutachter der Gutachten begutachtet)")))
 
-    #print(list())
+    #CONFIGURATION.log(list())

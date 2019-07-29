@@ -16,7 +16,7 @@ def interface(main_input, args, configuration):
 
 def execute(graph1, dim):
     if graph1.corpus is None:
-        print("!!! Graph has no corpus !!!")
+        CONFIGURATION.log("!!! Graph has no corpus !!!")
         return PipelineDataTuple(graph1)
     model = word2vec_embedding_from_sentences_v2(graph1.corpus, CONFIGURATION, sg=0, size=dim, window=500)
     for descriptor, resource in graph1.elements.items():
@@ -24,5 +24,5 @@ def execute(graph1, dim):
             resource.embeddings.append(np.array(model[descriptor.lower()]).astype(float).tolist())
         except KeyError:
             resource.embeddings.append(np.array(model["<>"]).astype(float).tolist())
-            print("Key " + descriptor + " not found ... proceeding")
+            CONFIGURATION.log("Key " + descriptor + " not found ... proceeding")
     return PipelineDataTuple(graph1)

@@ -53,7 +53,7 @@ def exec(graph1, graph2):
             continue
         best_matching_resources.sort(key = sortkey, reverse = True)
         best_matching_resources = np.array(best_matching_resources)
-        #print(best_matching_resources)
+        #CONFIGURATION.log(best_matching_resources)
 
         tmp = tgt.loc[best_matching_resources[:,0]]
         tmp['ngrammatches'] = best_matching_resources[:,1]

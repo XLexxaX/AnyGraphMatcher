@@ -57,7 +57,7 @@ def translation_invariant_lsa(sentences_one, sentences_two, lexicon, window=5, m
     #
     # dxd_svd()
     #
-    # print(word_vector_src.vectors)
+    # CONFIGURATION.log(word_vector_src.vectors)
 
 # TODO: check that return type is float32 or float64
 
@@ -84,15 +84,15 @@ def __dxd_svd(X, D1, D2, size=100, lam=1):
     Vs = np.sqrt(2) * vecs[:n, :size]
     Us = np.sqrt(2) * vecs[n:n+m, :size]
 
-    #print(Us)
-    print(Ss)
-    print(Vs)
-    print(Us)
+    #CONFIGURATION.log(Us)
+    CONFIGURATION.log(Ss)
+    CONFIGURATION.log(Vs)
+    CONFIGURATION.log(Us)
 
     word_vector = Us.dot(Ss)
-    #print(word_vector.shape)
-    #print(word_vector)
-    #print(Q)
+    #CONFIGURATION.log(word_vector.shape)
+    #CONFIGURATION.log(word_vector)
+    #CONFIGURATION.log(Q)
 
     return word_vector
 
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     # })
 
     #test = sio.loadmat('multilingual.mat')
-    #print(__dxd_svd(test['X'], test['D1'], test['D2'], size=10))
+    #CONFIGURATION.log(__dxd_svd(test['X'], test['D1'], test['D2'], size=10))
 
     #test = sio.loadmat('dxd_u.mat')
     #dxd_u(test['X'], test['P1'], test['P2'], test['u'], test['m'], test['n'])
@@ -126,6 +126,6 @@ if __name__ == '__main__':
     # bf = np.dtype("F")
     # d = np.dtype("d")
     # bd = np.dtype("D")
-    # print("bla")
+    # CONFIGURATION.log("bla")
 
 

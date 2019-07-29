@@ -68,7 +68,7 @@ if __name__ == '__main__':
     # from gensim.test.utils import common_texts
     # from wordembedding.lsa import lsa_embedding_from_sentences
     #
-    # print(lsa_embedding_from_sentences(common_texts, size=10))
+    # CONFIGURATION.log(lsa_embedding_from_sentences(common_texts, size=10))
 
 
 #############

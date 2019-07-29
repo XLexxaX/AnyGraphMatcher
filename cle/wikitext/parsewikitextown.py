@@ -41,9 +41,9 @@ class MarkupLinks(object):
 
 
         if link == 'of' or link == 'dor':
-            print("test")
+            CONFIGURATION.log("test")
         if text == 'of' or text == 'dor':
-            print("test")
+            CONFIGURATION.log("test")
 
         self.links[link] = link #add link to map
         self.links[text] = link  # add link text to map

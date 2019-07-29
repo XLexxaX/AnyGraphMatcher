@@ -137,7 +137,7 @@ def exec(graph1, graph2, model):
                 CONFIGURATION.log(str(srckey) + " --> " + str(maxtgtkey) + "\n")
 
             CONFIGURATION.log("\n\n\n")
-            print("     --> Evaluated; logs written to " + str(CONFIGURATION.logfile))
+            CONFIGURATION.log("     --> Evaluated; logs written to " + str(CONFIGURATION.logfile))
 
             return PipelineDataTuple(graph1, graph2)# just return the original graph data; this is assumed to be the final step in the pipeline!
 

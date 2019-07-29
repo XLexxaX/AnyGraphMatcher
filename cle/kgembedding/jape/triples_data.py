@@ -23,7 +23,7 @@ class Triples_Data:
         self.rels_list = list(self.rels)
         self.ent_num = len(self.ents)
         self.rel_num = len(self.rels)
-        print('ents: %d + %d = %d' % (len(heads), len(tails), self.ent_num))
+        CONFIGURATION.log('ents: %d + %d = %d' % (len(heads), len(tails), self.ent_num))
         for (h, r, t) in self.train_triples:
             self.__add_dict_kv(self.r_hs_train, r, h)
             self.__add_dict_kv(self.r_ts_train, r, t)

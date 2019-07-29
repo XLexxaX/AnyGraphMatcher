@@ -89,8 +89,8 @@ def get_property_mapping(set_of_language_pairs):
         source_prop_mapping = get_property_mapping_from_file(os.path.join(package_directory, '..', '..', 'data', 'dbpedia', src_dst_language[0], 'Mapping_'+ src_dst_language[0] + '.xml'))
         target_prop_mapping = get_property_mapping_from_file(os.path.join(package_directory, '..', '..', 'data', 'dbpedia', src_dst_language[1], 'Mapping_' + src_dst_language[1] + '.xml'))
 
-        print(source_prop_mapping)
-        print(target_prop_mapping)
+        CONFIGURATION.log(source_prop_mapping)
+        CONFIGURATION.log(target_prop_mapping)
 
         for common_ont_prop in set(source_prop_mapping.keys()).intersection(target_prop_mapping.keys()):
             logger.info("%s -> %s | %s", common_ont_prop, source_prop_mapping[common_ont_prop], target_prop_mapping[common_ont_prop])
@@ -108,7 +108,7 @@ if __name__ == '__main__':
     save_inter_language_links_given_min_amount_relationships(language_pairs, 4)
 
     #get_inter_language_links_given_min_amount_relationships(language_pairs, 4)
-    #print(language_pairs)
+    #CONFIGURATION.log(language_pairs)
     #get_property_mapping(language_pairs)
 
     #get_inter_language_links_given_min_amount_relationships(language_pairs, 4)

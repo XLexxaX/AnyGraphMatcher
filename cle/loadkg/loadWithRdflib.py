@@ -25,7 +25,7 @@ def __get_namespace(graph):
     for s, p, o in graph:
         o = urlparse(str(s))
         #common_namespace.update(o.)
-            #print(prefix, url)
+            #CONFIGURATION.log(prefix, url)
 
 
 def load_kg_with_rdflib(path, format=None):

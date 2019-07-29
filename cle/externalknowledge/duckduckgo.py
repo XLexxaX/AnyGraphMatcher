@@ -45,12 +45,12 @@ def html_to_text(html_content_in_byte):
 
 #def html_to_text_boilerpipe(link):
 #    extractor = Extractor(extractor='ArticleExtractor', url=link)
-#    print(extractor.getText())
+#    CONFIGURATION.log(extractor.getText())
 
 #def html_to_text_goose(link):
 #    g = Goose()
 #    article = g.extract(url=link)
-#    print(articleaned_text)
+#    CONFIGURATION.log(articleaned_text)
 
 def html_to_text_justext(html_content_in_byte):
     paragraphs = justext.justext(html_content_in_byte, justext.get_stoplist("English"))

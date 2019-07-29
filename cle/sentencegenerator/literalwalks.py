@@ -37,4 +37,4 @@ def generate_literal_walks(kg, window_size_for_repetition=None, text_link_amount
                     yield additional_sent
 
 # if __name__ == '__main__':
-#     print(__repeat_resource_after_every_nth_token([['a','b','c','d','e','f','g','h','i','j']], 'x', 3))
+#     CONFIGURATION.log(__repeat_resource_after_every_nth_token([['a','b','c','d','e','f','g','h','i','j']], 'x', 3))

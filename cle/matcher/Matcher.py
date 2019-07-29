@@ -66,15 +66,15 @@ def exec(graph1, graph2, ml_model):
         x_test1 = test.loc[:, test.columns != 'label']
         y_test1 = test['label']
 
-        print("\n################################################################\n\n")
+        CONFIGURATION.log("\n################################################################\n\n")
         CONFIGURATION.log("\n################################################################\n\n")
 
         prediction = model.predict(x_test1[[col for col in x_train.columns]])
         result = classification_report(prediction, np.array(y_test1), target_names=['false','true'])
-        print("Results on test '" + ntpath.basename(testset).replace('-strcombined','') + "':")
-        print(result)
-        print(ConfusionMatrix(prediction, np.array(y_test1)))
-        print("\n\n--------------------------------------------------------------\n")
+        CONFIGURATION.log("Results on test '" + ntpath.basename(testset).replace('-strcombined','') + "':")
+        CONFIGURATION.log(result)
+        CONFIGURATION.log(ConfusionMatrix(prediction, np.array(y_test1)))
+        CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
         CONFIGURATION.log("Results on test '" + ntpath.basename(testset).replace('-strcombined','') + "':")
         CONFIGURATION.log(str(result))
         CONFIGURATION.log(str(ConfusionMatrix(prediction, np.array(y_test1))))
@@ -82,14 +82,14 @@ def exec(graph1, graph2, ml_model):
 
         #prediction = syntactic_model.predict(pd.DataFrame(x_test1['syntactic_diff']))
         #result = classification_report(prediction, np.array(y_test1), target_names=['false','true'])
-        #print("Syntactic matching results on simple test:")
-        #print(result)
-        #print(ConfusionMatrix(prediction, np.array(y_test1)))
+        #CONFIGURATION.log("Syntactic matching results on simple test:")
+        #CONFIGURATION.log(result)
+        #CONFIGURATION.log(ConfusionMatrix(prediction, np.array(y_test1)))
         #CONFIGURATION.log("Syntactic matching results on simple test:")
         #CONFIGURATION.log(str(result))
         #CONFIGURATION.log(str(ConfusionMatrix(prediction, np.array(y_test1))))
     #
-        print("\n################################################################\n\n")
+        CONFIGURATION.log("\n################################################################\n\n")
         CONFIGURATION.log("\n################################################################\n\n")
 
 
@@ -100,19 +100,19 @@ def exec(graph1, graph2, ml_model):
         y_test_plus = test_plus['label']
         prediction_plus = model.predict(x_test_plus[[col for col in x_train.columns]])
         result_plus = classification_report(prediction_plus, np.array(y_test_plus), target_names=['false','true'])
-        print("Results+ on test '" + ntpath.basename(testset).replace('-strcombined','') + "':")
-        print(result_plus)
-        print(ConfusionMatrix(prediction_plus, np.array(y_test_plus)))
-        print("\n\n--------------------------------------------------------------\n")
+        CONFIGURATION.log("Results+ on test '" + ntpath.basename(testset).replace('-strcombined','') + "':")
+        CONFIGURATION.log(result_plus)
+        CONFIGURATION.log(ConfusionMatrix(prediction_plus, np.array(y_test_plus)))
+        CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
         CONFIGURATION.log("Results+ on test '" + ntpath.basename(testset).replace('-strcombined','') + "':")
         CONFIGURATION.log(str(result_plus))
         CONFIGURATION.log(str(ConfusionMatrix(prediction_plus, np.array(y_test_plus))))
         CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
 
-        #print("Syntactic matching results+ on simple test: 0.0%")
+        #CONFIGURATION.log("Syntactic matching results+ on simple test: 0.0%")
         #CONFIGURATION.log("Syntactic matching results+ on simple test: 0.0%")
 
-        print("\n################################################################\n\n")
+        CONFIGURATION.log("\n################################################################\n\n")
         CONFIGURATION.log("\n################################################################\n\n")
 
 

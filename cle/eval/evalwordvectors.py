@@ -75,4 +75,4 @@ def _assign_ranks(item_dict):
 if __name__ == '__main__':
     from gensim.models import KeyedVectors
     word_vectors = KeyedVectors.load_word2vec_format('global_context.vec', binary=False)
-    print(format_eval_results(eval_word_vectors(word_vectors)))
+    CONFIGURATION.log(format_eval_results(eval_word_vectors(word_vectors)))

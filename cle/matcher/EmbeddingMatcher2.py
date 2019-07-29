@@ -60,15 +60,15 @@ def exec(graph1, graph2, ml_model):
 
 
 
-    print("\n################################################################\n\n")
+    CONFIGURATION.log("\n################################################################\n\n")
     CONFIGURATION.log("\n################################################################\n\n")
 
     prediction = model.predict(x_test1[[col for col in x_train.columns if not col == 'syntactic_diff' and not col == 'plus_diff']])
     result = classification_report(prediction, np.array(y_test1), target_names=['false','true'])
-    print("Results on simple test:")
-    print(result)
-    print(ConfusionMatrix(prediction, np.array(y_test1)))
-    print("\n\n--------------------------------------------------------------\n")
+    CONFIGURATION.log("Results on simple test:")
+    CONFIGURATION.log(result)
+    CONFIGURATION.log(ConfusionMatrix(prediction, np.array(y_test1)))
+    CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
     CONFIGURATION.log("Results on simple test:")
     CONFIGURATION.log(str(result))
     CONFIGURATION.log(str(ConfusionMatrix(prediction, np.array(y_test1))))
@@ -76,14 +76,14 @@ def exec(graph1, graph2, ml_model):
 
     prediction = syntactic_model.predict(pd.DataFrame(x_test1['syntactic_diff']))
     result = classification_report(prediction, np.array(y_test1), target_names=['false','true'])
-    print("Syntactic matching results on simple test:")
-    print(result)
-    print(ConfusionMatrix(prediction, np.array(y_test1)))
+    CONFIGURATION.log("Syntactic matching results on simple test:")
+    CONFIGURATION.log(result)
+    CONFIGURATION.log(ConfusionMatrix(prediction, np.array(y_test1)))
     CONFIGURATION.log("Syntactic matching results on simple test:")
     CONFIGURATION.log(str(result))
     CONFIGURATION.log(str(ConfusionMatrix(prediction, np.array(y_test1))))
 
-    print("\n################################################################\n\n")
+    CONFIGURATION.log("\n################################################################\n\n")
     CONFIGURATION.log("\n################################################################\n\n")
 
 
@@ -94,29 +94,29 @@ def exec(graph1, graph2, ml_model):
     y_test_plus = test_plus['label']
     prediction_plus = model.predict(x_test_plus[[col for col in x_train.columns if not col == 'syntactic_diff' and not col == 'plus_diff']])
     result_plus = classification_report(prediction_plus, np.array(y_test_plus), target_names=['false','true'])
-    print("Results+ on simple test:")
-    print(result_plus)
-    print(ConfusionMatrix(prediction_plus, np.array(y_test_plus)))
-    print("\n\n--------------------------------------------------------------\n")
+    CONFIGURATION.log("Results+ on simple test:")
+    CONFIGURATION.log(result_plus)
+    CONFIGURATION.log(ConfusionMatrix(prediction_plus, np.array(y_test_plus)))
+    CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
     CONFIGURATION.log("Results+ on simple test:")
     CONFIGURATION.log(str(result_plus))
     CONFIGURATION.log(str(ConfusionMatrix(prediction_plus, np.array(y_test_plus))))
     CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
 
-    print("Syntactic matching results+ on simple test: 0.0%")
+    CONFIGURATION.log("Syntactic matching results+ on simple test: 0.0%")
     CONFIGURATION.log("Syntactic matching results+ on simple test: 0.0%")
 
-    print("\n################################################################\n\n")
+    CONFIGURATION.log("\n################################################################\n\n")
     CONFIGURATION.log("\n################################################################\n\n")
 
 
 
     prediction2 = model.predict(x_test2[[col for col in x_train.columns if not col == 'syntactic_diff' and not col == 'plus_diff']])
     result2 = classification_report(prediction2, np.array(y_test2), target_names=['false','true'])
-    print("Results on hard test:")
-    print(str(result2))
-    print(str(ConfusionMatrix(prediction2, np.array(y_test2))))
-    print("\n\n--------------------------------------------------------------\n")
+    CONFIGURATION.log("Results on hard test:")
+    CONFIGURATION.log(str(result2))
+    CONFIGURATION.log(str(ConfusionMatrix(prediction2, np.array(y_test2))))
+    CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
     CONFIGURATION.log("Results on hard test:")
     CONFIGURATION.log(str(result2))
     CONFIGURATION.log(str(ConfusionMatrix(prediction2, np.array(y_test2))))
@@ -124,14 +124,14 @@ def exec(graph1, graph2, ml_model):
 
     prediction = syntactic_model.predict(pd.DataFrame(x_test2['syntactic_diff']))
     result = classification_report(prediction, np.array(y_test2), target_names=['false','true'])
-    print("Syntactic matching results on hard test:")
-    print(result)
-    print(ConfusionMatrix(prediction, np.array(y_test2)))
+    CONFIGURATION.log("Syntactic matching results on hard test:")
+    CONFIGURATION.log(result)
+    CONFIGURATION.log(ConfusionMatrix(prediction, np.array(y_test2)))
     CONFIGURATION.log("Syntactic matching results on hard test:")
     CONFIGURATION.log(str(result))
     CONFIGURATION.log(str(ConfusionMatrix(prediction, np.array(y_test2))))
 
-    print("\n################################################################\n\n")
+    CONFIGURATION.log("\n################################################################\n\n")
     CONFIGURATION.log("\n################################################################\n\n")
 
 
@@ -142,19 +142,19 @@ def exec(graph1, graph2, ml_model):
     y_test_plus = test_plus['label']
     prediction_plus = model.predict(x_test_plus[[col for col in x_train.columns if not col == 'syntactic_diff' and not col == 'plus_diff']])
     result_plus = classification_report(prediction_plus, np.array(y_test_plus), target_names=['false','true'])
-    print("Results+ on hard test:")
-    print(result_plus)
-    print(ConfusionMatrix(prediction_plus, np.array(y_test_plus)))
-    print("\n\n--------------------------------------------------------------\n")
+    CONFIGURATION.log("Results+ on hard test:")
+    CONFIGURATION.log(result_plus)
+    CONFIGURATION.log(ConfusionMatrix(prediction_plus, np.array(y_test_plus)))
+    CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
     CONFIGURATION.log("Results+ on hard test:")
     CONFIGURATION.log(str(result_plus))
     CONFIGURATION.log(str(ConfusionMatrix(prediction_plus, np.array(y_test_plus))))
     CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
 
-    print("Syntactic matching results+ on hard test: 0.0%")
+    CONFIGURATION.log("Syntactic matching results+ on hard test: 0.0%")
     CONFIGURATION.log("Syntactic matching results+ on hard test: 0.0%")
 
-    print("\n################################################################\n\n")
+    CONFIGURATION.log("\n################################################################\n\n")
     CONFIGURATION.log("\n################################################################\n\n")
 
     # Schema correspondence predictions

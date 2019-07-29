@@ -203,7 +203,7 @@ def process_article(article_text, title):
     #     link_text = link.text or link.title
     #     text = text.replace(link_text.lower(),make_url_from_link(str(link.title)))
     #
-    #     print(link_text)
+    #     CONFIGURATION.log(link_text)
         #text.replace('http://dbpedia.org/resource/' + title.replace(' ', '_')))
 
     #text.replace()
@@ -214,12 +214,12 @@ def process_article(article_text, title):
     #text.replace(title.lower(), 'http://dbpedia.org/resource/' + title.replace(' ', '_'))
     #for link in parsed_wikicode.filter_wikilinks():
     #    text.replace('')
-    #print(text)
+    #CONFIGURATION.log(text)
 
     #parsed = wtp.parse(article_text)
     #for link in parsed.wikilinks:
-    #    print(link.target)
-    #    print(link.text)
+    #    CONFIGURATION.log(link.target)
+    #    CONFIGURATION.log(link.text)
 
 
     #from tokenization.spacytoken import tokenize
@@ -236,7 +236,7 @@ def process_article(article_text, title):
 def get_wiki_text():
     with open(source, 'r', encoding='utf-8') as dump_file:
         for title, text, pageid in extract_pages(dump_file, filter_namespaces=set(['0'])):
-            pprint.pprint((title, pageid))
+            pprint.pCONFIGURATION.log((title, pageid))
             process_article(text, title)
 
 
@@ -248,4 +248,4 @@ if __name__ == '__main__':
     nlp = spacy.load("en_core_web_sm") # en or  en_core_web_sm
     doc = nlp(" http://dbpedia.org/resource/Gryffindor  helps is one of the four  http://dbpedia.org/resource/Hogwarts_Houses  of  http://dbpedia.org/resource/Hogwarts_School_of_Witchcraft_and_Wizardry , founded by  http://dbpedia.org/resource/Godric_Gryffindor . godric instructed  http://dbpedia.org/resource/Sorting_Hat  to choose a few particular characteristics he most values. such character traits of students  http://dbpedia.org/resource/Sorting_ceremony  into  http://dbpedia.org/resource/Gryffindor  are courage, chivalry, and determination. the emblematic animal is a  http://dbpedia.org/resource/lion , and its colours are scarlet and gold.  http://dbpedia.org/resource/Nicholas_de_Mimsy-Porpington , also known as \"nearly headless nick\" is the house  http://dbpedia.org/resource/ghost .  ")
     for sentence in doc.sents:
-        print(sentence)#[token.string.strip().lower() for token in sentence])
+        CONFIGURATION.log(sentence)#[token.string.strip().lower() for token in sentence])

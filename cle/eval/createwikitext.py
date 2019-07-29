@@ -143,7 +143,7 @@ if __name__ == '__main__':
     #with open(source, 'rb') as f:
     #    #create_wiki_text(source, target)
     #    for title, ns, text, page_id in extract_pages_new_new(f, None):
-    #        #print(title)
+    #        #CONFIGURATION.log(title)
     #        pass
 
     #segment_and_write_all_articles

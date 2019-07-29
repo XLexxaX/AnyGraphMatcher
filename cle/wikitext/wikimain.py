@@ -34,7 +34,7 @@ def replace_text(text, links, title):
 
 def process_page(args):#title, text, pageid):
     title, text, pageid = args
-    print("Process " + title + ' (' + pageid + ')')
+    CONFIGURATION.log("Process " + title + ' (' + pageid + ')')
     text, links = get_raw_text_and_links_from_markup(text)
     text = replace_text(text, links, title)
     text = re.sub('\s+', ' ', text).strip()
@@ -44,7 +44,7 @@ def process_page(args):#title, text, pageid):
 def process_wiki_dump(source, target, processes=None):
     if processes is None:
         processes = max(1, multiprocessing.cpu_count() - 1)
-    print(processes)
+    CONFIGURATION.log(processes)
 
     with open(source, 'r', encoding='utf-8') as dump_file, \
          open(target, 'w', encoding='utf-8') as out_file:

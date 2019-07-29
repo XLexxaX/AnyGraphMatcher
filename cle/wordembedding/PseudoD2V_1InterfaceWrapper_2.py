@@ -42,7 +42,7 @@ def fill_graph(graph, model):
             resource.embeddings.append(test)
         except KeyError:
             resource.embeddings.append(model.wv['<>'].astype(float).tolist())
-            print("Key " + descriptor + " not found ... proceeding")
+            CONFIGURATION.log("Key " + descriptor + " not found ... proceeding")
 
 def array_heterogeneity(x):
     textsset = set()

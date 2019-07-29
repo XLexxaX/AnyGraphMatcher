@@ -52,7 +52,7 @@ def fill_graph(graph, model, documents_ids):
         except KeyError:
             test = np.array(model.docvecs[documents_ids["<>"]]).astype(float).tolist()
             resource.embeddings.append(test)
-            #print("Key " + descriptor + " not found ... proceeding")
+            #CONFIGURATION.log("Key " + descriptor + " not found ... proceeding")
 
 def array_heterogeneity(x):
     textsset = set()

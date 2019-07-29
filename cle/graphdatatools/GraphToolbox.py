@@ -132,7 +132,7 @@ class Resources(dict):
     def add_resources(self, generator, literal_properties):
         for s, p, o in generator:
             if 'http://dbkwik.webdatacommons.org/oldschoolrunescape/class/Recipe' in s:
-                print('here')
+                CONFIGURATION.log('here')
             subj = self.create_or_get(s, Resource)
             pred = self.create_or_get(p, Resource)
             obj = self.create_or_get(o, Resource)
@@ -142,7 +142,7 @@ class Resources(dict):
     def add_literals(self, generator, iindex, literal_properties):
         for s, p, l in generator:
             if 'http://dbkwik.webdatacommons.org/oldschoolrunescape/class/Recipe' in s:
-                print('here')
+                CONFIGURATION.log('here')
             subj = self.create_or_get(s, Resource)
             pred = self.create_or_get(p, Resource)
             try:

@@ -27,14 +27,14 @@ class SharedEmbeddingMatcher(BaseMatcher):
             nearest_element, confidence = self.shared_embedding.most_similar(element, topn=1)[0]#, topn=5)
             if confidence > 0.9:
                 mapping.add((element, nearest_element, '=', confidence))
-            #print("test")
+            #CONFIGURATION.log("test")
             # for dst_element, confidence in dst_most_similar:
             #     #if dst_element == class:
             #     if confidence > 0.90:
             #         mapping.add((src_element, dst_element, '=', confidence))
             #         break
 
-            #print(src_element)
+            #CONFIGURATION.log(src_element)
 
 
         # from_training = []

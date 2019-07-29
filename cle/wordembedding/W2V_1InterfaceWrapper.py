@@ -18,7 +18,7 @@ def interface(main_input, args, configuration):
 
 def execute(graph1, graph2, dim):
     if graph1.corpus is None or graph2.corpus is None:
-        print("!!! At least one of the graphs has no corpus !!!")
+        CONFIGURATION.log("!!! At least one of the graphs has no corpus !!!")
         return PipelineDataTuple(graph1, graph2)
     full_corpus = graph1.corpus + graph2.corpus
     model = word2vec_embedding_from_sentences_v2(full_corpus, CONFIGURATION, sg=0, size=dim, window=500)
@@ -27,11 +27,11 @@ def execute(graph1, graph2, dim):
             resource.embeddings.append(np.array(model[descriptor.lower()]).astype(float).tolist())
         except KeyError:
             resource.embeddings.append(np.array(model["<>"]).astype(float).tolist())
-            print("Key " + descriptor + " not found ... proceeding")
+            CONFIGURATION.log("Key " + descriptor + " not found ... proceeding")
     for descriptor, resource in graph2.elements.items():
         try:
             resource.embeddings.append(np.array(model[descriptor.lower()]).astype(float).tolist())
         except KeyError:
             resource.embeddings.append(np.array(model["<>"]).astype(float).tolist())
-            print("Key " + descriptor + " not found ... proceeding")
+            CONFIGURATION.log("Key " + descriptor + " not found ... proceeding")
     return PipelineDataTuple(graph1, graph2)

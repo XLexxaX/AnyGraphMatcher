@@ -21,11 +21,11 @@ valid_examples = np.random.choice(valid_window, valid_size, replace=False)
 
 
 def get_common(props_list, props_set):
-    print("total props:", len(props_set))
-    print("total prop frequency:", len(props_list))
+    CONFIGURATION.log("total props:", len(props_set))
+    CONFIGURATION.log("total prop frequency:", len(props_list))
     n = int(data_frequent_p * len(props_set))
     most_frequent_props = collections.Counter(props_list).most_common(n)
-    print(most_frequent_props[0:10])
+    CONFIGURATION.log(most_frequent_props[0:10])
     most_frequent_props = most_frequent_props[len(props_set) - n:]
     common_props_ids = dict()
     for prop, freq in most_frequent_props:
@@ -127,7 +127,7 @@ def dict2file(dictionary, embeddings, meta_out_file):
 
 
 def embedding2file(embeddings, embeddings_out_file):
-    print("Embedding:", embeddings.shape)
+    CONFIGURATION.log("Embedding:", embeddings.shape)
     fw = open(embeddings_out_file, 'w', encoding='utf8')
     for i in range(embeddings.shape[0]):
         line = ''
@@ -148,7 +148,7 @@ def learn_vec(attr_folder, rel_train_data_folder, attrs_range_file, en_attrs_ran
                                                                                          en_attrs_range_file)
     # if num_steps < 50000:
     #     num_steps = 50000
-    print("number of steps:", num_steps)
+    CONFIGURATION.log("number of steps:", num_steps)
 
     graph = tf.Graph()
     with graph.as_default():
@@ -185,7 +185,7 @@ def learn_vec(attr_folder, rel_train_data_folder, attrs_range_file, en_attrs_ran
             if step % 2000 == 0:
                 if step > 0:
                     average_loss /= 2000
-                print("average loss at step", step, ":", average_loss, "time = ", round(time.time() - t, 2))
+                CONFIGURATION.log("average loss at step", step, ":", average_loss, "time = ", round(time.time() - t, 2))
                 t = time.time()
                 average_loss = 0
 

@@ -42,7 +42,7 @@ def process_article(article_text, title):
     for link_text, replacement in get_replacement_list(title, parsed_wikicode.filter_wikilinks()):
         # a lookahead because we dont want to replace "abcdef" when we only have "abc" replace with "123"
         text = re.sub(link_text + '(?![a-zA-Z0-9])', replacement, text)
-    print(len(text))
+    CONFIGURATION.log(len(text))
     doc = nlp(text)
     sentences = []
     for sentence in doc.sents:
@@ -109,7 +109,7 @@ def get_wiki_text():
          open(target, 'w', encoding='utf-8') as out_file:
         for title, text, pageid in extract_pages(dump_file, filter_namespaces=set(['0'])):
             get_raw_text_from_markup(text)
-            #print((title, pageid))
+            #CONFIGURATION.log((title, pageid))
             #for sentence in process_article(text, title):
             #    out_file.write(sentence + '\n')
 

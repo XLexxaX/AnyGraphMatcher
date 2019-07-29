@@ -65,10 +65,10 @@ def embed(triples_path, dim):
 def init(file, DIMENSIONS):
     global nodeid_to_tokenized_docs_index
     tokenized_docs, nodeid_to_tokenized_docs_index = prepare_data(file)
-    print("Training document embeddings for "+str(file)+"...")
+    CONFIGURATION.log("Training document embeddings for "+str(file)+"...")
     model = train(tokenized_docs, DIMENSIONS)
     generate_embeddings(tokenized_docs, model)
-    print("Learned document embeddings for "+str(file)+".\n")
+    CONFIGURATION.log("Learned document embeddings for "+str(file)+".\n")
 
 
 def np_arraylength_aggregator(x):

@@ -87,4 +87,4 @@ if __name__ == '__main__':
     test.add_ranking([('a', 0.49), ('b', 0.49), ('c', 0.49), ('d', 0.49)], 'a')
     test.add_ranking([('a', 0.49), ('b', 0.49), ('c', 0.49), ('d', 0.49)], 'e')
     test.close_track()
-    print(test.macro_eval(lambda x: hits_at_k(x, 5)))
+    CONFIGURATION.log(test.macro_eval(lambda x: hits_at_k(x, 5)))

@@ -68,7 +68,7 @@ def exec(graph1, graph2, ml_model):
     df = None
     for sample in test:
         ctr = ctr + 1
-        print(str(ctr))
+        CONFIGURATION.log(str(ctr))
         if df is None:
             df = sample
         else:
@@ -76,7 +76,7 @@ def exec(graph1, graph2, ml_model):
     #    ctr = ctr + 1
     #    prediction = prediction + model.predict(sample.loc[:, sample.columns != 'label']).tolist()
     #    gold = gold + sample['label'].tolist()
-    #    print(str(ctr))
+    #    CONFIGURATION.log(str(ctr))
     #    if sample.plus_diff.values[0] > 0.68 and sample.label.values[0] == 1 or sample.plus_diff.values[0] < 0.68 and sample.label.values[0] == 0:
     #        plus_prediction = plus_prediction + model.predict(sample.loc[:, sample.columns != 'label']).tolist()
     #        plus_gold = plus_gold + sample['label'].tolist()
@@ -88,29 +88,29 @@ def exec(graph1, graph2, ml_model):
     plus_gold = np.array(plus_gold)
 
     result = classification_report(prediction, gold, target_names=['false', 'true'])
-    print("Results on test:")
-    print(result)
-    print(ConfusionMatrix(prediction, gold))
-    print("\n\n--------------------------------------------------------------\n")
+    CONFIGURATION.log("Results on test:")
+    CONFIGURATION.log(result)
+    CONFIGURATION.log(ConfusionMatrix(prediction, gold))
+    CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
     CONFIGURATION.log("Results on test:")
     CONFIGURATION.log(str(result))
     CONFIGURATION.log(str(ConfusionMatrix(prediction, gold)))
     CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
 
     plus_result = classification_report(plus_prediction, plus_gold, target_names=['false', 'true'])
-    print("Results on test:")
-    print(plus_result)
-    print(ConfusionMatrix(plus_prediction, plus_gold))
-    print("\n\n--------------------------------------------------------------\n")
+    CONFIGURATION.log("Results on test:")
+    CONFIGURATION.log(plus_result)
+    CONFIGURATION.log(ConfusionMatrix(plus_prediction, plus_gold))
+    CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
     CONFIGURATION.log("Results on test:")
     CONFIGURATION.log(str(plus_result))
     CONFIGURATION.log(str(ConfusionMatrix(plus_prediction, plus_gold)))
     CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
 
-    print("Syntactic matching results+ on test: 0.0%")
+    CONFIGURATION.log("Syntactic matching results+ on test: 0.0%")
     CONFIGURATION.log("Syntactic matching results+ on test: 0.0%")
 
-    print("\n################################################################\n\n")
+    CONFIGURATION.log("\n################################################################\n\n")
     CONFIGURATION.log("\n################################################################\n\n")
 
 

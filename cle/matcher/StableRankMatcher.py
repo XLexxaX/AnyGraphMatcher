@@ -133,14 +133,14 @@ def exec(graph1, graph2):
                 ctr = 1
                 #sorted_x.columns = ['syntax_diff' if col==0 else col for col in sorted_x.columns]
                 for index, row in sorted_x.iterrows():
-                    #print(row[1] + " - " + str(row['syntax_diff']))
+                    #CONFIGURATION.log(row[1] + " - " + str(row['syntax_diff']))
                     sorted_x.loc[index, 'syntax_score'] = row['syntax_score'] + 1/ctr
                     ctr += 1
 
 
 
 
-                #print('Closest in sum:')
+                #CONFIGURATION.log('Closest in sum:')
                 x = sorted_x
                 x.loc[:,'total_score'] = x['cos_score'] + x['syntax_score'] + x['euclid_score'] + x['probability_score']
                 sorted_x = x.sort_values(by=['total_score'], ascending=False)
@@ -148,14 +148,14 @@ def exec(graph1, graph2):
                 for index, row in sorted_x.iterrows():#sorted_x.loc[sorted_x.total_score == max(sorted_x.total_score.values),:].iterrows():
                     matching_pair = pd.DataFrame([sorted_x.loc[index]])
                     matching_pair.loc[:,'src_id'] = nodeid
-                    #print(nodeid + "\t" + row[1] + "\t" + str(row['total_score']) + "\t" + str(row['cos_score']) + "\t" + str(row['euclid_score']))
+                    #CONFIGURATION.log(nodeid + "\t" + row[1] + "\t" + str(row['total_score']) + "\t" + str(row['cos_score']) + "\t" + str(row['euclid_score']))
                     matchings = mergedf(matchings, matching_pair)
 
 
 
-                print("         Computing syntax-ranks: " + str(int(100*progress/total)) + "%.", end='\r')
+                CONFIGURATION.log("         Computing syntax-ranks: " + str(int(100*progress/total)) + "%.", end='\r')
 
-        print("         Computing syntax-ranks: 100%")
+        CONFIGURATION.log("         Computing syntax-ranks: 100%")
 
 
 

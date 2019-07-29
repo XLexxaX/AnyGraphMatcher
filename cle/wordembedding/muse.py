@@ -92,7 +92,7 @@ def execute(graph1, graph2):
             tmp.append(np.array(line[1:len(line)]).astype(float).tolist())
             graph1.elements[line[0]].embeddings = tmp
         except KeyError:
-            print("key not found for " + line[0])
+            CONFIGURATION.log("key not found for " + line[0])
 
     ctr = 0
     for line in open(emb_dir + str(os.sep) + "vectors-tgt.txt","r"):
@@ -105,7 +105,7 @@ def execute(graph1, graph2):
             tmp.append(np.array(line[1:len(line)]).astype(float).tolist())
             graph2.elements[line[0]].embeddings = tmp
         except KeyError:
-            print("key not found for " + line[0])
+            CONFIGURATION.log("key not found for " + line[0])
 
     return PipelineDataTuple(graph1, graph2)
 
@@ -114,9 +114,9 @@ def line_pre_adder(filename, line_to_prepend):
         f = fileinput.input(filename, inplace=1)
         for xline in f:
             if f.isfirstline():
-                print(line_to_prepend.lower() + xline.lower(), end='')
+                CONFIGURATION.log(line_to_prepend.lower() + xline.lower(), end='')
             else:
-                print(xline.lower(), end='')
+                CONFIGURATION.log(xline.lower(), end='')
 
 def align(src_emb, tgt_emb, dim):
 
@@ -128,7 +128,7 @@ def align(src_emb, tgt_emb, dim):
     copyfile(os.path.join(CONFIGURATION.musedir,"data","crosslingual","dictionaries","src-tgt.txt.sampled"), os.path.join(CONFIGURATION.musedir,"data","crosslingual","dictionaries","src-tgt.txt"))
     os.remove(os.path.join(CONFIGURATION.musedir,"data","crosslingual","dictionaries","src-tgt.txt.sampled"))
     MUSEEmbeddingAligner.align(src_emb, tgt_emb, "src", "tgt", dim, dico_train)
-    print("\n\n ------- Embedding creation process finished -------")
+    CONFIGURATION.log("\n\n ------- Embedding creation process finished -------")
 
 
 

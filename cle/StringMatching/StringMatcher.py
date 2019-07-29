@@ -69,4 +69,4 @@ class StringMatcher:
 if __name__ == '__main__':
     index_properties = ["<http://rdata2graph.sap.com/hilti_erp/property/T179.Description>", "<http://rdata2graph.sap.com/hiti_web/property/Products.Name>"]
     stringmatcher = StringMatcher("C:/Users/D072202/RData2Graph/rdata2graph/data/sap_hilti_data/graph_triples_hilti_erp.nt","C:/Users/D072202/RData2Graph/rdata2graph/data/sap_hilti_data/graph_triples_hiti_web.nt")
-    pprint.PrettyPrinter().pprint(str(stringmatcher.preciseBatchMatch(0.95)))
+    #pprint.PrettyPrinter().pCONFIGURATION.log(str(stringmatcher.preciseBatchMatch(0.95)))

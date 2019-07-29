@@ -61,7 +61,7 @@ def structure_embedding(folder):
                 random.shuffle(triples_data1.train_triples)
                 random.shuffle(triples_data2.train_triples)
                 end = time.time()
-                print("{}/{}, relation_loss = {:.3f}, time = {:.3f} s".format(epoch, num_epochs, pos_loss, end - start))
+                CONFIGURATION.log("{}/{}, relation_loss = {:.3f}, time = {:.3f} s".format(epoch, num_epochs, pos_loss, end - start))
                 # if (epoch % print_validation == 0 or epoch == num_epochs - 1) and epoch >= 200:
                 if epoch % print_validation == 0 or epoch == num_epochs - 1:
                     early_stop_flag1, early_stop_flag2, hits = valid(ent_embeddings, references_s, references_t_list,
@@ -76,5 +76,5 @@ if __name__ == '__main__':
     data_folder = sys.argv[1]
     supervised_ent_rel_ratio = sys.argv[2]
     folder = radio_2file(supervised_ent_rel_ratio, data_folder)
-    print("neg param", neg_param, "split")
+    CONFIGURATION.log("neg param", neg_param, "split")
     structure_embedding(folder)

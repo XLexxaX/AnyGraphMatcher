@@ -52,7 +52,7 @@ def linear_projection(word_vector_src, word_vector_tgt, lexicon):
 #         loss.backward()
 #         optimiser.step()
 #         if epoch % 100 == 0:
-#             print('epoch {}, loss {}'.format(epoch, loss.data[0]))
+#             CONFIGURATION.log('epoch {}, loss {}'.format(epoch, loss.data[0]))
 #
 #     w = list(model.parameters())[0]
 #     w = np.transpose(torch.tensor(w).detach().numpy())

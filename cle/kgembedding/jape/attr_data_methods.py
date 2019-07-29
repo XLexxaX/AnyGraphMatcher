@@ -3,7 +3,7 @@ from data_utils import *
 
 
 def generate_all_attr_data(folder, lines):
-    print("generate all attrs...all attr lines", len(lines))
+    CONFIGURATION.log("generate all attrs...all attr lines", len(lines))
     attrs = dict()
     attr_triples = set()
     line_file = open(folder + ALL_ATTR_TRIPLES_FILE, 'w', encoding='utf8')
@@ -13,8 +13,8 @@ def generate_all_attr_data(folder, lines):
             add_dict_kv(attrs, triple[0], triple[1])
             line_file.write(line)
             attr_triples.add(triple)
-    print("num of ents has attrs:", len(attrs))
-    print("num of attr triples", len(attr_triples))
+    CONFIGURATION.log("num of ents has attrs:", len(attrs))
+    CONFIGURATION.log("num of attr triples", len(attr_triples))
     line_file.close()
     attrs_2file(attrs, folder + ALL_ATTRS_FILE)
     del attrs
@@ -59,7 +59,7 @@ def handle_attrs_range(triples):
         add_dict_one(first_dict, t)
         range_type_dict[triple[1]] = first_dict
     # for t in datetype:
-    #     print(t)
+    #     CONFIGURATION.log(t)
     range_type_dict_final = dict()
     for k in range_type_dict.keys():
         dic = range_type_dict.get(k)
@@ -76,7 +76,7 @@ def generate_all_attrs(attrs_file, ib_props_ttl, ib_props_mapped_ttl, mb_literal
     attrs2 = read_ttl_2attrs_dict(ib_props_mapped_ttl)
     attrs3 = read_ttl_2attrs_dict(mb_literals_ttl)
     attrs = merge_dicts(merge_dicts(attrs1, attrs2), attrs3)
-    print("total num of ents has attrs:", len(attrs))
+    CONFIGURATION.log("total num of ents has attrs:", len(attrs))
     attrs_2file(attrs, attrs_file)
 
 
@@ -89,7 +89,7 @@ def read_ttl_2attrs_dict(ttl_file_path):
         triple = parse_ttl_lines(line)
         if is_attributed_triple(triple):
             add_dict_kv(attrs, triple[0], triple[1])
-    print("num of ents has attrs:", len(attrs))
+    CONFIGURATION.log("num of ents has attrs:", len(attrs))
     return attrs
 
 
@@ -129,9 +129,9 @@ def generate_attrs_train_data(data_folder, s_attrs_file, t_attrs_file, is_sup_at
     kb1_ents_set, _, _ = parse_triples_heads(kb1_triples)
     kb2_ents_set, _, _ = parse_triples_heads(kb2_triples)
     kb1_attrs_dict, attrs_set1 = get_attrs(read_attrs(s_attrs_file), kb1_ents_set)
-    print("num of attrs1:", len(attrs_set1))
+    CONFIGURATION.log("num of attrs1:", len(attrs_set1))
     kb2_attrs_dict, attrs_set2 = get_attrs(read_attrs(t_attrs_file), kb2_ents_set)
-    print("num of attrs2:", len(attrs_set2))
+    CONFIGURATION.log("num of attrs2:", len(attrs_set2))
     if is_sup_attrs:
         sup_attrs_dict = generate_sup_attrs(attrs_set1, attrs_set2)
         # 这里是替换
@@ -154,10 +154,10 @@ def generate_attr_triples_data(all_attr_triples_file, ents, out_file):
             file.write(line)
             ents_set.add(triple[0])
             num += 1
-    print("all attr triples", num)
+    CONFIGURATION.log("all attr triples", num)
     if len(ents_set) != len(ents):
-        print(len(ents_set), len(ents))
-        print("some ents have no attrs")
+        CONFIGURATION.log(len(ents_set), len(ents))
+        CONFIGURATION.log("some ents have no attrs")
     file.close()
 
 
@@ -196,4 +196,4 @@ def read_attrs_range(file_path):
 
 if __name__ == '__main__':
     dic = {'d': 111, 'c': 12}
-    print(sorted(dic.items(), key=lambda x: x[1], reverse=True)[0][0])
+    CONFIGURATION.log(sorted(dic.items(), key=lambda x: x[1], reverse=True)[0][0])

@@ -88,9 +88,9 @@ def exec(graph1, graph2, ml_model):
 
         #prediction = syntactic_model.predict(pd.DataFrame(x_test1['syntactic_diff']))
         #result = classification_report(prediction, np.array(y_test1), target_names=['false','true'])
-        #print("Syntactic matching results on simple test:")
-        #print(result)
-        #print(ConfusionMatrix(prediction, np.array(y_test1)))
+        #CONFIGURATION.log("Syntactic matching results on simple test:")
+        #CONFIGURATION.log(result)
+        #CONFIGURATION.log(ConfusionMatrix(prediction, np.array(y_test1)))
         #CONFIGURATION.log("Syntactic matching results on simple test:")
         #CONFIGURATION.log(str(result))
         #CONFIGURATION.log(str(ConfusionMatrix(prediction, np.array(y_test1))))
@@ -112,7 +112,7 @@ def exec(graph1, graph2, ml_model):
         else:
             CONFIGURATION.log("No performance+ calculated")
             CONFIGURATION.log("\n\n--------------------------------------------------------------\n")
-        #print("Syntactic matching results+ on simple test: 0.0%")
+        #CONFIGURATION.log("Syntactic matching results+ on simple test: 0.0%")
         #CONFIGURATION.log("Syntactic matching results+ on simple test: 0.0%")
 
         CONFIGURATION.log("\n################################################################\n\n")

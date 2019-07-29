@@ -39,14 +39,14 @@ class StringMatcher:
         return correspondences
 
     def preciseBatchMatch(self, min_similarity, progressqueue, max_similarity=1.0, keys=None, x=0):
-        #print('Starting matching')
+        #CONFIGURATION.log('Starting matching')
         #f = open(path+str(x), "a+", encoding="UTF-8")
         correspondences = ""
         i=0
         total_size = len(keys)
         for nodeid in keys:
             i=i+1
-            #print('         Blocking by syntax, progress: ' + str(int(100 * i / (total_size))) + '%', end="\r")
+            #CONFIGURATION.log('         Blocking by syntax, progress: ' + str(int(100 * i / (total_size))) + '%', end="\r")
             progressqueue.send(1)
             if random.randint(1,101) > 100:
                 continue

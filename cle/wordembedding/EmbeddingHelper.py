@@ -164,8 +164,12 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
     )
     model.build_vocab(sentences)
 
-    print("      --> Training embeddings: 0% (no progress updates here... please wait)", end="\r")
-    model.train(sentences, total_examples=model.corpus_count, epochs=2)
+    epochs = 1#((os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))**(-2))*675000
+    epochs = max(epochs, 1)
+    epochs = min(epochs, 2000)
+
+    CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 0% [inactive]", end="\r")
+    model.train(sentences, total_examples=model.corpus_count, epochs=epochs)
     model.save(CONFIGURATION.rundir+"w2v.model")
-    print("      --> Training embeddings: 100%")
+    CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 100% [inactive]")
     return model

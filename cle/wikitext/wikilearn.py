@@ -76,7 +76,7 @@ def run_test(source_target, model):
     source_test, target_test =list_of_source_target[1]
     #result = word_vectors.most_similar(positive=['woman', 'king'], negative=['man'])
     result = model.most_similar(positive=[source_test, target], negative=[source], topn=50)
-    print("test")
+    CONFIGURATION.log("test")
 
 
 if __name__ == '__main__':

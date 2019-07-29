@@ -21,9 +21,9 @@ class EmbeddingsInterface:
         f = fileinput.input(filename, inplace=1)
         for xline in f:
             if f.isfirstline():
-                print(line_to_prepend.lower() + xline.lower(), end='')
+                CONFIGURATION.log(line_to_prepend.lower() + xline.lower(), end='')
             else:
-                print(xline.lower(), end='')
+                CONFIGURATION.log(xline.lower(), end='')
 
     def add_embedding(self, word, embedding):
         self.embeddings[word] = embedding

@@ -52,4 +52,4 @@ def evaluate(system, selection_sub_tracks=None, type_of_text_files='.tokenized.l
 if __name__ == '__main__':
     import pprint
 
-    pprint.pprint(list(generate_eval_files()))
+    pprint.pCONFIGURATION.log(list(generate_eval_files()))

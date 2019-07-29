@@ -32,7 +32,7 @@ class LinearProjectionMatcher(BaseMatcher):
                     mapping.add((src_element, dst_element, '=', confidence))
                     break
 
-            #print(src_element)
+            #CONFIGURATION.log(src_element)
 
 
         # from_training = []

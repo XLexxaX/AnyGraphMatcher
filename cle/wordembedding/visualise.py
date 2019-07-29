@@ -23,9 +23,9 @@ def __plot_tsne2(array, vocab, color=None):
     vocab = vocab.values
     tsne = TSNE(n_components=2, method='exact')#, random_state=0)
     #np.set_printoptions(suppress=True)
-    print("Performing TSNE")
+    CONFIGURATION.log("Performing TSNE")
     Y = tsne.fit_transform(array)
-    print("TSNE done")
+    CONFIGURATION.log("TSNE done")
     Y = Y[:10, :]
     plt.scatter(Y[:, 0], Y[:, 1], c=color)
     for label, x, y in zip(vocab, Y[:, 0], Y[:, 1]):

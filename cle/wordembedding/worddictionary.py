@@ -51,7 +51,7 @@ class WordDictionary():
         most_frequent_items = sorted(self.word_freq.items(), key=itemgetter(1), reverse=True)[:remove_n]
         most_frequent_ids = {word_id for word_id, freq in most_frequent_items}
         # for freq_id in most_frequent_ids:
-        #     print("remove id" + str(freq_id) + " " + self.get_word_by_id(freq_id) + "(" + str(self.word_freq[freq_id]) + ")")
+        #     CONFIGURATION.log("remove id" + str(freq_id) + " " + self.get_word_by_id(freq_id) + "(" + str(self.word_freq[freq_id]) + ")")
         logging.info("discarding %i most_frequent tokens", len(most_frequent_ids))
         self.filter_ids(most_frequent_ids, compactify)
 

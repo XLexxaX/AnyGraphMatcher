@@ -29,7 +29,7 @@ def preprocess(filepath):
             line = re.sub( '\.+', '.', line) # remove multiple dots
             line = ' '.join(line.split())
             if line:
-                print(line)
+                CONFIGURATION.log(line)
 
 
 def collocation(in_path):
@@ -38,7 +38,7 @@ def collocation(in_path):
     bigram = Phraser(Phrases(corpus))
     collocation_corpus = bigram[corpus]
     for sentence in collocation_corpus:
-        print(' '.join(sentence))
+        CONFIGURATION.log(' '.join(sentence))
 
 
 if __name__ == '__main__':
@@ -49,4 +49,4 @@ if __name__ == '__main__':
     elif arguments['<type>'] == 'preprocess':
         preprocess(arguments['<file_path>'])
     else:
-        print(__doc__)
+        CONFIGURATION.log(__doc__)

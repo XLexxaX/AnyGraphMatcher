@@ -157,14 +157,14 @@ def get_confusion_matrix(mapping_system, mapping_gold):
     for (source, target, relation, confidence) in mapping_gold:
         if map_system.get((source, target), None) is not None:
             true_positiv +=1
-            print("true_positiv {} = {}".format(source, target))
+            CONFIGURATION.log("true_positiv {} = {}".format(source, target))
         else:
-            print("should be found {} = {}".format(source, target))
+            CONFIGURATION.log("should be found {} = {}".format(source, target))
 
     map_gold = __get_map_from_mapping(mapping_gold)
     for (source, target, relation, confidence) in mapping_system:
         if map_gold.get((source, target), None) is None:
-            print("too much {} = {}".format(source, target))
+            CONFIGURATION.log("too much {} = {}".format(source, target))
 
 
     if predicted_positive == 0:
@@ -189,5 +189,5 @@ if __name__ == "__main__":
         '/home/shertlin-tmp/gold/dbpedia/lotr~dbpedia~evaluation.ttl')
     #mapping, onto1, onto2, extension = parse_mapping_from_file('C:\\dev\\dbkwik_extraction\\extraction_docker_ubuntu\\newapproach\\e_gold_mapping_interwiki\\gold\\darkscape~oldschoolrunescape~evaluation.xml')
     for a in mapping:
-        print(a)
+        CONFIGURATION.log(a)
     #write_to_file('./test.xml', [], ('Dbpedia', 'http://dbpedia.org', 'test', 'bla'))

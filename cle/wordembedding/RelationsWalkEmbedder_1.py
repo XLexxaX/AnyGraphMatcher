@@ -46,7 +46,7 @@ def fill_graph(graph, model):
             resource.embeddings.append(test)
         except KeyError:
             resource.embeddings.append(model.wv['<>'].astype(float).tolist())
-            #print("Key " + descriptor + " not found ... proceeding")
+            #CONFIGURATION.log("Key " + descriptor + " not found ... proceeding")
 
 def array_heterogeneity(x):
     textsset = set()
@@ -70,8 +70,8 @@ def prepare_data(graph, sentence_generation_method, ngrams, maxdepth):
                 tmp = broad_step(resource, 0, i, graph, "", ngrams)
             documents = documents + tmp #.append(tmp)
             ctr +=1
-            print("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "%", end="\r")
-    print("      --> Generating training corpus: 100%")
+            CONFIGURATION.log("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "%", end="\r")
+    CONFIGURATION.log("      --> Generating training corpus: 100%")
     return documents
 
 def deep_steps(resource, i, maxdepth, graph, exclude_descriptor, ngrams=False):

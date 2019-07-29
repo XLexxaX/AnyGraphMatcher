@@ -70,7 +70,7 @@ class StringMatcher:
             j.start()
         while i < total_size-1:
             i = i + int(parent_conn.recv())
-            print('         Blocking by syntax, progress: ' + str(int(100 * i / (total_size))) + '%', end="\r")
+            CONFIGURATION.log('         Blocking by syntax, progress: ' + str(int(100 * i / (total_size))) + '%', end="\r")
         for q in queues:
             f = open(path, 'a+')
             f.write(str(q.get()))
@@ -92,18 +92,18 @@ def main(src_triples, tgt_triples, labels, filename):
     else:
         index_properties = labels
     assert type(index_properties) == list, "Labels-parameter must be provided as a list of label-properties"
-    #print('label size: ' + str(len(index_properties)))
+    #CONFIGURATION.log('label size: ' + str(len(index_properties)))
 
 
     stringmatcher = StringMatcher(src_triples,tgt_triples, index_properties)
     mappings = stringmatcher.preciseBatchMatch(filename, 0.9, index_properties, src_triples, tgt_triples)
-    #pprint.PrettyPrinter().pprint(str(mappings))
+    #pprint.PrettyPrinter().pCONFIGURATION.log(str(mappings))
     #formatted_save(mappings, "/sapmnt/home/D072202/RData2Graph/rdata2graph/data/sap_hilti_data/sap_hilti_gold.csv")
 
     # match categories
     #index_properties = ["<http://rdata2graph.sap.com/hilti_erp/property/T179.Description>", "<http://rdata2graph.sap.com/hilti_web/property/Categories.name>"]
     #stringmatcher = StringMatcher("C:/Users/D072202/RData2Graph/rdata2graph/data/sap_hilti_data/graph_triples_hilti_erp.nt","C:/Users/D072202/RData2Graph/rdata2graph/data/sap_hilti_data/graph_triples_hilti_web.nt")
     #mappings = stringmatcher.preciseBatchMatch(0.85)
-    #pprint.PrettyPrinter().pprint(str(mappings))
+    #pprint.PrettyPrinter().pCONFIGURATION.log(str(mappings))
 
     #formatted_save(mappings, "C:/Users/D072202/RData2Graph/rdata2graph/data/sap_hilti_data/sap_hilti_gold.csv")

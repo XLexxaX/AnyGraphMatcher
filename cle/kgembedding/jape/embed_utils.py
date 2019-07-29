@@ -13,7 +13,7 @@ def read_ids(ids_file):
 
 
 def embedding2file(embeddings, embeddings_out_file):
-    print("Embedding:", embeddings.shape)
+    CONFIGURATION.log("Embedding:", embeddings.shape)
     fw = open(embeddings_out_file, 'w', encoding='utf8')
     for i in range(embeddings.shape[0]):
         line = ''
@@ -24,7 +24,7 @@ def embedding2file(embeddings, embeddings_out_file):
 
 
 def print_time(t):
-    print('time:{:.3f} s'.format(t))
+    CONFIGURATION.log('time:{:.3f} s'.format(t))
 
 
 def radio_2file(radio, folder):
@@ -108,7 +108,7 @@ def pair_2_rev_dict(pairs):
         if pair[1] not in d:
             d[pair[1]] = pair[0]
         else:
-            print("Error")
+            CONFIGURATION.log("Error")
     return d
 
 

@@ -23,23 +23,23 @@ def generate_input(folder):
     ent_num = len(triples_data1.ents | triples_data2.ents)
     rel_num = len(triples_data1.rels | triples_data2.rels)
     triples_num = len(triples1) + len(triples2)
-    print('all ents:', ent_num)
-    print('all rels:', len(triples_data1.rels), len(triples_data2.rels), rel_num)
-    print('all triples: %d + %d = %d' % (len(triples1), len(triples2), triples_num))
+    CONFIGURATION.log('all ents:', ent_num)
+    CONFIGURATION.log('all rels:', len(triples_data1.rels), len(triples_data2.rels), rel_num)
+    CONFIGURATION.log('all triples: %d + %d = %d' % (len(triples1), len(triples2), triples_num))
 
     refs1, refs2 = read_ref(folder + 'ref_ent_ids')
     ref1_list = copy.deepcopy(refs1)
     ref2_list = copy.deepcopy(refs2)
 
-    print("To align:", len(refs2))
+    CONFIGURATION.log("To align:", len(refs2))
     sup_ents_pairs = read_pair_ids(folder + 'sup_ent_ids')
 
     return triples_data1, triples_data2, sup_ents_pairs, refs1, ref2_list, refs2, ref1_list, triples_num, ent_num, rel_num
 
 
 def generate_pos_batch_of2KBs(triples_data1, triples_data2, step):
-    # print(triples_data1.train_triples[0: 2])
-    # print(triples_data2.train_triples[0: 2])
+    # CONFIGURATION.log(triples_data1.train_triples[0: 2])
+    # CONFIGURATION.log(triples_data2.train_triples[0: 2])
     assert batch_size % 2 == 0
     num1 = int(triples_data1.train_triples_num / (
         triples_data1.train_triples_num + triples_data2.train_triples_num) * batch_size)
@@ -124,7 +124,7 @@ def get_all_sim_mat_sparse(folder):
 
 
 def sparse_mat_2sparse_tensor(sparse_mat):
-    print("sparse sim mat to sparse tensor")
+    CONFIGURATION.log("sparse sim mat to sparse tensor")
     indices = list()
     values = list()
     shape = sparse_mat.shape
@@ -157,7 +157,7 @@ def valid(ent_embeddings, references_s, references_t_list, references_t, referen
     flag2 = early_stop_flag2 - res2
     flag3 = hits1 - hits
     if flag1 < early_stop and flag2 < early_stop and flag3 < 0:
-        print("early stop")
+        CONFIGURATION.log("early stop")
         return -1, -1, -1
     else:
         return res1, res2, hits1
@@ -186,7 +186,7 @@ def valid_results(embeddings, references_s, references_t, word, top_k=[1, 5, 10,
     for i in range(len(acc)):
         acc[i] = round(acc[i], 4)
     mean /= s_len
-    print("{} acc of top {} = {}, mean = {:.3f}, time = {:.3f} s ".
+    CONFIGURATION.log("{} acc of top {} = {}, mean = {:.3f}, time = {:.3f} s ".
           format(word, top_k, acc, mean, time.time() - t))
     return mean / t_len, acc[2]
 
@@ -231,7 +231,7 @@ def valid_results_mul(embeddings, references_s, references_t, word, top_k=[1, 5,
     for i in range(len(acc)):
         acc[i] = round(acc[i], 4)
     total_mean /= s_len
-    print("{} acc of top {} = {}, mean = {:.3f}, time = {:.3f} s ".
+    CONFIGURATION.log("{} acc of top {} = {}, mean = {:.3f}, time = {:.3f} s ".
           format(word, top_k, acc, total_mean, time.time() - t))
     return total_mean / t_len, acc[2]
 
@@ -252,7 +252,7 @@ def valid_m(ent_embeddings, mat, references_s, references_t_list, early_stop_fla
     flag1 = early_stop_flag1 - res1
     flag2 = hits1 - hits
     if flag1 <= early_stop and flag2 <= 0:
-        print("early stop")
+        CONFIGURATION.log("early stop")
         exit()
     else:
         return res1, hits1
@@ -282,13 +282,13 @@ def valid_results_m(embeddings, mat, references_s, references_t, word, top_k=[1,
     for i in range(len(acc)):
         acc[i] = round(acc[i], 4)
     mean /= s_len
-    print("{} acc of top {} = {}, mean = {:.3f}, time = {:.3f} s ".
+    CONFIGURATION.log("{} acc of top {} = {}, mean = {:.3f}, time = {:.3f} s ".
           format(word, top_k, acc, mean, time.time() - t))
     return mean / t_len, acc[2]
 
 
 def save_embeddings(folder, ent_embeddings, rel_embeddings, references_s, references_t_list):
-    print("save embeddings...")
+    CONFIGURATION.log("save embeddings...")
     final_ent_embeddings = ent_embeddings.eval()
     final_rel_embeddings = rel_embeddings.eval()
     ref1_ents_embeddings = tf.nn.embedding_lookup(ent_embeddings, references_s).eval()

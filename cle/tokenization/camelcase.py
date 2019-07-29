@@ -11,4 +11,4 @@ def camel_case_split(text):
 
 
 if __name__ == '__main__':
-    print(camel_case_split('ThisIsOneWord Am Anfang noch Grossbuchstaben. DiesIstEinTest diesIstEinTest und Weiter gehts. UNd weiter'))
+    CONFIGURATION.log(camel_case_split('ThisIsOneWord Am Anfang noch Grossbuchstaben. DiesIstEinTest diesIstEinTest und Weiter gehts. UNd weiter'))

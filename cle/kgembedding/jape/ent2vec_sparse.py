@@ -39,7 +39,7 @@ def vec2file(vec, title, local_ents_fw, local_meta_fw):
 
 
 def generate_kb_ents_vecs(vec_dict, ents_list, zero_vec, ents_fw, meta_fw, npy_file):
-    print("begin generate_kb_ents_vecs...")
+    CONFIGURATION.log("begin generate_kb_ents_vecs...")
     t = time.time()
     mat = list()
     for ent in ents_list:
@@ -53,32 +53,32 @@ def generate_kb_ents_vecs(vec_dict, ents_list, zero_vec, ents_fw, meta_fw, npy_f
     mat = preprocessing.normalize(mat)
     assert mat.shape[0] == len(ents_list)
     np.save(npy_file, mat)
-    print("end generate_kb_ents_vecs...cost", time.time() - t)
-    print()
+    CONFIGURATION.log("end generate_kb_ents_vecs...cost", time.time() - t)
+    CONFIGURATION.log()
     return mat
 
 
 def get_sim_mat(mat11, mat22, is_norm=False, is_sparse=True, is_filtered=True, th=0.8):
-    print("begin dot...")
+    CONFIGURATION.log("begin dot...")
     t = time.time()
     sim = np.dot(mat11, mat22.T)
-    print("end dot...cost", time.time() - t)
+    CONFIGURATION.log("end dot...cost", time.time() - t)
 
     if is_filtered:
-        print("filtered by sim th:", th)
+        CONFIGURATION.log("filtered by sim th:", th)
         sim[sim < th] = 0.0
     if is_norm:
-        print("begin normalize...")
+        CONFIGURATION.log("begin normalize...")
         t = time.time()
         sim = preprocessing.normalize(sim, norm='l1')
-        print("end normalize...cost", time.time() - t)
+        CONFIGURATION.log("end normalize...cost", time.time() - t)
     if is_sparse:
-        print("begin sparse...")
+        CONFIGURATION.log("begin sparse...")
         t = time.time()
         # sim = sp.sparse.csr_matrix(sim)
         sim = sp.sparse.lil_matrix(sim)
-        print("end sparse...cost", time.time() - t)
-    print()
+        CONFIGURATION.log("end sparse...cost", time.time() - t)
+    CONFIGURATION.log()
     return sim
 
 
@@ -102,7 +102,7 @@ def to_ids(related_ents, ids_uris_dict, kb_ents):
 
 def enhance_sim(sim_mat, kb1_ents, kb2_ents, ids_uris_dict1, ids_uris_dict2, sup_ents_pairs, related_ents_dict1,
                 related_ents_dict2, th=0.8):
-    print("begin enhance_sim...")
+    CONFIGURATION.log("begin enhance_sim...")
     t = time.time()
     total_sim = 0
     related_pair = dict()
@@ -112,15 +112,15 @@ def enhance_sim(sim_mat, kb1_ents, kb2_ents, ids_uris_dict1, ids_uris_dict2, sup
             e2_id = kb2_ents.index(ids_uris_dict2.get(e2))
             total_sim += sim_mat[e1_id, e2_id]
             sim_mat[e1_id, e2_id] = 1
-            # print("sim of sups", sim_mat[e1_id, e2_id])
+            # CONFIGURATION.log("sim of sups", sim_mat[e1_id, e2_id])
             related_ents1 = to_ids(related_ents_dict1.get(e1), ids_uris_dict1, kb1_ents)
             related_ents2 = to_ids(related_ents_dict2.get(e2), ids_uris_dict2, kb2_ents)
             for r1 in related_ents1:
                 for r2 in related_ents2:
                     related_pair[(r1, r2)] = related_pair.get((r1, r2), 0) + 1
-    print("related pairs", len(related_pair))
+    CONFIGURATION.log("related pairs", len(related_pair))
     avg_sim = total_sim / len(sup_ents_pairs)
-    print("ava sim of sups", avg_sim)
+    CONFIGURATION.log("ava sim of sups", avg_sim)
     # sim_mat[sim_mat < th // 3] = 0.0
     for r1, r2 in related_pair:
         sim_mat[r1, r2] *= (related_pair.get((r1, r2)) + 1) * 100  # big data
@@ -128,13 +128,13 @@ def enhance_sim(sim_mat, kb1_ents, kb2_ents, ids_uris_dict1, ids_uris_dict2, sup
         sim_mat[r1, r2] = max(1, sim_mat[r1, r2])
         # if sim_mat[r1, r2] > 0.0001:
         #     sim_mat[r1, r2] = max(1.0, sim_mat[r1, r2])
-    print("filtered by sim th:", th)
+    CONFIGURATION.log("filtered by sim th:", th)
     sim_mat[sim_mat < th] = 0.0
     sim_mat = preprocessing.normalize(sim_mat, norm='l1')
     sim_mat = sp.sparse.csr_matrix(sim_mat)
 
-    print("end enhance_sim...cost", time.time() - t)
-    print()
+    CONFIGURATION.log("end enhance_sim...cost", time.time() - t)
+    CONFIGURATION.log()
     return sim_mat
 
 
@@ -186,20 +186,20 @@ def ent2vec(attr_folder, folder, sim_th1=0.95, sim_th2=0.95, enhance_sim_th=0.9)
 
     mat1 = generate_kb_ents_vecs(ent_vec_dict, kb1_ents, zero_vec, kb1_ents_fw, kb1_meta_fw, folder + "ents_vec_1")
     kb1_ents_sim = get_sim_mat(mat1, mat1, th=sim_th1)
-    print("begin mmwrite kb1...")
+    CONFIGURATION.log("begin mmwrite kb1...")
     t = time.time()
     io.mmwrite(folder + "kb1_ents_sim.mtx", kb1_ents_sim)
-    print("end mmwrite...cost", time.time() - t)
-    print()
+    CONFIGURATION.log("end mmwrite...cost", time.time() - t)
+    CONFIGURATION.log()
     del kb1_ents_sim
 
     mat2 = generate_kb_ents_vecs(ent_vec_dict, kb2_ents, zero_vec, kb2_ents_fw, kb2_meta_fw, folder + "ents_vec_2")
     kb2_ents_sim = get_sim_mat(mat2, mat2, th=sim_th2)
-    print("begin mmwrite kb2...")
+    CONFIGURATION.log("begin mmwrite kb2...")
     t = time.time()
     io.mmwrite(folder + "kb2_ents_sim.mtx", kb2_ents_sim)
-    print("end mmwrite...cost", time.time() - t)
-    print()
+    CONFIGURATION.log("end mmwrite...cost", time.time() - t)
+    CONFIGURATION.log()
     del kb2_ents_sim
 
     # ents_fw.close()
@@ -210,14 +210,14 @@ def ent2vec(attr_folder, folder, sim_th1=0.95, sim_th2=0.95, enhance_sim_th=0.9)
     kb2_meta_fw.close()
 
     sim_mat = get_sim_mat(mat1, mat2, is_sparse=False, is_filtered=False)
-    print(sim_mat.min(), sim_mat.max(), sim_mat.mean())
+    CONFIGURATION.log(sim_mat.min(), sim_mat.max(), sim_mat.mean())
     sim_mat = enhance_sim(sim_mat, kb1_ents, kb2_ents, ids_uris_dict1, ids_uris_dict2, sup_ents_pairs,
                           related_ents_dict1, related_ents_dict2, th=enhance_sim_th)
-    print("begin mmwrite kb12...")
+    CONFIGURATION.log("begin mmwrite kb12...")
     t = time.time()
     io.mmwrite(folder + "ents_sim.mtx", sim_mat)
-    print("end mmwrite...cost", time.time() - t)
-    print()
+    CONFIGURATION.log("end mmwrite...cost", time.time() - t)
+    CONFIGURATION.log()
 
 
 if __name__ == '__main__':

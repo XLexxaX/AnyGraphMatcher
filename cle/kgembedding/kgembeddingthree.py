@@ -30,7 +30,7 @@ def train(triples):
 
     model.E
     model.R
-    print('finish')
+    CONFIGURATION.log('finish')
 
 
 def generate_kg_for_training(triples):

@@ -20,7 +20,7 @@ global CONFIGURATION
 def exec(graph1, graph2):
 
             for gold_mapping in CONFIGURATION.gold_mapping.raw_trainsets:
-                print("     --> Preparing training data.")
+                CONFIGURATION.log("     --> Preparing training data.")
                 # package_directory = os.path.dirname(os.path.abspath(__file__))
                 #gold_mapping = CONFIGURATION.gold_mapping.raw_trainsets[0]#os.path.join(package_directory, '..','..', 'data', 'sap_hilti_data','sap_hilti_full_strings',
                                #     'train_simple_sap_hilti.csv')
@@ -39,14 +39,14 @@ def exec(graph1, graph2):
             #CONFIGURATION.gold_mapping.prepared_trainsets.append(CONFIGURATION.rundir + 'train_hard' + "-strcombined.csv")
 
             if CONFIGURATION.match_cross_product:
-                print("     --> No testset provided. Preparing cross product.")
+                CONFIGURATION.log("     --> No testset provided. Preparing cross product.")
                 filepath = CONFIGURATION.rundir + str(uuid.uuid4().hex)+".tmp"
-                print('         Blocking by syntax, progress: 0%', end="\r")
+                CONFIGURATION.log('         Blocking by syntax, progress: 0%', end="\r")
                 parallel.main(CONFIGURATION.src_triples, CONFIGURATION.tgt_triples, CONFIGURATION.src_properties, filepath)
-                print('         Blocking by syntax, progress: 100%')
+                CONFIGURATION.log('         Blocking by syntax, progress: 100%')
                 CONFIGURATION.gold_mapping.raw_testsets = [filepath]
             else:
-                print("     --> Preparing testset.")
+                CONFIGURATION.log("     --> Preparing testset.")
             for gold_mapping in CONFIGURATION.gold_mapping.raw_testsets:
                 #gold_mapping = CONFIGURATION.gold_mapping.raw_testsets[0]#os.path.join(package_directory, '..','..', 'data', 'sap_hilti_data','sap_hilti_full_strings',
                                #     'test_simple_sap_hilti.csv')

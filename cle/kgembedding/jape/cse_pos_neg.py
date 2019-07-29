@@ -87,7 +87,7 @@ def structure_embedding(folder):
                 random.shuffle(triples_data2.train_triples)
                 end = time.time()
                 loss_print = "rel loss" if epoch % 2 == 0 else "sim loss"
-                print("{}/{}, {} = {:.3f}, time = {:.3f} s".format(epoch, num_epochs, loss_print, train_loss,
+                CONFIGURATION.log("{}/{}, {} = {:.3f}, time = {:.3f} s".format(epoch, num_epochs, loss_print, train_loss,
                                                                    end - start))
                 if (epoch % print_validation == 0 or epoch == num_epochs - 1) and epoch >= 300:
                     # if epoch % print_validation == 0 or epoch == num_epochs - 1:
@@ -105,5 +105,5 @@ if __name__ == '__main__':
     data_folder = sys.argv[1]
     supervised_ent_rel_ratio = sys.argv[2]
     folder = radio_2file(supervised_ent_rel_ratio, data_folder)
-    print("neg param", neg_param, "; split", "; sim param", sim_loss_param, "; inner sim param", inner_sim_param)
+    CONFIGURATION.log("neg param", neg_param, "; split", "; sim param", sim_loss_param, "; inner sim param", inner_sim_param)
     structure_embedding(folder)

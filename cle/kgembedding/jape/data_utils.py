@@ -8,8 +8,8 @@ def parse_attr_ttl_lines(line):
     if ".dbpedia.org/resource/" in params[2]:
         return None
     if len(params) > 3:
-        print(line)
-        print(params)
+        CONFIGURATION.log(line)
+        CONFIGURATION.log(params)
     assert len(params) == 3
     ent = params[0].strip().lstrip('<').rstrip('>').strip()
     attr = params[1].strip().lstrip('<').rstrip('>').strip()
@@ -92,18 +92,18 @@ def read_attrs(attrs_file):
             if len(params) >= 2:
                 attrs_dic[params[0]] = set(params[1:])
             else:
-                print(line)
+                CONFIGURATION.log(line)
     return attrs_dic
 
 
 def print_line(*line):
-    print()
+    CONFIGURATION.log()
     if len(line) == 0:
-        print("====================================")
+        CONFIGURATION.log("====================================")
     else:
         for i in line:
-            print(i, end=" ")
-    print()
+            CONFIGURATION.log(i, end=" ")
+    CONFIGURATION.log()
 
 
 def read_pairs(file_path):
@@ -190,7 +190,7 @@ def pair_2dict(pairs):
         if pair[0] not in d:
             d[pair[0]] = pair[1]
         else:
-            print("Error")
+            CONFIGURATION.log("Error")
     return d
 
 
@@ -200,7 +200,7 @@ def pair_2dict_rev(pairs):
         if pair[1] not in d:
             d[pair[1]] = pair[0]
         else:
-            print("Error")
+            CONFIGURATION.log("Error")
     return d
 
 
@@ -238,7 +238,7 @@ def ids_2file(ids_mapping, path):
         if id > max:
             max = id
         fw.write(str(id) + '\t' + uri + '\n')
-    print("max id:", max)
+    CONFIGURATION.log("max id:", max)
     fw.close()
 
 
@@ -330,4 +330,4 @@ def read_lines(file_path):
 
 if __name__ == '__main__':
     line = "<http://ja.dbpedia.org/resource/Dungeons_and_Dragons> <http://www.w3.org/2000/01/rdf-schema#label> \"Dungeons and Dragons\"@ja ."
-    print(parse_attr_ttl_lines(line))
+    CONFIGURATION.log(parse_attr_ttl_lines(line))

@@ -20,12 +20,13 @@ class ConfigurationHandler:
             current_time_in_millis = int(round(time.time()))
 
 
-            print("-----------------------------------------------")
-            print("Starting '" + configuration.name + "':\n\n")
-
-
             configuration.logs_ = open(configuration.logfile, "a+")
+            configuration.log("Starting '" + configuration.name + "'\n")
+
+            configuration.log("Configuration as follows:")
             configuration.log(configuration.to_string())
+
+            configuration.log("\nExecution as follows:")
 
             #prepare_file(configuration.src_corpus)
             #prepare_file(configuration.tgt_corpus)
@@ -38,7 +39,7 @@ class ConfigurationHandler:
 
             step = configuration.pipeline.get_first_step()
             while step is not None:
-                print("Performing step " + str(step.func.__module__) + "." + str(step.func.__name__) + " with " + str(step.args))
+                configuration.log("Performing step " + str(step.func.__module__) + "." + str(step.func.__name__) + " with " + str(step.args))
                 x = []
                 if step.input_step is not None:
                     for input_step in step.input_step.elems:
@@ -52,10 +53,11 @@ class ConfigurationHandler:
                 step = step.next_step
 
 
-            configuration.log("\n\n\n\nNeeded " + str(int(round(time.time())) - current_time_in_millis) + "s.")
-            configuration.logs_.close()
+            configuration.log("\n\nSuccessfully finished '" + configuration.name + "'.")
+            configuration.log("Needed " + str(int(round(time.time())) - current_time_in_millis) + "s.")
 
-            print("-----------------------------------------------")
+            configuration.log("-----------------------------------------------")
+            configuration.logs_.close()
         #except Exception as e:
         #    try:
         #        configuration.logs_.close()
@@ -66,7 +68,7 @@ class ConfigurationHandler:
         #    logs.write(configuration.name + " FAILED due to:")
         #    logs.write(str(e))
         #    logs.close()
-        #    print(configuration.name + " FAILED.")
-        #    print("-----------------------------------------------")
+        #    CONFIGURATION.log(configuration.name + " FAILED.")
+        #    CONFIGURATION.log("-----------------------------------------------")
 
             del configuration
