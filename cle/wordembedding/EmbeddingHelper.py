@@ -139,7 +139,7 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
 
     # Number of threads to run in parallel.
     #more workers, faster we train
-    num_workers = multiprocessing.cpu_count()*2
+    num_workers = multiprocessing.cpu_count()*0.75
 
     # Context window length.
     context_size = window
@@ -164,7 +164,8 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
     )
     model.build_vocab(sentences)
 
-    epochs = 1#((os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))**(-2))*675000
+    epochs = 1#int(((os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))**(-2))*675000)
+    epochs = int(epochs/2)
     epochs = max(epochs, 1)
     epochs = min(epochs, 2000)
 

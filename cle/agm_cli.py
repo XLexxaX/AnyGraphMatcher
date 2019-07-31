@@ -17,7 +17,7 @@ from wordembedding import W2VInterfaceWrapper, D2VInterfaceWrapper, PseudoD2VInt
 from visualization import CategoriesVisualizer, StratifiedVisualizer, TypeVisualizer, FullVisualizer, \
     EmbeddingSaver, TSNEInterface
 from sentencegenerator import ReadSentencesInterfaceWrapper
-from matcher import UnsupervisedRankMatcher
+from matcher import UnsupervisedRankMatcher, SupervisedRankMatcher
 #from xgboost import XGBClassifier
 from sklearn.linear_model import LogisticRegression
 from configurations.DiskDataPreparation import prepare_dir, copytree
@@ -25,17 +25,21 @@ import shutil
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
-def main(source, target, possible_matches):
+def main(source, target, possible_matches, trainset):
 
 
     src_corpus = None
     tgt_corpus = None
     src_triples = source
     tgt_triples = target
-    gold_mapping = InternalGoldStandard({'trainsets': [],
+    if trainset:
+        trainset = [trainset]
+    else:
+        trainset = []
+    gold_mapping = InternalGoldStandard({'trainsets': trainset,
                                          'testsets': [possible_matches]
                                         })
-    dim = 2
+    dim = 100
     model = LogisticRegression()#XGBClassifier()
     properties = InternalProperties({'src_labels': ["http://www.w3.org/2000/01/rdf-schema#label"],
                                      'tgt_labels': ["http://www.w3.org/2000/01/rdf-schema#label"],
@@ -64,7 +68,10 @@ def main(source, target, possible_matches):
                                    PipelineDataTuple(dim, 'steps', False, 1))
     line_ab = pipeline.append_step(concat_combiner.interface, PipelineDataTuple(line_ab), None)
 
-    line_ab = pipeline.append_step(UnsupervisedRankMatcher.interface, PipelineDataTuple(line_ab), None)
+    if len(trainset)>0:
+        line_ab = pipeline.append_step(SupervisedRankMatcher.interface, PipelineDataTuple(line_ab), None)
+    else:
+        line_ab = pipeline.append_step(UnsupervisedRankMatcher.interface, PipelineDataTuple(line_ab), None)
 
     configuration = Configuration(name, src_corpus, tgt_corpus, src_triples, tgt_triples, gold_mapping, dim,
                                   pipeline, properties, use_streams, False, True)
@@ -83,19 +90,19 @@ def main(source, target, possible_matches):
     #copy
 
 if __name__ == '__main__':
-    #python agm_cli.py -s "../data/oaei_data/graph_triples_darkscape.nt" -t "../data/oaei_data/graph_triples_oldschoolrunescape.nt" -p "../data/oaei_data/possible_matches.csv"
-    main("../data/oaei_data/graph_triples_darkscape.nt", "../data/oaei_data/graph_triples_oldschoolrunescape.nt", "../data/oaei_data/possible_matches.csv")
-#        from optparse import OptionParser, OptionGroup
-#
-#        optparser = OptionParser(
-#            description="An integrated, fully automatic, semantic identity resolution system")
-#        optparser.add_option("-s", "--source", default=None, dest="source", help="Path to the source .nt-file")
-#        optparser.add_option("-t", "--target", default=None, dest="target", help="Path to the target .nt-file")
-#        optparser.add_option("-p", "--possible_matches", default=None, dest="possible_matches", help="Path to t#he .csv-file with possible matches")
-#        (options, args) = optparser.parse_args()
+    #python agm_cli.py -s "../data/oaei_data/graph_triples_darkscape.nt" -t "../data/oaei_data/graph_triples_oldschoolrunescape.nt" -p "../data/oaei_data/possible_matches.csv" -g "../data/oaei_data/trainset.csv"
+    #main("../data/oaei_data/graph_triples_darkscape.nt", "../data/oaei_data/graph_triples_oldschoolrunescape.nt", "../data/oaei_data/possible_matches.csv", None)# "../data/oaei_data/trainset.csv"
 
-#        assert options.source, "A source data set must be provided"
-#        assert options.target, "A target data set must be provided"
-#        assert options.possible_matches, "A data set with possible matches must be provided"
+        from optparse import OptionParser, OptionGroup
 
-#        main(options.source, options.target, options.possible_matches)
+        optparser = OptionParser(
+            description="An integrated, fully automatic, semantic identity resolution system")
+        optparser.add_option("-s", "--source", default=None, dest="source", help="Path to the source .nt-file")
+        optparser.add_option("-t", "--target", default=None, dest="target", help="Path to the target .nt-file")
+        optparser.add_option("-p", "--possible_matches", default=None, dest="possible_matches", help="Path to the .csv-file with possible matches")
+        optparser.add_option("-g", "--gold_standard", default=None, dest="gold_standard", help="Path to the .csv-file with gold standard entries")
+        (options, args) = optparser.parse_args()
+        assert options.source, "A source data set must be provided"
+        assert options.target, "A target data set must be provided"
+        assert options.possible_matches, "A data set with possible matches must be provided"
+        main(options.source, options.target, options.possible_matches, options.gold_standard)

@@ -28,19 +28,20 @@ def execute(graph1, graph2):
     ids2 = np.array(list(graph2.elements.keys()))
     ids = np.concatenate((ids1, ids2), axis=0)
 
-    for descriptor in ids:
-        try:
-            vecs.append(graph1.elements[descriptor].embeddings[0])
-        except:
-            vecs.append(graph2.elements[descriptor].embeddings[0])
-    vecs = np.array(vecs)
 
     output = list()
-    vlen = 0
+    vlen = len(graph1.elements[ids[0]].embeddings[0])
+    out = open(CONFIGURATION.rundir + 'stratified_embeddings.csv', mode="w+", encoding="UTF-8")
+    columns = ['src_' + str(i) for i in range(0, vlen)] + ['label']#, 'category', 'origin']
+    out.write(str("\t".join(columns) + "\n"))
     # Plot embeddings
     for i, label in enumerate(ids):
 
-            v = list(vecs[i])#vecs[i,0], vecs[i,1]
+            try:
+                v = graph1.elements[label].embeddings[0]
+            except:
+                v = graph2.elements[label].embeddings[0]
+
             if vlen==0:
                 vlen = len(v)
             if i < len(ids1):
@@ -49,6 +50,7 @@ def execute(graph1, graph2):
                         'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'].descriptor
                 except KeyError:
                     cat = 'none'
+                graph = "graph1"
                 output.append(v+[label,cat,'graph1'])
             else:
                 try:
@@ -56,8 +58,14 @@ def execute(graph1, graph2):
                         'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'].descriptor
                 except KeyError:
                     cat = 'none'
-                output.append(v+[label,cat,'graph2'])
-    pd.DataFrame(np.array(output), columns=['x'+str(i) for i in range(0,vlen)]+['label','category','origin']).to_csv(path_or_buf=CONFIGURATION.rundir+'stratified_embeddings.csv')
+                graph = "graph2"
+                #output.append(v+[label,cat,'graph2'])
+            #line = v+[label,cat,'graph2']
+            line=v+[label]
+            line = [str(val) for val in line]
+            out.write(str("\t".join(line) + "\n"))
+    out.close()
+    #pd.DataFrame(np.array(output), columns=['x'+str(i) for i in range(0,vlen)]+['label','category','origin']).to_csv(path_or_buf=CONFIGURATION.rundir+'stratified_embeddings.csv')
 
 
 
