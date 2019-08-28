@@ -5,7 +5,6 @@ import ntpath
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from sklearn.ensemble import RandomForestClassifier
-from pandas_ml import ConfusionMatrix
 
 from configurations.PipelineTools import PipelineDataTuple
 from matcher import Matchdata_Saver

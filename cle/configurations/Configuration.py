@@ -5,8 +5,10 @@ from configurations.InternalGoldStandard import InternalGoldStandard
 from configurations.InternalGoldStandard import Values
 import hashlib
 import re
+import logging
 
-
+logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.INFO)
+logging.root.level = logging.INFO
 
 class Configuration:
     def __init__(self, name, src_corpus, tgt_corpus, src_triples, tgt_triples, gold_mapping, dim, pipeline,
@@ -30,6 +32,7 @@ class Configuration:
         self.cachedir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..','cache')) + str(os.sep)
         self.match_cross_product = len(self.gold_mapping.raw_testsets) == 0
         self.LOGMEMORY = ""
+        self.resultsdir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..','result_data'))
 
 
     def log(self, text, end=""):
@@ -38,8 +41,11 @@ class Configuration:
 
             if self.logs_ is not None and end == "":
                 self.logs_.write(str(text))
-                print(text)
+                self.logs_.flush()
+                logging.info(text)
             else:
+                self.logs_.write(str(text))
+                self.logs_.flush()
                 print(text, end=end)
 
 

@@ -5,7 +5,6 @@ import ntpath
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from sklearn.ensemble import RandomForestClassifier
-from pandas_ml import ConfusionMatrix
 
 from configurations.PipelineTools import PipelineDataTuple
 from matcher import PredictionToXMLConverter, RAMCleaner
@@ -36,7 +35,7 @@ def prepare(graph1, graph2):
 
         basedir = CONFIGURATION.rundir
 
-        
+
 
 
         pm = pd.read_csv(CONFIGURATION.gold_mapping.raw_testsets[0], encoding="UTF-8", sep="\t", header=None)
@@ -48,7 +47,7 @@ def prepare(graph1, graph2):
         embs.columns = ["tgt_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if
                                                       re.match('src_\d+', col) is not None]] + ['label']
         pm = pm.merge(embs, left_on=['tgt_id'], right_on=['label'])
-        
+
 
 
         gs = pd.read_csv(CONFIGURATION.gold_mapping.raw_trainsets[0], encoding="UTF-8", sep="\t", header=None)

@@ -27,7 +27,10 @@ def prepare_dir(path):
     os.mkdir(path)
 
 def clean_cache(path_to_cache):
-    shutil.rmtree(path_to_cache)
+    try:
+        shutil.rmtree(path_to_cache)
+    except:
+        pass
 
 
 def copytree(src, dst, symlinks=False, ignore=None):

@@ -5,7 +5,7 @@
 
 
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-from nltk.tokenize import word_tokenize
+#from nltk.tokenize import word_tokenize
 from configurations.PipelineTools import PipelineDataTuple
 import numpy as np
 from gensim.models import Word2Vec
@@ -64,6 +64,7 @@ def prepare_data(graph, sentence_generation_method, ngrams, maxdepth):
     maxdepth = [maxdepth]
     total_ctr = len(maxdepth)*len(graph.elements.keys())
     ctr = 0
+    CONFIGURATION.log("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "% [active]", end="\r")
     for i in maxdepth:
             for descriptor, resource in graph.elements.items():
                 if sentence_generation_method == 'steps':
@@ -74,7 +75,7 @@ def prepare_data(graph, sentence_generation_method, ngrams, maxdepth):
                 for sentence in tmp:
                     yield sentence
                 ctr +=1
-                CONFIGURATION.log("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "% [active]", end="\r")
+                #CONFIGURATION.log("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "% [active]", end="\r")
     #gold_path = CONFIGURATION.CONFIGURATION.gold_mapping.raw_trainsets[0]
     #for index, row in pd.read_csv(gold_path, delimiter="\t", header=None, skiprows=1).iterrows():
     #    documents = documents + [row[0], "<mapsto>", row[1]]
@@ -131,5 +132,3 @@ def train(documents, DIMENSIONS, ngrams=False):
     from wordembedding import EmbeddingHelper
     model = EmbeddingHelper.embed(documents, DIMENSIONS, CONFIGURATION, ngrams)
     return model
-
-

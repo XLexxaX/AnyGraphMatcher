@@ -1,7 +1,11 @@
-xopen
 gensim
-sklearn
-pandas
+pandas-ml
 nltk
-pytorch
 rdflib
+editdistance
+xopen
+xgboost
+urllib3
+joblib
+matplotlib
+sklearn

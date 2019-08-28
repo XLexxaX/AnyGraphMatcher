@@ -3,14 +3,18 @@ package de.uni_mannheim.informatik.dws.ontmatching.demomatcher;
 import de.uni_mannheim.informatik.dws.ontmatching.matchingbase.OaeiOptions;
 import de.uni_mannheim.informatik.dws.ontmatching.matchingjena.MatcherYAAAJena;
 import de.uni_mannheim.informatik.dws.ontmatching.yetanotheralignmentapi.Alignment;
+import de.uni_mannheim.informatik.dws.ontmatching.yetanotheralignmentapi.Correspondence;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntResource;
@@ -30,6 +35,8 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.util.FileManager;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.apache.lucene.analysis.Analyzer;
@@ -58,36 +65,105 @@ import org.apache.lucene.util.Version;
  */
 public class SimpleStringMatcher extends MatcherYAAAJena {
 
-    private String NEWLINE = System.getProperty("line.separator");
-    private String BASEDIR = System.getProperty("user.home");
-    private String DSEP = File.pathSeparator;
-    
+	@SuppressWarnings("unused")
+	private final String NEWLINE = System.getProperty("line.separator");
+	private final String BASEDIR = System.getProperty("user.home");
+	private final String DSEP = File.separator;
+	@SuppressWarnings("unused")
+	private final String CWD = System.getProperty("user.dir");
+	private final String AGMDIR = "oaei-resources" + DSEP + "AnyGraphMatcher";// "D:"+DSEP+"Development"+DSEP+"Code"+DSEP+"AnyGraphMatcher";
+
+	
+    public boolean findFile(String name,String filepath) {
+    	File file = new File(filepath);
+        File[] list = file.listFiles();
+        if(list!=null)
+        for (File fil : list) {
+        	String fname = fil.getName();
+        	if (fname.contains("."))
+        		fname = String.join("", Arrays.copyOfRange(fname.split("\\."), 0, fname.split("\\.").length-1));
+            if (name.equalsIgnoreCase(fname)) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
 	@Override
 	public Alignment match(OntModel source, OntModel target, Alignment inputAlignment, Properties p) throws Exception {
+		
+		System.out.println("Starting matching...");
 		Alignment alignment = new Alignment();
-
+		
 		Blocker blocker = new Blocker();
 		triplize(source, "source", true, blocker);
 		triplize(target, "target", false, blocker);
+		blocker = null;
+		source = null;
+		target = null;
+		inputAlignment = null;
+		p = null;
+		System.gc();
 
+		
+
+		ProcessBuilder pb = new ProcessBuilder();// "python",
+													// "C:"+DSEP+"dev"+DSEP+"OntMatching"+DSEP+"ontMatching"+DSEP+"test.py",
+													// source.toString(), target.toString(), inputAlignment.toString());
+
+		Map<String, String> envs = pb.environment();
+		String PYTHONDIR = "";
+		for (String pathVar : envs.get("Path").split(";")) {
+			if (this.findFile("python", pathVar)) {
+				PYTHONDIR = pathVar;
+			}
+		}
+		if (PYTHONDIR.equals("")) {
+			throw new Exception("Python must be registered as an environment-variable");
+		} else {
+			System.out.println("Python calling from " + PYTHONDIR);
+		}
+		
 		List<String> activate_env_command = new ArrayList<>();
 		activate_env_command.add("conda");
 		activate_env_command.add("activate");
 		activate_env_command.add("py36");
 		List<String> call_matcher_command = new ArrayList<>();
-		call_matcher_command.add("C:\\Users\\Alexander\\Anaconda3\\envs\\py36\\python");
-		call_matcher_command.add("C:\\Users\\Alexander\\DeepAnyMatch\\cle\\agm_cli.py");
+		// call_matcher_command.add("C:"+DSEP+"Users"+DSEP+"Alexander"+DSEP+"Anaconda3"+DSEP+"envs"+DSEP+"py36"+DSEP+"python");
+		// call_matcher_command.add("C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"envs"+DSEP+"py36"+DSEP+"python");
+		// call_matcher_command.add(BASEDIR+DSEP+"DeepAnyMatch"+DSEP+"cle"+DSEP+"agm_cli.py");
+		// call_matcher_command.add("python");
+		//call_matcher_command.add("C:\\Users\\Bernd Lütke\\AppData\\Local\\Programs\\Python\\Python37\\python" + "");
+		call_matcher_command.add(PYTHONDIR + DSEP + "python");
+		// call_matcher_command.add("C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"python");
+		// call_matcher_command.add(AGMDIR+DSEP+"cle"+DSEP+"agm_cli.py");
+		call_matcher_command.add("agm_cli.py");
 		call_matcher_command.add("-s");
-		call_matcher_command.add("C:/Users/Alexander/oaei_track_cache/tmpdata/graph_triples_source.nt");
+		call_matcher_command.add("\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
+				+ "graph_triples_source.nt" + "\"");
 		call_matcher_command.add("-t");
-		call_matcher_command.add("C:/Users/Alexander/oaei_track_cache/tmpdata/graph_triples_target.nt");
+		call_matcher_command.add("\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
+				+ "graph_triples_target.nt" + "\"");
 		call_matcher_command.add("-p");
-		call_matcher_command.add("C:/Users/Alexander/oaei_track_cache/tmpdata/possible_matches.csv");
+		call_matcher_command.add(
+				"\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP + "possible_matches.csv" + "\"");
 
-		ProcessBuilder pb = new ProcessBuilder();// "python", "C:\\dev\\OntMatching\\ontMatching\\test.py",
-													// source.toString(), target.toString(), inputAlignment.toString());
+		/*
+		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"); envs.put("Path",
+		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"); envs.put("Path",
+		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Library"+DSEP+"mingw-w64"+DSEP
+		 * +"bin"); envs.put("Path",
+		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Library"+DSEP+"usr"+DSEP+"bin"
+		 * ); envs.put("Path",
+		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Library"+DSEP+"bin");
+		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Scripts");
+		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"bin");
+		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"condabin");
+		 */
 
-		//pb.command(activate_env_command);
+		pb.directory(new File(AGMDIR + DSEP + "cle"));
+
+		// pb.command(activate_env_command);
 		pb.command(call_matcher_command);
 
 		pb.redirectInput(Redirect.INHERIT); // no need because the process gets no further input than the process
@@ -95,43 +171,32 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		pb.redirectOutput(Redirect.INHERIT); // no need because we want to collect it
 		pb.redirectError(Redirect.INHERIT); // redirect err pipe because of all logging etc
 
-		//System.err.println("Start external matcher with command: " + String.join(" ", activate_env_command));
+		// System.err.println("Start external matcher with command: " + String.join(" ",
+		// activate_env_command));
 		System.err.println("Start external matcher with command: " + String.join(" ", call_matcher_command));
-		Process process = pb.start();
-		
-		
-		
-		int errCode = process.waitFor(); // wait for the matcher to finish
-	    if(errCode != 0){
-	         System.err.println("Error code of external matcher is not equal to 0.");
-	    }
-	    
+		//Process process = pb.start();
 
-        StringBuilder sb = new StringBuilder();
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                    System.out.print(line);
-            }
-        }
-		
-		
+		//int errCode = process.waitFor(); // wait for the matcher to finish
+		//if (errCode != 0) {
+		//	System.err.println("Error code of external matcher is not equal to 0.");
+		//}
 
-		Path path = Paths.get("C:/Users/Alexander/DeepAnyMatch/result_data/cli_result/married_matchings.csv");
+		StringBuilder sb = new StringBuilder();
+		//try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+		//	String line = null;
+		//	while ((line = br.readLine()) != null) {
+		//		System.out.print(line);
+		//	}
+		//}
+
+		Path path = Paths.get(AGMDIR + DSEP + "result_data" + DSEP + "cli_result" + DSEP + "married_matchings.csv");
 		byte[] bytes = Files.readAllBytes(path);
 		List<String> married_matchings_per_line = Files.readAllLines(path, StandardCharsets.UTF_8);
 		for (String x : married_matchings_per_line) {
 			String[] uris = x.split("\t");
 			if (uris[0].length() > 0)
-				inputAlignment.add(uris[1], uris[2]);
+				alignment.add(uris[1], uris[2]);
 		}
-
-		/*
-		 * if(OaeiOptions.isMatchingClassesRequired())//check if matching classes
-		 * requried - only set in hobbit (for seals oaeiOptions is always true)
-		 */
-		// matchResources(source.listClasses(), target.listClasses(), alignment);//
-		// match only classes
 
 		return alignment;
 	}
@@ -161,17 +226,33 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 	}
 
 	private void triplize(OntModel model, String datasetname, boolean indexed, Blocker blocker) {
-
-		String folder = "C:/Users/Alexander/oaei_track_cache/tmpdata/";
+		
+		
+		String folder = BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP + "";
 		File f = new File(folder + "graph_triples_" + datasetname + ".nt");
-		BufferedWriter ntwriter = null;
+		//BufferedWriter ntwriter = null;
 		File f2 = new File(folder + "possible_matches.csv");
 		BufferedWriter blockedwriter = null;
+		
+		
+		if (f.exists())
+			f.delete();
+		if (f2.exists())
+			f2.delete();
 
+		try {
+			RDFDataMgr.write(new FileOutputStream(f), model, RDFFormat.NTRIPLES_UTF8) ;
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		HashSet<String> output = new HashSet<String>();
 
 		try {
-			ntwriter = new BufferedWriter(new FileWriter(f));
+			f.createNewFile();
+			f2.createNewFile();
+			//ntwriter = new BufferedWriter(new FileWriter(f));
 			blockedwriter = new BufferedWriter(new FileWriter(f2));
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
@@ -210,18 +291,18 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 					text = "<" + s.getURI().toString().toLowerCase() + "> <" + p.getURI().toString().toLowerCase()
 							+ "> <" + o.asResource().getURI().toString().toLowerCase() + "> .\n";
 
-				writeFile(ntwriter, text);
+				//writeFile(ntwriter, text);
 			}
 		} finally {
 			if (iter != null)
 				iter.close();
 		}
-
+		
 		try {
 			if (indexed)
 				blocker.closeIndexing();
 			blockedwriter.close();
-			ntwriter.close();
+			//ntwriter.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -289,7 +370,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			ArrayList<String> result = new ArrayList<>();
 			try {
 
-				TopDocs docs = idxSearcher.search(query, 5);
+				TopDocs docs = idxSearcher.search(query, 3);
 				String l1 = query.toString().replaceAll("~", " ");
 				for (ScoreDoc doc : docs.scoreDocs) {
 					Document thisDoc = idxSearcher.doc(doc.doc);
@@ -304,6 +385,8 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		}
 
 		public int calculate(String x, String y) {
+			x = x.substring(0, Math.min(x.length(), 15));
+			y = y.substring(0, Math.min(y.length(), 15));
 			int[][] dp = new int[x.length() + 1][y.length() + 1];
 
 			for (int i = 0; i <= x.length(); i++) {
@@ -333,6 +416,8 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		public ArrayList<String> searchFuzzyQuery(String searchstring) {
 			String[] splitstring = searchstring.replaceAll("[^A-Za-z0-9 ]", " ").replaceAll(" {2,}", " ")
 					.replaceAll("^ ", "").toLowerCase().split(" ");
+			Arrays.sort(splitstring, (a, b)->Integer.compare(b.length(), a.length()));
+			splitstring = Arrays.copyOfRange(splitstring, 0, 3);
 			for (int i = 0; i < splitstring.length; i++) {
 				splitstring[i] = splitstring[i] + "~";
 			}

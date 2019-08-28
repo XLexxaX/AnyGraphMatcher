@@ -1,2 +1,2 @@
-from .configurations.Configuration import Configuration
-from .configurations.ConfigurationHandler import ConfigurationHandler
+from cle import agm_cli
+main = agm_cli.main

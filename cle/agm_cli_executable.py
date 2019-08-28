@@ -10,10 +10,10 @@ from configurations.ConfigurationHandler import ConfigurationHandler
 from configurations.PipelineTools import Pipeline, PipelineDataTuple
 from loadkg.loadWithRdflib import load_kg_with_rdflib_ttl_interface
 from graphdatatools import GraphToolbox
-from wordembedding import WalkEmbedder_1, concat_combiner#W2VInterfaceWrapper, D2VInterfaceWrapper, PseudoD2VInterfaceWrapper, \
-    #W2V_1InterfaceWrapper, #D2V_1InterfaceWrapper, PseudoD2V_1InterfaceWrapper, SimpleTriplesEmbedder, \
-    #SimpleTriplesEmbedder_1, concat_combiner, ResourceRelationsEmbeddingWrapper, SimpleLiteralsEmbedder_1, \
-    #, WalkD2V_1Embedder
+from wordembedding import W2VInterfaceWrapper, D2VInterfaceWrapper, PseudoD2VInterfaceWrapper, \
+    W2V_1InterfaceWrapper, D2V_1InterfaceWrapper, PseudoD2V_1InterfaceWrapper, SimpleTriplesEmbedder, \
+    SimpleTriplesEmbedder_1, concat_combiner, ResourceRelationsEmbeddingWrapper, SimpleLiteralsEmbedder_1, \
+    WalkEmbedder_1, WalkD2V_1Embedder
 from visualization import CategoriesVisualizer, StratifiedVisualizer, TypeVisualizer, FullVisualizer, \
     EmbeddingSaver, TSNEInterface
 from sentencegenerator import ReadSentencesInterfaceWrapper
@@ -21,7 +21,21 @@ from matcher import UnsupervisedRankMatcher, SupervisedRankMatcher
 #from xgboost import XGBClassifier
 from sklearn.linear_model import LogisticRegression
 from configurations.DiskDataPreparation import prepare_dir, copytree
+
 import shutil
+import numpy
+import scipy
+import gensim
+import sklearn
+import pandas
+import nltk
+import rdflib
+import editdistance
+import xopen
+import xgboost
+import urllib3
+import joblib
+import matplotlib
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 

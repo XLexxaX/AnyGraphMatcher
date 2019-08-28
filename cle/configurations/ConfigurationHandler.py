@@ -11,6 +11,7 @@ class ConfigurationHandler:
         #try:
 
             clean_cache(configuration.cachedir)
+            prepare_dir(configuration.resultsdir)
             prepare_dir(configuration.rundir)
             prepare_dir(configuration.cachedir)
             prepare_file(configuration.logfile)

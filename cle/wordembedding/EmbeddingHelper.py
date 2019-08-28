@@ -8,6 +8,8 @@ import re
 import os
 import gensim
 import pandas as pd
+import logging
+
 
 def stem(CONFIGURATION, sents, ngrams=False):
 
@@ -116,9 +118,19 @@ def literalize(documents):
                 break
     return d2
 
+def file_len(fname):
+    i=0
+    with open(fname, encoding="UTF-8", mode="r") as f:
+        for line in f:
+            i=i+1
+    return i
+
 def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
 
 
+
+    logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.INFO)
+    logging.root.level = logging.INFO
 
     sentences = prepare_training_data(sentences, CONFIGURATION, ngrams)
 
@@ -159,9 +171,12 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
         size=num_features,
         min_count=min_word_count,
         window=context_size,
-        negative=20,
+        negative=0,
         ns_exponent=0.1
     )
+
+    total_examples = file_len(CONFIGURATION.rundir + "w2v_training_material.csv")
+
     model.build_vocab(sentences)
 
     epochs = 1#int(((os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))**(-2))*675000)
@@ -170,7 +185,7 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
     epochs = min(epochs, 2000)
 
     CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 0% [inactive]", end="\r")
-    model.train(sentences, total_examples=model.corpus_count, epochs=epochs)
+    model.train(sentences, total_examples=total_examples, epochs=epochs)
     model.save(CONFIGURATION.rundir+"w2v.model")
     CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 100% [inactive]")
     return model
