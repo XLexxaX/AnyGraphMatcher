@@ -46,8 +46,13 @@ class ConfigurationHandler:
                     for input_step in step.input_step.elems:
                         for elem in input_step.output.elems:
                             x.append(elem)
+
+                #clean memory
+                step.input_step = None
+                
                 t = PipelineDataTuple(*x)
                 out = step.func(t, step.args, configuration)
+
                 if step.persist_output:
                     step.output = out
 

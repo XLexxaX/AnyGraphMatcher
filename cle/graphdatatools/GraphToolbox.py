@@ -185,6 +185,14 @@ class Graph:
     def to_string(self):
         return str(self.file)
 
+    def reset(self):
+        self.file = self.file
+        self.corpus = None
+        self.iindex = InvertedIndex()
+        self.elements = Resources()
+        self.relation_properties = set()
+        self.literal_properties = set()
+
 def interface(main_input, args, configuration):
     global CONFIGURATION
     CONFIGURATION = configuration
@@ -195,4 +203,3 @@ def interface(main_input, args, configuration):
     assert spl_generator is not None, "S-P-L generator not found in " + os.path.basename(sys.argv[0])
     assert nt_filepath is not None, "Path to NT-sourcefile not found in " + os.path.basename(sys.argv[0])
     return PipelineDataTuple(Graph(spo_generator, spl_generator, nt_filepath))
-

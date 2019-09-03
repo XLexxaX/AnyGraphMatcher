@@ -106,7 +106,7 @@ def main(source, target, possible_matches, trainset):
 if __name__ == '__main__':
     #python agm_cli.py -s "../data/oaei_data/graph_triples_darkscape.nt" -t "../data/oaei_data/graph_triples_oldschoolrunescape.nt" -p "../data/oaei_data/possible_matches.csv" -g "../data/oaei_data/trainset.csv"
     #C:\ProgramData\Anaconda3\envs\py36\Python
-    #python agm_cli.py -s "C:\Users\Bernd Lütke\oaei_track_cache\tmpdata\graph_triples_source.nt" -t "C:\Users\Bernd Lütke\oaei_track_cache\tmpdata\graph_triples_target.nt" -p "C:\Users\Bernd Lütke\oaei_track_cache\tmpdata\possible_matches.csv"
+    #python agm_cli.py -s "C:\Users\allue\oaei_track_cache\tmpdata\graph_triples_source.nt" -t "C:\Users\allue\oaei_track_cache\tmpdata\graph_triples_target.nt" -p "C:\Users\allue\oaei_track_cache\tmpdata\possible_matches.csv" -g "C:\Users\allue\oaei_track_cache\tmpdata\artificial_gold_standard.csv"
     #main("../data/oaei_data/graph_triples_darkscape.nt", "../data/oaei_data/graph_triples_oldschoolrunescape.nt", "../data/oaei_data/possible_matches.csv", None)# "../data/oaei_data/trainset.csv"
 
         from optparse import OptionParser, OptionGroup

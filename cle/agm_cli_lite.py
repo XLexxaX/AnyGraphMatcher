@@ -9,15 +9,16 @@ from configurations.InternalProperties import InternalProperties
 from configurations.ConfigurationHandler import ConfigurationHandler
 from configurations.PipelineTools import Pipeline, PipelineDataTuple
 from loadkg.loadWithRdflib import load_kg_with_rdflib_ttl_interface
-from graphdatatools import GraphToolbox
-from wordembedding import WalkEmbedder_1, concat_combiner#W2VInterfaceWrapper, D2VInterfaceWrapper, PseudoD2VInterfaceWrapper, \
+from graphdatatools import RAMOptimizedGTbox
+from wordembedding import RAMOptimizedWalkEmbedder_1, concat_combiner
+    #W2VInterfaceWrapper, D2VInterfaceWrapper, PseudoD2VInterfaceWrapper, \
     #W2V_1InterfaceWrapper, #D2V_1InterfaceWrapper, PseudoD2V_1InterfaceWrapper, SimpleTriplesEmbedder, \
     #SimpleTriplesEmbedder_1, concat_combiner, ResourceRelationsEmbeddingWrapper, SimpleLiteralsEmbedder_1, \
     #, WalkD2V_1Embedder
 from visualization import CategoriesVisualizer, StratifiedVisualizer, TypeVisualizer, FullVisualizer, \
     EmbeddingSaver, TSNEInterface
 from sentencegenerator import ReadSentencesInterfaceWrapper
-from matcher import UnsupervisedRankMatcher, SupervisedRankMatcher
+from matcher import UnsupervisedRankMatcher, RAMOptimizedSupervisedRankMatcher
 #from xgboost import XGBClassifier
 from sklearn.linear_model import LogisticRegression
 from configurations.DiskDataPreparation import prepare_dir, copytree
@@ -58,19 +59,18 @@ def main(source, target, possible_matches, trainset):
     name = "cli_task"
     pipeline = Pipeline()
     line_a = pipeline.append_step(load_kg_with_rdflib_ttl_interface, None, PipelineDataTuple(src_triples))
-    line_a = pipeline.append_step(GraphToolbox.interface, PipelineDataTuple(line_a), PipelineDataTuple(src_triples))
+    line_a = pipeline.append_step(RAMOptimizedGTbox.interface, PipelineDataTuple(line_a), PipelineDataTuple(src_triples))
     #line_a = pipeline.append_step(ReadSentencesInterfaceWrapper.interface, PipelineDataTuple(line_a),
     #                              PipelineDataTuple(src_corpus))
     line_b = pipeline.append_step(load_kg_with_rdflib_ttl_interface, None, PipelineDataTuple(tgt_triples))
-    line_b = pipeline.append_step(GraphToolbox.interface, PipelineDataTuple(line_b), PipelineDataTuple(tgt_triples))
+    line_b = pipeline.append_step(RAMOptimizedGTbox.interface, PipelineDataTuple(line_b), PipelineDataTuple(tgt_triples))
     #line_b = pipeline.append_step(ReadSentencesInterfaceWrapper.interface, PipelineDataTuple(line_b),
     #                              PipelineDataTuple(tgt_corpus))
-    line_ab = pipeline.append_step(WalkEmbedder_1.interface, PipelineDataTuple(line_a, line_b),
+    line_ab = pipeline.append_step(RAMOptimizedWalkEmbedder_1.interface, PipelineDataTuple(line_a, line_b),
                                    PipelineDataTuple(dim, 'steps', False, 1))
-    line_ab = pipeline.append_step(concat_combiner.interface, PipelineDataTuple(line_ab), None)
 
     if len(trainset)>0:
-        line_ab = pipeline.append_step(SupervisedRankMatcher.interface, PipelineDataTuple(line_ab), None)
+        line_ab = pipeline.append_step(RAMOptimizedSupervisedRankMatcher.interface, PipelineDataTuple(line_ab), None)
     else:
         line_ab = pipeline.append_step(UnsupervisedRankMatcher.interface, PipelineDataTuple(line_ab), None)
 

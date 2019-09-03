@@ -216,6 +216,7 @@ def prepare(graph1, graph2):
         w_array[y==0] = ( 1 - weight_ratio )
         clf = XGBClassifier().fit(X, y, sample_weight=w_array)
         #random_state=0, solver='lbfgs', multi_class='ovr', class_weight={1:0.1,0:0.9}).fit(X, y)
+        X = pm[cols]
         pm = pm.loc[clf.predict(X)==1]
         CONFIGURATION.log("      --> Performing machine learning step: 100% [inactive]")
 
@@ -422,12 +423,12 @@ def match(pm, graph1, graph2):
 
     mem = len(left_for_mapping)
     total = len(left_for_mapping)
-    married_matchinpm = list()
+    married_matchings = list()
     while len(left_for_mapping) > 0:
         ind = left_for_mapping[0]
         a = values[ind][0]
         b = values[ind][1]
-        married_matchinpm.append([a, b])
+        married_matchings.append([a, b])
         for x in inverted_values[a]:
             if x in left_for_mapping:
                 left_for_mapping.remove(x)
@@ -439,13 +440,13 @@ def match(pm, graph1, graph2):
             mem = len(left_for_mapping)
 
     CONFIGURATION.log("      --> Peforming stable marriage: 100% [active]")
-    married_matchinpm = pd.DataFrame(married_matchinpm)
-    married_matchinpm.columns = ['src_id', 'tgt_id']
-    married_matchinpm.head()
+    married_matchings = pd.DataFrame(married_matchings)
+    married_matchings.columns = ['src_id', 'tgt_id']
+    married_matchings.head()
 
     CONFIGURATION.log("      --> Storing results: 0% [inactive]", end="\r")
-    married_matchinpm[['src_id','tgt_id']].to_csv(CONFIGURATION.rundir+"married_matchinpm.csv", encoding="UTF-8", sep="\t")
-    PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchinpm.csv'), CONFIGURATION)
+    married_matchings[['src_id','tgt_id']].to_csv(CONFIGURATION.rundir+"married_matchings.csv", encoding="UTF-8", sep="\t")
+    PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
 
     CONFIGURATION.log("      --> Storing results: 100% [inactive]")
 
