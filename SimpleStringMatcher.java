@@ -1,5 +1,6 @@
 package de.uni_mannheim.informatik.dws.ontmatching.demomatcher;
 
+import de.uni_mannheim.informatik.dws.ontmatching.demomatcher.SimpleStringMatcher.Blocker.Tuple;
 import de.uni_mannheim.informatik.dws.ontmatching.matchingbase.OaeiOptions;
 import de.uni_mannheim.informatik.dws.ontmatching.matchingjena.MatcherYAAAJena;
 import de.uni_mannheim.informatik.dws.ontmatching.yetanotheralignmentapi.Alignment;
@@ -147,6 +148,9 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		call_matcher_command.add("-p");
 		call_matcher_command.add(
 				"\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP + "possible_matches.csv" + "\"");
+		call_matcher_command.add("-g");
+		call_matcher_command.add(
+				"\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP + "artificial_gold_standard.csv" + "\"");
 
 		/*
 		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"); envs.put("Path",
@@ -173,15 +177,15 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 
 		// System.err.println("Start external matcher with command: " + String.join(" ",
 		// activate_env_command));
-		System.err.println("Start external matcher with command: " + String.join(" ", call_matcher_command));
+		//System.err.println("Start external matcher with command: " + String.join(" ", call_matcher_command));
 		//Process process = pb.start();
-
+        //
 		//int errCode = process.waitFor(); // wait for the matcher to finish
 		//if (errCode != 0) {
 		//	System.err.println("Error code of external matcher is not equal to 0.");
 		//}
-
-		StringBuilder sb = new StringBuilder();
+        //
+		//StringBuilder sb = new StringBuilder();
 		//try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 		//	String line = null;
 		//	while ((line = br.readLine()) != null) {
@@ -189,15 +193,15 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		//	}
 		//}
 
-		Path path = Paths.get(AGMDIR + DSEP + "result_data" + DSEP + "cli_result" + DSEP + "married_matchings.csv");
-		byte[] bytes = Files.readAllBytes(path);
-		List<String> married_matchings_per_line = Files.readAllLines(path, StandardCharsets.UTF_8);
-		for (String x : married_matchings_per_line) {
-			String[] uris = x.split("\t");
-			if (uris[0].length() > 0)
-				alignment.add(uris[1], uris[2]);
-		}
-
+		//Path path = Paths.get(AGMDIR + DSEP + "result_data" + DSEP + "cli_result" + DSEP + "married_matchings.csv");
+		//byte[] bytes = Files.readAllBytes(path);
+		//List<String> married_matchings_per_line = Files.readAllLines(path, StandardCharsets.UTF_8);
+		//for (String x : married_matchings_per_line) {
+		//	String[] uris = x.split("\t");
+		//	if (uris[0].length() > 0)
+		//		alignment.add(uris[1], uris[2]);
+		//}
+		Thread.sleep(1000);
 		return alignment;
 	}
 
@@ -232,13 +236,17 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		File f = new File(folder + "graph_triples_" + datasetname + ".nt");
 		//BufferedWriter ntwriter = null;
 		File f2 = new File(folder + "possible_matches.csv");
+		File f3 = new File(folder + "artificial_gold_standard.csv");
 		BufferedWriter blockedwriter = null;
+		BufferedWriter gswriter = null;
 		
 		
 		if (f.exists())
 			f.delete();
 		if (f2.exists())
 			f2.delete();
+		if (f3.exists())
+			f3.delete();
 
 		try {
 			RDFDataMgr.write(new FileOutputStream(f), model, RDFFormat.NTRIPLES_UTF8) ;
@@ -252,8 +260,10 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		try {
 			f.createNewFile();
 			f2.createNewFile();
+			f3.createNewFile();
 			//ntwriter = new BufferedWriter(new FileWriter(f));
 			blockedwriter = new BufferedWriter(new FileWriter(f2));
+			gswriter = new BufferedWriter(new FileWriter(f3));
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -283,8 +293,24 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 						if (indexed) {
 							blocker.addDoc(s.getURI().toString().toLowerCase(), lit);
 						} else if (!indexed) {
-							for (String possibleMatch : blocker.searchFuzzyQuery(lit)) {
-								writeFile(blockedwriter, possibleMatch + "\t" + nid + "\n");
+							boolean useMatchForGS = false;
+							ArrayList<Tuple> result = blocker.searchFuzzyQuery(lit);
+							for (int i = 0; i < result.size(); i++) {
+								
+								Tuple possibleMatch = result.get(i);
+								String uri = possibleMatch.uri;
+								float score = possibleMatch.score;
+								writeFile(blockedwriter, uri + "\t" + nid + "\n");
+								if (i==0) {
+									if (score>2.0f && result.size()>1) {//((this.calculate(uri, nid) / Math.min(15, Math.max(uri.length(), nid.length()))) < 0.05) {
+										if (result.get(i+1).score/score < 0.5)  {
+											writeFile(gswriter, uri + "\t" + nid + "\t1\n");
+											useMatchForGS = true;
+										}
+									}
+								} else if (useMatchForGS) {
+									writeFile(gswriter, uri + "\t" + nid + "\t0\n");
+								}
 							}
 						}
 				} else
@@ -302,6 +328,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			if (indexed)
 				blocker.closeIndexing();
 			blockedwriter.close();
+			gswriter.close();
 			//ntwriter.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -316,6 +343,37 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			e.printStackTrace();
 		}
 	}
+	
+
+	public int calculate(String x, String y) {
+		x = x.substring(0, Math.min(x.length(), 15));
+		y = y.substring(0, Math.min(y.length(), 15));
+		int[][] dp = new int[x.length() + 1][y.length() + 1];
+
+		for (int i = 0; i <= x.length(); i++) {
+			for (int j = 0; j <= y.length(); j++) {
+				if (i == 0) {
+					dp[i][j] = j;
+				} else if (j == 0) {
+					dp[i][j] = i;
+				} else {
+					dp[i][j] = min(dp[i - 1][j - 1] + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
+							dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+				}
+			}
+		}
+
+		return dp[x.length()][y.length()];
+	}
+
+	public int costOfSubstitution(char a, char b) {
+		return a == b ? 0 : 1;
+	}
+
+	public int min(int... numbers) {
+		return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
+	}
+
 
 	public class Blocker {
 
@@ -365,9 +423,18 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 				System.out.println("Exception : " + ex.getLocalizedMessage());
 			}
 		}
+		
+		public class Tuple {
+			String uri;
+			float score;
+			public Tuple(String uri, float score) {
+				this.uri = uri;
+				this.score = score;
+			}
+		}
 
-		public ArrayList<String> searchIndexAndDisplayResults(Query query) {
-			ArrayList<String> result = new ArrayList<>();
+		public ArrayList<Tuple> searchIndexAndDisplayResults(Query query) {
+			ArrayList<Tuple> result = new ArrayList<>();
 			try {
 
 				TopDocs docs = idxSearcher.search(query, 3);
@@ -375,8 +442,8 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 				for (ScoreDoc doc : docs.scoreDocs) {
 					Document thisDoc = idxSearcher.doc(doc.doc);
 					String l2 = thisDoc.get("label");
-					if (calculate(l1, l2) / Math.max(l1.length(), l2.length()) < 0.3)
-						result.add(thisDoc.get("uri"));
+					if (doc.score > 1.0)//(calculate(l1, l2) / Math.min(15, Math.max(l1.length(), l2.length())) < 0.3)
+						result.add(new Tuple(thisDoc.get("uri"), doc.score));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -413,7 +480,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
 		}
 
-		public ArrayList<String> searchFuzzyQuery(String searchstring) {
+		public ArrayList<Tuple> searchFuzzyQuery(String searchstring) {
 			String[] splitstring = searchstring.replaceAll("[^A-Za-z0-9 ]", " ").replaceAll(" {2,}", " ")
 					.replaceAll("^ ", "").toLowerCase().split(" ");
 			Arrays.sort(splitstring, (a, b)->Integer.compare(b.length(), a.length()));

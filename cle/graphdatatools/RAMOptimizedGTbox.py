@@ -31,7 +31,7 @@ class Graph:
                 if p.lower() == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
                     self.elements[s].type = l
 
-                self.elements[s].lits.append([p,o])
+                self.elements[s].lits.append([p,l])
 
 
 

@@ -20,13 +20,13 @@ from gensim.models import Doc2Vec, Word2Vec
 
 global CONFIGURATION
 
-def exec(graph1, graph2):
+def exec():
 
-    match(prepare(graph1, graph2), graph1, graph2)
-    return PipelineDataTuple(graph1, graph2)
+    match(prepare())
+    return PipelineDataTuple(None)
 
 
-def prepare(graph1, graph2):
+def prepare():
         #EmbeddingSaver.interface(PipelineDataTuple(graph1, graph2), None, CONFIGURATION)
         #CONFIGURATION.log("      --> Cleaning memory: 0% [inactive]", end="\r")
         #RAMCleaner.interface(PipelineDataTuple(graph1, graph2), None, CONFIGURATION)
@@ -347,7 +347,7 @@ def prepare(graph1, graph2):
         CONFIGURATION.log("      --> Calculating final scores: 100% [active]")
         return pm
 
-def match(pm, graph1, graph2):
+def match(pm):
     # In[263]:
 
     #matchinpm = matchinpm_saved
@@ -446,7 +446,7 @@ def match(pm, graph1, graph2):
 
     CONFIGURATION.log("      --> Storing results: 0% [inactive]", end="\r")
     married_matchings[['src_id','tgt_id']].to_csv(CONFIGURATION.rundir+"married_matchings.csv", encoding="UTF-8", sep="\t")
-    PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
+    PredictionToXMLConverter.interface(PipelineDataTuple(None, None), PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
 
     CONFIGURATION.log("      --> Storing results: 100% [inactive]")
 
@@ -454,10 +454,6 @@ def match(pm, graph1, graph2):
 def interface(main_input, arpm, configuration):
     global CONFIGURATION
     CONFIGURATION = configuration
-    graph1 = main_input.get(0)
-    graph2 = main_input.get(1)
-    assert graph1 is not None, "Graph (1) not found in " + os.path.basename(sys.argv[0])
-    assert graph2 is not None, "Graph (2) not found in " + os.path.basename(sys.argv[0])
     assert CONFIGURATION.logfile is not None, "Path to logfile not found in " + os.path.basename(sys.argv[0])
     assert CONFIGURATION.name is not None, "Test config name not found in " + os.path.basename(sys.argv[0])
-    return exec(graph1, graph2)
+    return exec()

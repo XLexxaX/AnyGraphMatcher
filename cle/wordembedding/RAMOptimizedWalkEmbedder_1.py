@@ -103,7 +103,7 @@ def prepare_data(graph, sentence_generation_method, ngrams, maxdepth):
     for i in maxdepth:
             for descriptor, resource in graph.elements.items():
                 if sentence_generation_method == 'steps':
-                    tmp = deep_steps(descriptor, 0, i, graph.elements, "", ngrams)
+                    tmp = deep_steps(descriptor, 0, i, graph, "", ngrams)
                 for sentence in tmp:
                     yield sentence
                 ctr +=1
