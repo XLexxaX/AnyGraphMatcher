@@ -7,28 +7,31 @@ import sys
 
 global CONFIGURATION
 
-
-class Graph:
-
-    def __init__(self, literal_triples_generator, resource_literals_generator):
+class Resource:
+    def __init__(self):
         self.objs = list()
         self.lits = list()
         self.type = 'none'
 
+class Graph:
+
+    def __init__(self, spo_generator, spl_generator):
+        self.elements = dict()
+
         for s, p, o in spo_generator:
-                if not s in self.objs.keys():
-                    self.objs[s] = Resource()
+                if not s in self.elements.keys():
+                    self.elements[s] = Resource()
                 if p.lower() == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                    self.type = o
+                    self.elements[s].type = o
 
-                self.objs.append([p,o])
+                self.elements[s].objs.append([p,o])
         for s, p, l in spl_generator:
-                if not s in self.lits.keys():
-                    self.lists[s] = Resource()
+                if not s in self.elements.keys():
+                    self.elements[s] = Resource()
                 if p.lower() == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                    self.type = l
+                    self.elements[s].type = l
 
-                self.lits.append([p,o])
+                self.elements[s].lits.append([p,o])
 
 
 

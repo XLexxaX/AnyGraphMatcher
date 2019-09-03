@@ -53,14 +53,14 @@ def save_to_file(graph1, graph2, model, dim):
     # Plot embeddings
 
 
-    for descriptor in graph1.keys():
+    for descriptor in graph1.elements.keys():
             vector = None
             try:
                     vector = np.array(model.wv[descriptor]).astype(float).tolist()
             except KeyError:
                     vector = model.wv['<>'].astype(float).tolist()
 
-            cat = graph1[descriptor].type
+            cat = graph1.elements[descriptor].type
             origin = "graph1"
             #output.append(v+[label,cat,origin])
 
@@ -68,14 +68,14 @@ def save_to_file(graph1, graph2, model, dim):
             line = [str(val) for val in line]
             out.write(str("\t".join(line) + "\n"))
 
-    for descriptor in graph2.keys():
+    for descriptor in graph2.elements.keys():
             vector = None
             try:
                     vector = np.array(model.wv[descriptor]).astype(float).tolist()
             except KeyError:
                     vector = model.wv['<>'].astype(float).tolist()
 
-            cat = graph2[descriptor].type
+            cat = graph2.elements[descriptor].type
             origin = "graph2"
             #output.append(v+[label,cat,origin])
 
@@ -97,13 +97,13 @@ def array_heterogeneity(x):
 def prepare_data(graph, sentence_generation_method, ngrams, maxdepth):
     documents = list()
     maxdepth = [maxdepth]
-    total_ctr = len(maxdepth)*len(graph.keys())
+    total_ctr = len(maxdepth)*len(graph.elements.keys())
     ctr = 0
     CONFIGURATION.log("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "% [active]", end="\r")
     for i in maxdepth:
-            for descriptor, resource in graph.items():
+            for descriptor, resource in graph.elements.items():
                 if sentence_generation_method == 'steps':
-                    tmp = deep_steps(descriptor, 0, i, graph, "", ngrams)
+                    tmp = deep_steps(descriptor, 0, i, graph.elements, "", ngrams)
                 for sentence in tmp:
                     yield sentence
                 ctr +=1
@@ -117,7 +117,7 @@ def deep_steps(descriptor, i, maxdepth, graph, exclude_descriptor, ngrams=False)
     if i>=maxdepth:
         return [[descriptor]]
     new_sentences = list()
-    for pl in graph[descriptor].lits:
+    for pl in graph.elements[descriptor].lits:
         predicate = pl[0]
         literal = pl[1]
         if ngrams:
@@ -125,7 +125,7 @@ def deep_steps(descriptor, i, maxdepth, graph, exclude_descriptor, ngrams=False)
             new_sentences.append([predicate] + literal)
         else:
             new_sentences.append([predicate, literal])
-    for po in graph[descriptor].objs:
+    for po in graph.elements[descriptor].objs:
         predicate = po[0]
         object = po[1]
         if not object == exclude_descriptor:
