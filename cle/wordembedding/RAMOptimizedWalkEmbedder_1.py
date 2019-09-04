@@ -107,7 +107,7 @@ def prepare_data(graph, sentence_generation_method, ngrams, maxdepth):
                 for sentence in tmp:
                     yield sentence
                 ctr +=1
-                CONFIGURATION.log("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "% [active]", end="\r")
+                #CONFIGURATION.log("      --> Generating training corpus: " + str(int(100*ctr/total_ctr)) + "% [active]", end="\r")
     #gold_path = CONFIGURATION.CONFIGURATION.gold_mapping.raw_trainsets[0]
     #for index, row in pd.read_csv(gold_path, delimiter="\t", header=None, skiprows=1).iterrows():
     #    documents = documents + [row[0], "<mapsto>", row[1]]

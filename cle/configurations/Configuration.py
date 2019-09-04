@@ -43,7 +43,7 @@ class Configuration:
                 self.logs_.write(str(text))
                 self.logs_.flush()
                 logging.info(text)
-            else:
+            else if "0%" in text:
                 self.logs_.write(str(text))
                 self.logs_.flush()
                 print(text, end=end)
