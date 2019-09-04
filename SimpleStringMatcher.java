@@ -76,13 +76,13 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 	private final String CWD = System.getProperty("user.dir");
 	private final String AGMDIR = "oaei-resources" + DSEP + "AnyGraphMatcher";// "D:"+DSEP+"Development"+DSEP+"Code"+DSEP+"AnyGraphMatcher";
 
-	public boolean findFile(String name, String filepath) {
+	public boolean findFile(String name, String filepath, boolean withPostfix) {
 		File file = new File(filepath);
 		File[] list = file.listFiles();
 		if (list != null)
 			for (File fil : list) {
 				String fname = fil.getName();
-				if (fname.contains("."))
+				if (!withPostfix && fname.contains("."))
 					fname = String.join("", Arrays.copyOfRange(fname.split("\\."), 0, fname.split("\\.").length - 1));
 				if (name.equalsIgnoreCase(fname)) {
 					return true;
@@ -112,10 +112,10 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			if (envs.get("PATH") != null) {
 				for (String pathVar2 : envs.get("PATH").split(";")) {
 					for (String pathVar : pathVar2.split(":")) {
-						if (this.findFile("python3", pathVar)) {
+						if (this.findFile("python3", pathVar, false)) {
 							PYTHONDIR = pathVar;
 							pythonname = "python3";
-						} else if (this.findFile("python", pathVar)) {
+						} else if (this.findFile("python", pathVar, false)) {
 							PYTHONDIR = pathVar;
 						}
 					}
@@ -126,10 +126,10 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 
 			if (envs.get("Path") != null) {
 				for (String pathVar : envs.get("Path").split(";")) {
-					if (this.findFile("python3", pathVar)) {
+					if (this.findFile("python3.exe", pathVar, true)) {
 						PYTHONDIR = pathVar;
 						pythonname = "python3";
-					} else if (this.findFile("python", pathVar)) {
+					} else if (this.findFile("python.exe", pathVar, true)) {
 						PYTHONDIR = pathVar;
 					}
 				}
@@ -169,17 +169,17 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		// call_matcher_command.add(AGMDIR+DSEP+"cle"+DSEP+"agm_cli.py");
 		call_matcher_command.add("agm_cli_lite.py");
 		call_matcher_command.add("-s");
-		call_matcher_command.add("\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
-				+ "graph_triples_source.nt" + "\"");
+		call_matcher_command.add("" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
+				+ "graph_triples_source.nt" + "");
 		call_matcher_command.add("-t");
-		call_matcher_command.add("\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
-				+ "graph_triples_target.nt" + "\"");
+		call_matcher_command.add("" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
+				+ "graph_triples_target.nt" + "");
 		call_matcher_command.add("-p");
 		call_matcher_command.add(
-				"\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP + "possible_matches.csv" + "\"");
+				"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP + "possible_matches.csv" + "");
 		call_matcher_command.add("-g");
-		call_matcher_command.add("\"" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
-				+ "artificial_gold_standard.csv" + "\"");
+		call_matcher_command.add("" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
+				+ "artificial_gold_standard.csv" + "");
 
 		/*
 		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"); envs.put("Path",
