@@ -6,9 +6,9 @@ def read_from_file_generator(sentences_filename):
 
 def read_from_file(sentences_filename, properties):
     sentences = list()
-    for line in open(sentences_filename, "r", encoding="UTF-8"):
+    for line in open(sentences_filename, "r"):
         line = line.replace('"',"").replace(" .\n","").replace("<","").replace(">","")
-        line = line.lower().split(" ")
+        line = line.split(" ")
         if properties is not None:
             l = list()
             has_to_be_in_properties = False

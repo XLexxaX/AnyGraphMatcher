@@ -11,7 +11,7 @@ import pandas as pd
 
 def stem(CONFIGURATION, sents):
 
-    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+", encoding="UTF-8") as f:
+    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+") as f:
         for sent in sents:
             tmp = list()
             for expression in sent:
@@ -39,14 +39,14 @@ def stem(CONFIGURATION, sents):
 
 
 def tuplize(sents, CONFIGURATION):
-    f = open(CONFIGURATION.rundir + "w2v_formatted_training_material.csv",'w+', encoding="UTF-8")
+    f = open(CONFIGURATION.rundir + "w2v_formatted_training_material.csv",'w+')
     for sentence in sents:
         for j in range(0,len(sentence)):
             for k in range(j+1,len(sentence)):
                 f.write(sentence[k] + ',' + sentence[j] + "\n")
     f.close()
     df = pd.read_csv(CONFIGURATION.rundir + "w2v_formatted_training_material.csv", sep=',', header=None,
-                    encoding="UTF-8")
+                    encoding=CONFIGURATION.encoding)
     return df
 
 def eliminate_rare_and_freqeunt_terms(x):
@@ -83,7 +83,7 @@ def prepare_training_data(sentences, CONFIGURATION):
 
     #sentences = stem(CONFIGURATION, sentences)
     ctr = 0
-    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+", encoding="UTF-8") as f:
+    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+") as f:
         for sent in sentences:
             tmp = list()
             for expression in sent:

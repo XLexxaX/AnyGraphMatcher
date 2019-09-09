@@ -27,8 +27,8 @@ def exec(graph1, graph2):
                 save(graph1, graph2, ntpath.basename(gold_mapping), gold_mapping)
                 path_to_set = CONFIGURATION.rundir + ntpath.basename(gold_mapping) + "-strcombined.csv"
                 path_to_idset = CONFIGURATION.rundir + ntpath.basename(gold_mapping) + "-strcombined_ids.csv"
-                df = pd.read_csv(path_to_set, index_col=['Unnamed: 0'], sep="\t", encoding="UTF-8").\
-                        merge(pd.read_csv(path_to_idset, index_col=['Unnamed: 0'], sep="\t", encoding="UTF-8"), left_index=True,\
+                df = pd.read_csv(path_to_set, index_col=['Unnamed: 0'], sep="\t").\
+                        merge(pd.read_csv(path_to_idset, index_col=['Unnamed: 0'], sep="\t"), left_index=True,\
                         right_index=True)
                 df.to_csv(CONFIGURATION.rundir + ntpath.basename(gold_mapping) + "_merged.csv", sep="\t")
                 CONFIGURATION.gold_mapping.prepared_trainsets.append(df)
@@ -53,8 +53,8 @@ def exec(graph1, graph2):
                 save(graph1, graph2, ntpath.basename(gold_mapping), gold_mapping)
                 path_to_set = CONFIGURATION.rundir + ntpath.basename(gold_mapping) + "-strcombined.csv"
                 path_to_idset = CONFIGURATION.rundir + ntpath.basename(gold_mapping) + "-strcombined_ids.csv"
-                df = pd.read_csv(path_to_set, index_col=['Unnamed: 0'], sep="\t", encoding="UTF-8").\
-                        merge(pd.read_csv(path_to_idset, index_col=['Unnamed: 0'], sep="\t", encoding="UTF-8"), left_index=True,\
+                df = pd.read_csv(path_to_set, index_col=['Unnamed: 0'], sep="\t").\
+                        merge(pd.read_csv(path_to_idset, index_col=['Unnamed: 0'], sep="\t"), left_index=True,\
                         right_index=True)
                 df.to_csv(CONFIGURATION.rundir + ntpath.basename(gold_mapping) + "_merged.csv", sep="\t")
                 CONFIGURATION.gold_mapping.prepared_testsets.append(df)

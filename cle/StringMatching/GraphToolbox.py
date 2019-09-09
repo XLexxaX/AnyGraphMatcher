@@ -31,7 +31,7 @@ class GraphManager:
         TEXT_REGEXER = re.compile("\".*\"")
         NODEID_REGEXER = re.compile("^<[^<^>]*>")
         PROPERTY_REGEXER = re.compile(" <[^<^>]*> ")
-        file = open(file_path, "r", encoding="UTF-8")
+        file = open(file_path, "r")
         for line in file:
             try:
                 value = TEXT_REGEXER.findall(line)[0].replace("\"", "")

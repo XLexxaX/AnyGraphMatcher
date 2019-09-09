@@ -44,7 +44,7 @@ def exec(graph1, graph2):
         documents_ids_B = dict()
         all_possible_matches = dict()
         all_nodeids = set()
-        with open(all_possible_matches_path, encoding="UTF-8") as f:
+        with open(all_possible_matches_path) as f:
             for line in f:
                 line = line.replace("\n","").split("\t")
                 all_nodeids.add(line[0])
@@ -58,13 +58,13 @@ def exec(graph1, graph2):
                 else:
                     all_possible_matches[line[1]] = set([line[0]])
 
-        possible_matches = CONFIGURATION.gold_mapping.prepared_testsets[0]#pd.read_csv(dirpath + "possible_matches.csv-strcombined.csv", sep=",", encoding="UTF-8")
-        #possible_matches_ids = pd.read_csv(dirpath + "possible_matches.csv-strcombined_ids.csv", sep=",", encoding="UTF-8")
+        possible_matches = CONFIGURATION.gold_mapping.prepared_testsets[0]#pd.read_csv(dirpath + "possible_matches.csv-strcombined.csv", sep=",")
+        #possible_matches_ids = pd.read_csv(dirpath + "possible_matches.csv-strcombined_ids.csv", sep=",")
         #possible_matches = possible_matches.merge(possible_matches_ids, left_on=['Unnamed: 0'], right_on=['Unnamed: 0'])
 
 
-        oaei_gold_standard3 = CONFIGURATION.gold_mapping.prepared_trainsets[0]#pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined.csv", sep=",", encoding="UTF-8")
-        #oaei_gold_standard3_ids = pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined_ids.csv", sep=",", encoding="UTF-8")
+        oaei_gold_standard3 = CONFIGURATION.gold_mapping.prepared_trainsets[0]#pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined.csv", sep=",")
+        #oaei_gold_standard3_ids = pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined_ids.csv", sep=",")
         #oaei_gold_standard3 = oaei_gold_standard3.merge(oaei_gold_standard3_ids, left_on=['Unnamed: 0'], right_on=['Unnamed: 0'])
 
 
@@ -96,7 +96,7 @@ def exec(graph1, graph2):
 
         def get_training_material(nid):
             res = list()
-            with open(dirpath+"w2v_training_material.csv", mode="r", encoding="UTF-8") as f:
+            with open(dirpath+"w2v_training_material.csv", mode="r") as f:
                 for line in f:
                     if nodeid in line.split(" "):
                         res = res + line.split(" ")
@@ -105,7 +105,7 @@ def exec(graph1, graph2):
 
         total = len(all_nodeids)
         matchings = None
-        with open(dirpath+'additional_features.csv', mode="w+", encoding="UTF-8") as f:
+        with open(dirpath+'additional_features.csv', mode="w+") as f:
             for nodeid in all_nodeids:
 
                 possible_matches_for_nodeid = possible_matches.loc[((possible_matches.src_id==nodeid) & (possible_matches.tgt_id.isin(get_possible_matches(nodeid))))]

@@ -38,9 +38,9 @@ def prepare(graph1, graph2):
 
 
 
-        pm = pd.read_csv(CONFIGURATION.gold_mapping.raw_testsets[0], encoding="UTF-8", sep="\t", header=None)
+        pm = pd.read_csv(CONFIGURATION.gold_mapping.raw_testsets[0], sep="\t", header=None)
         pm.columns = ['src_id','tgt_id']
-        embs = pd.read_csv(basedir+"stratified_embeddings.csv", encoding="UTF-8", sep="\t")
+        embs = pd.read_csv(basedir+"stratified_embeddings.csv", sep="\t")
         #embs = embs[[col for col in embs.columns if re.match('x\d+', col) is not None]+['label']]
         #embs.columns = ["src_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if re.match('src_\d+', col) is not None]] + ['label']
         pm = pm.merge(embs, left_on=['src_id'], right_on=['label'])
@@ -50,7 +50,7 @@ def prepare(graph1, graph2):
 
 
 
-        gs = pd.read_csv(CONFIGURATION.gold_mapping.raw_trainsets[0], encoding="UTF-8", sep="\t", header=None)
+        gs = pd.read_csv(CONFIGURATION.gold_mapping.raw_trainsets[0], sep="\t", header=None)
         gs.columns = ['src_id','tgt_id','target']
         embs.columns = ["src_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if re.match('tgt_\d+', col) is not None]] + ['label']
         gs = gs.merge(embs, left_on=['src_id'], right_on=['label'])
@@ -63,7 +63,7 @@ def prepare(graph1, graph2):
 
         labels1 = dict()
         categories1 = dict()
-        with open(CONFIGURATION.src_triples, encoding="UTF-8", mode="r") as f:
+        with open(CONFIGURATION.src_triples, mode="r") as f:
             for line in f:
                 if " <" + CONFIGURATION.properties.src_label_properties[0] + "> " in line:
                     line = line.replace("<","").replace(">","").replace(" .\n","").split(" "+CONFIGURATION.properties.src_label_properties[0]+" ")
@@ -76,7 +76,7 @@ def prepare(graph1, graph2):
                          categories1[line[0]] = line[1]
         labels2 = dict()
         categories2 = dict()
-        with open(CONFIGURATION.tgt_triples, encoding="UTF-8", mode="r") as f:
+        with open(CONFIGURATION.tgt_triples, mode="r") as f:
                     for line in f:
                         if " <" + CONFIGURATION.properties.tgt_label_properties[0] + "> " in line:
                             line = line.replace("<", "").replace(">", "").replace(" .\n", "").split(
@@ -387,7 +387,7 @@ def match(pm, graph1, graph2):
     #married_matchinpm.columns = ['src_id', 'tgt_id']
     #married_matchinpm.head()
 #
-    #married_matchinpm[['src_id','tgt_id']].to_csv(basedir+"married_matchinpm.csv", encoding="UTF-8", sep="\t")
+    #married_matchinpm[['src_id','tgt_id']].to_csv(basedir+"married_matchinpm.csv", sep="\t")
     #PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchinpm.csv'), CONFIGURATION)
 
 
@@ -445,7 +445,7 @@ def match(pm, graph1, graph2):
     married_matchings.head()
 
     CONFIGURATION.log("      --> Storing results: 0% [inactive]", end="\r")
-    married_matchings[['src_id','tgt_id']].to_csv(CONFIGURATION.rundir+"married_matchings.csv", encoding="UTF-8", sep="\t")
+    married_matchings[['src_id','tgt_id']].to_csv(CONFIGURATION.rundir+"married_matchings.csv", sep="\t")
     PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
 
     CONFIGURATION.log("      --> Storing results: 100% [inactive]")

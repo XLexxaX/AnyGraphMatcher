@@ -121,7 +121,7 @@ class Resources(dict):
         return iter(self.__dict__)
 
     def __unicode__(self):
-        return repr(self.__dict__).decode("UTF-8")
+        return repr(self.__dict__).decode(CONFIGURATION.encoding)
 
     def create_or_get(self, descriptor, type):
         if self.has_key(descriptor):

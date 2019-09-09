@@ -21,11 +21,11 @@ global CONFIGURATION
 
 def exec(matchings_filename):
 
-    married_matches = pd.read_csv(CONFIGURATION.rundir + matchings_filename, sep="\t", encoding="UTF-8")
-    starttag = '<?xml version="1.0" encoding="utf-8"?>\n<rdf:RDF xmlns="http://knowledgeweb.semanticweb.org/heterogeneity/alignment"\n  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">\n<Alignment>\n  <xml>yes</xml>\n  <level>0</level>\n  <type>??</type>\n  <onto1>\n    <Ontology rdf:about="darkscape">\n      <location>http://darkscape.wikia.com</location>\n    </Ontology>\n  </onto1>\n  <onto2>\n    <Ontology rdf:about="oldschoolrunescape">\n      <location>http://oldschoolrunescape.wikia.com</location>\n    </Ontology>\n  </onto2>\n'
+    married_matches = pd.read_csv(CONFIGURATION.rundir + matchings_filename, sep="\t")
+    starttag = '<?xml version="1.0" encoding=CONFIGURATION.encoding?>\n<rdf:RDF xmlns="http://knowledgeweb.semanticweb.org/heterogeneity/alignment"\n  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">\n<Alignment>\n  <xml>yes</xml>\n  <level>0</level>\n  <type>??</type>\n  <onto1>\n    <Ontology rdf:about="darkscape">\n      <location>http://darkscape.wikia.com</location>\n    </Ontology>\n  </onto1>\n  <onto2>\n    <Ontology rdf:about="oldschoolrunescape">\n      <location>http://oldschoolrunescape.wikia.com</location>\n    </Ontology>\n  </onto2>\n'
     endtag = '</Alignment>\n</rdf:RDF>'
     os.mkdir(CONFIGURATION.rundir + matchings_filename.replace(".csv",""))
-    with open(CONFIGURATION.rundir + matchings_filename.replace(".csv","") + str(os.sep) + 'darkscape~oldschoolrunescape~results.xml', "w+", encoding="UTF-8") as f:
+    with open(CONFIGURATION.rundir + matchings_filename.replace(".csv","") + str(os.sep) + 'darkscape~oldschoolrunescape~results.xml', "w+", encoding=CONFIGURATION.encoding) as f:
         f.write(starttag)
         for index, row in married_matches.iterrows():
             f.write(create_elem(str(row.src_id).replace("&","&amp;"), str(row.tgt_id).replace("&","&amp;"))+"\n")

@@ -16,9 +16,9 @@ from sklearn.metrics.pairwise import *
 
 
 def match(basedir):
-	gs = pd.read_csv("C:/Users/D072202/RData2Graph/rdata2graph/data/oaei_data/oaei_gold_standard5best.csv", encoding="UTF-8", sep="\t", header=None)
+	gs = pd.read_csv("C:/Users/D072202/RData2Graph/rdata2graph/data/oaei_data/oaei_gold_standard5best.csv", sep="\t", header=None)
 	gs.columns = ['src_id','tgt_id','prediction']
-	embs = pd.read_csv(basedir+"stratified_embeddings.csv", encoding="UTF-8", sep=",")
+	embs = pd.read_csv(basedir+"stratified_embeddings.csv", sep=",")
 	embs = embs[[col for col in embs.columns if re.match('x\d+', col) is not None]+['label']]
 	embs.columns = ["src_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if re.match('x\d+', col) is not None]] + ['label']
 	gs = gs.merge(embs, left_on=['src_id'], right_on=['label'])
@@ -112,7 +112,7 @@ def match(basedir):
 	model = Word2Vec.load(basedir+"w2v.model")
 	#def get_training_material(nid):
 	#            res = list()
-	#            with open(basedir+"w2v_training_material.csv", mode="r", encoding="UTF-8") as f:
+	#            with open(basedir+"w2v_training_material.csv", mode="r") as f:
 	#                for line in f:
 	#                    if nodeid in line.split(" "):
 	#                        res = res + line.split(" ")
@@ -287,11 +287,11 @@ def match(basedir):
 		return elem
 
 	matchings_filename ="postsyntaxmarried_matchings.csv"
-	married_matches = pd.read_csv(basedir + matchings_filename, sep="\t", encoding="UTF-8")
-	starttag = '<?xml version="1.0" encoding="utf-8"?>\n<rdf:RDF xmlns="http://knowledgeweb.semanticweb.org/heterogeneity/alignment"\n  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">\n<Alignment>\n  <xml>yes</xml>\n  <level>0</level>\n  <type>??</type>\n  <onto1>\n    <Ontology rdf:about="darkscape">\n      <location>http://darkscape.wikia.com</location>\n    </Ontology>\n  </onto1>\n  <onto2>\n    <Ontology rdf:about="oldschoolrunescape">\n      <location>http://oldschoolrunescape.wikia.com</location>\n    </Ontology>\n  </onto2>\n'
+	married_matches = pd.read_csv(basedir + matchings_filename, sep="\t")
+	starttag = '<?xml version="1.0" encoding=CONFIGURATION.encoding?>\n<rdf:RDF xmlns="http://knowledgeweb.semanticweb.org/heterogeneity/alignment"\n  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">\n<Alignment>\n  <xml>yes</xml>\n  <level>0</level>\n  <type>??</type>\n  <onto1>\n    <Ontology rdf:about="darkscape">\n      <location>http://darkscape.wikia.com</location>\n    </Ontology>\n  </onto1>\n  <onto2>\n    <Ontology rdf:about="oldschoolrunescape">\n      <location>http://oldschoolrunescape.wikia.com</location>\n    </Ontology>\n  </onto2>\n'
 	endtag = '</Alignment>\n</rdf:RDF>'
 	os.mkdir(basedir + matchings_filename.replace(".csv",""))
-	with open(basedir + matchings_filename.replace(".csv","") + str(os.sep) + 'darkscape~oldschoolrunescape~results.xml', "w+", encoding="UTF-8") as f:
+	with open(basedir + matchings_filename.replace(".csv","") + str(os.sep) + 'darkscape~oldschoolrunescape~results.xml', "w+") as f:
 			f.write(starttag)
 			for index, row in married_matches.iterrows():
 				f.write(create_elem(str(row.src_id).replace("&","&amp;"), str(row.tgt_id).replace("&","&amp;"))+"\n")

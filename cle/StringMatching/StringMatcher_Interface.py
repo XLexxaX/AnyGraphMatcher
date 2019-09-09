@@ -40,7 +40,7 @@ class StringMatcher:
 
     def preciseBatchMatch(self, min_similarity, progressqueue, max_similarity=1.0, keys=None, x=0):
         #CONFIGURATION.log('Starting matching')
-        #f = open(path+str(x), "a+", encoding="UTF-8")
+        #f = open(path+str(x), "a+")
         correspondences = ""
         i=0
         total_size = len(keys)
@@ -116,7 +116,7 @@ def main(keys, q, x, progressqueue, index_properties, src_triples, tgt_triples):
 
 def get_labels_from_file(path):
     index_properties = list()
-    with open(path, mode="r", encoding="UTF-8") as f:
+    with open(path, mode="r") as f:
         for label in f:
             if random.randint(1,101) > 0:
                 index_properties.append(label.replace('\n',''))

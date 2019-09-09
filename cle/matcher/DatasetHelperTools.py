@@ -66,7 +66,7 @@ def batch_prepare_data_from_graph(graph1, graph2, gold_path, src_properties=None
     CONFIGURATION.log("         Reading embeddings, progress: 0%", end='\r')
 
     gold_mapping = pd.read_csv(gold_path, delimiter="\t", header=None, skiprows=1)
-    gold_mapping = gold_mapping.applymap(lambda s:s.lower() if type(s) == str else s)
+    gold_mapping = gold_mapping.applymap(lambda s:s if type(s) == str else s)
     gold_mapping.columns = ["gold_src_id", "gold_tgt_id", "label"]
     # Sample the data according to the parameters given.
 
@@ -153,7 +153,7 @@ def stream_prepare_data_from_graph(graph1, graph2, gold_mapping_path, calc_PLUS_
 
     i = 0
     for index, row in gold_mapping.iterrows():
-        if str(row['tgt_id']).lower() == str(float('NaN')) and row['label'] == 0:
+        if str(row['tgt_id']) == str(float('NaN')) and row['label'] == 0:
             for descriptor in graph2.elements.keys():
                 try:
                     src_embeddings = graph1.elements[row['src_id']].embeddings[0]
@@ -180,7 +180,7 @@ def stream_prepare_data_from_graph(graph1, graph2, gold_mapping_path, calc_PLUS_
                 except KeyError:
                     pass
                 #{'src_id': row['src_id'], 'tgt_id': descriptor, 'label': row['label']}
-        if str(row['src_id']).lower() == str(float('NaN')) and row['label'] == 0:
+        if str(row['src_id']) == str(float('NaN')) and row['label'] == 0:
             for descriptor in graph1.elements.keys():
                 try:
                     src_embeddings = graph1.elements[descriptor].embeddings[0]
@@ -284,9 +284,9 @@ def prepare_data_from_file(src_path, tgt_path, gold_path, n_positive_samples=100
 
     # Load the data from csv
     src = pd.read_csv(src_path, delimiter=" ", header=None, skiprows=1)
-    src = src.applymap(lambda s:s.lower() if type(s) == str else s)
+    src = src.applymap(lambda s:s if type(s) == str else s)
     tgt = pd.read_csv(tgt_path, delimiter=" ", header=None, skiprows=1)
-    tgt = tgt.applymap(lambda s:s.lower() if type(s) == str else s)
+    tgt = tgt.applymap(lambda s:s if type(s) == str else s)
 
 
     src = src.dropna(axis=1)
@@ -294,7 +294,7 @@ def prepare_data_from_file(src_path, tgt_path, gold_path, n_positive_samples=100
     src.columns = ["src_id"] + ["src_" + str(i) for i in range(len(src.columns) - 1)]
     tgt.columns = ["tgt_id"] + ["tgt_" + str(i) for i in range(len(tgt.columns) - 1)]
     gold_mapping = pd.read_csv(gold_path, delimiter="\t", header=None, skiprows=1)
-    gold_mapping = gold_mapping.applymap(lambda s:s.lower() if type(s) == str else s)
+    gold_mapping = gold_mapping.applymap(lambda s:s if type(s) == str else s)
     gold_mapping.columns = ["gold_src_id", "gold_tgt_id", "label"]
     # Sample the data according to the parameters given.
 
@@ -396,7 +396,7 @@ def get_negatives(src, tgt, positive_samples, n_negative_samples, method='non_ne
 def sample_gold_data(gold_path):
     #former_gold_file = open(gold_path, "r")
     gold_mapping = pd.read_csv(gold_path, delimiter="\t", header=None, skiprows=1)
-    gold_mapping = gold_mapping.applymap(lambda s: s.lower() if type(s) == str else s)
+    gold_mapping = gold_mapping.applymap(lambda s: s if type(s) == str else s)
     gold_mapping.columns = ["gold_src_id", "gold_tgt_id", "label"]
     gold_mapping = gold_mapping.sample(n=round(len(gold_mapping)/2))
     try:
@@ -635,4 +635,3 @@ def levenshtein_distance(word1, word2):
                                      table[line - 1][column - 1] + substitution_cost)
 
    return table[len(word1)][len(word2)]
-

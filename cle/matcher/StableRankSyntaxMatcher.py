@@ -36,13 +36,13 @@ def exec(graph1, graph2):
         current_process_dir = basedir
         dirpath = basedir
 
-        possible_matches = CONFIGURATION.gold_mapping.prepared_testsets[0]#pd.read_csv(dirpath + "possible_matches.csv-strcombined.csv", sep=",", encoding="UTF-8")
-        #possible_matches_ids = pd.read_csv(dirpath + "possible_matches.csv-strcombined_ids.csv", sep=",", encoding="UTF-8")
+        possible_matches = CONFIGURATION.gold_mapping.prepared_testsets[0]#pd.read_csv(dirpath + "possible_matches.csv-strcombined.csv", sep=",")
+        #possible_matches_ids = pd.read_csv(dirpath + "possible_matches.csv-strcombined_ids.csv", sep=",")
         #possible_matches = possible_matches.merge(possible_matches_ids, left_on=['Unnamed: 0'], right_on=['Unnamed: 0'])
 
 
-        oaei_gold_standard3 = CONFIGURATION.gold_mapping.prepared_trainsets[0]#pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined.csv", sep=",", encoding="UTF-8")
-        #oaei_gold_standard3_ids = pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined_ids.csv", sep=",", encoding="UTF-8")
+        oaei_gold_standard3 = CONFIGURATION.gold_mapping.prepared_trainsets[0]#pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined.csv", sep=",")
+        #oaei_gold_standard3_ids = pd.read_csv(dirpath + "oaei_gold_standard3.csv-strcombined_ids.csv", sep=",")
         #oaei_gold_standard3 = oaei_gold_standard3.merge(oaei_gold_standard3_ids, left_on=['Unnamed: 0'], right_on=['Unnamed: 0'])
 
         cols = ['syntactic_diff']

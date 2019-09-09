@@ -8,9 +8,9 @@ def line_pre_adder(self, filename, line_to_prepend):
         f = fileinput.input(filename, inplace=1)
         for xline in f:
             if f.isfirstline():
-                CONFIGURATION.log(line_to_prepend.lower() + xline.lower(), end='')
+                CONFIGURATION.log(line_to_prepend + xline, end='')
             else:
-                CONFIGURATION.log(xline.lower(), end='')
+                CONFIGURATION.log(xline, end='')
 
 def embed(self, triples_path, embpath, w2vi):
         vocab = set()
@@ -46,6 +46,3 @@ def prepare_output_dir(self):
                 os.remove(os.path.join(root, name))
             for name in dirs:
                 os.rmdir(os.path.join(root, name))
-
-
-

@@ -13,7 +13,7 @@ import logging
 
 def stem(CONFIGURATION, sents, ngrams=False):
 
-    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+", encoding="UTF-8") as f:
+    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+", encoding=CONFIGURATION.encoding) as f:
         for sent in sents:
             tmp = list()
             for expression in sent:
@@ -46,14 +46,14 @@ def stem(CONFIGURATION, sents, ngrams=False):
 
 
 def tuplize(sents, CONFIGURATION):
-    f = open(CONFIGURATION.rundir + "w2v_formatted_training_material.csv",'w+', encoding="UTF-8")
+    f = open(CONFIGURATION.rundir + "w2v_formatted_training_material.csv",'w+', encoding=CONFIGURATION.encoding)
     for sentence in sents:
         for j in range(0,len(sentence)):
             for k in range(j+1,len(sentence)):
                 f.write(sentence[k] + ',' + sentence[j] + "\n")
     f.close()
     df = pd.read_csv(CONFIGURATION.rundir + "w2v_formatted_training_material.csv", sep=',', header=None,
-                    encoding="UTF-8")
+                    encoding=CONFIGURATION.encoding)
     return df
 
 def eliminate_rare_and_freqeunt_terms(x):
@@ -118,9 +118,9 @@ def literalize(documents):
                 break
     return d2
 
-def file_len(fname):
+def file_len(fname, CONFIGURATION):
     i=0
-    with open(fname, encoding="UTF-8", mode="r") as f:
+    with open(fname, mode="r", encoding=CONFIGURATION.encoding) as f:
         for line in f:
             i=i+1
     return i
@@ -176,14 +176,14 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
         ns_exponent=0.1
     )
 
-    total_examples = file_len(CONFIGURATION.rundir + "w2v_training_material.csv")
+    total_examples = file_len(CONFIGURATION.rundir + "w2v_training_material.csv", CONFIGURATION)
 
     model.build_vocab(sentences)
 
-    epochs = int(((os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))**(-2))*675000)
-    epochs = int(epochs/2)
-    epochs = max(epochs, 1)
-    epochs = min(epochs, 200)
+    epochs = int(-0.237*(os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))+300.0) #int(((os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))**(-2))*675000)
+    #epochs = int(epochs/2)
+    epochs = max(epochs, 10)
+    epochs = min(epochs, 250)
 
     CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 0% [inactive]", end="\r")
     model.train(sentences, total_examples=total_examples, epochs=epochs)

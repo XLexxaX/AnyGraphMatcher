@@ -31,7 +31,7 @@ def execute(graph1, graph2):
 
     output = list()
     vlen = len(graph1.elements[ids[0]].embeddings[0])
-    out = open(CONFIGURATION.rundir + 'stratified_embeddings.csv', mode="w+", encoding="UTF-8")
+    out = open(CONFIGURATION.rundir + 'stratified_embeddings.csv', mode="w+", encoding=CONFIGURATION.encoding)
     columns = ['src_' + str(i) for i in range(0, vlen)] + ['label']#, 'category', 'origin']
     out.write(str("\t".join(columns) + "\n"))
     # Plot embeddings
@@ -66,6 +66,3 @@ def execute(graph1, graph2):
             out.write(str("\t".join(line) + "\n"))
     out.close()
     #pd.DataFrame(np.array(output), columns=['x'+str(i) for i in range(0,vlen)]+['label','category','origin']).to_csv(path_or_buf=CONFIGURATION.rundir+'stratified_embeddings.csv')
-
-
-

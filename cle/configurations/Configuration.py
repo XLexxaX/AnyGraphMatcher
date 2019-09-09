@@ -33,6 +33,7 @@ class Configuration:
         self.match_cross_product = len(self.gold_mapping.raw_testsets) == 0
         self.LOGMEMORY = ""
         self.resultsdir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..','result_data'))
+        self.encoding = "UTF-8"#"ISO-8859-1"
 
 
     def log(self, text, end=""):
@@ -43,7 +44,7 @@ class Configuration:
                 self.logs_.write(str(text))
                 self.logs_.flush()
                 logging.info(text)
-            else if "0%" in text:
+            elif "0%" in text:
                 self.logs_.write(str(text))
                 self.logs_.flush()
                 print(text, end=end)

@@ -47,7 +47,7 @@ def save_to_file(graph1, graph2, model, dim):
 
 
 
-    out = open(CONFIGURATION.rundir + 'stratified_embeddings.csv', mode="w+", encoding="UTF-8")
+    out = open(CONFIGURATION.rundir + 'stratified_embeddings.csv', mode="w+", encoding=CONFIGURATION.encoding)
     columns = ['src_' + str(i) for i in range(0, dim)] + ['label']#, 'category', 'origin']
     out.write(str("\t".join(columns) + "\n"))
     # Plot embeddings

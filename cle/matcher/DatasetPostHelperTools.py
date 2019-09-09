@@ -113,7 +113,7 @@ def exec(possible_matches, CONFIGURATION, graph1, graph2):
 
         def get_training_material(nid):
             res = list()
-            with open(dirpath+"w2v_training_material.csv", mode="r", encoding="UTF-8") as f:
+            with open(dirpath+"w2v_training_material.csv", mode="r", encoding=CONFIGURATION.encoding) as f:
                 for line in f:
                     if nodeid in line.split(" "):
                         res = res + line.split(" ")
@@ -122,7 +122,7 @@ def exec(possible_matches, CONFIGURATION, graph1, graph2):
 
         total = len(all_nodeids)
         matchings = None
-        with open(dirpath+'additional_features.csv', mode="w+", encoding="UTF-8") as f:
+        with open(dirpath+'additional_features.csv', mode="w+", encoding=CONFIGURATION.encoding) as f:
             for nodeid in all_nodeids:
 
                 possible_matches_for_nodeid = possible_matches.loc[((possible_matches.src_id==nodeid) & (possible_matches.tgt_id.isin(get_possible_matches(nodeid))))]
