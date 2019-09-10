@@ -37,9 +37,12 @@ def prepare():
 
 
 
+        if os.path.isfile(CONFIGURATION.gold_mapping.raw_testsets[0]) and os.path.getsize(CONFIGURATION.gold_mapping.raw_testsets[0]) > 0:
+            pm = pd.read_csv(CONFIGURATION.gold_mapping.raw_testsets[0], sep="\t", header=None, encoding=CONFIGURATION.encoding)
+            pm.columns = ['src_id','tgt_id']
+        else:
+            return None
 
-        pm = pd.read_csv(CONFIGURATION.gold_mapping.raw_testsets[0], sep="\t", header=None, encoding=CONFIGURATION.encoding)
-        pm.columns = ['src_id','tgt_id']
         embs = pd.read_csv(basedir+"stratified_embeddings.csv", sep="\t", encoding=CONFIGURATION.encoding)
         #embs = embs[[col for col in embs.columns if re.match('x\d+', col) is not None]+['label']]
         #embs.columns = ["src_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if re.match('src_\d+', col) is not None]] + ['label']
@@ -49,9 +52,12 @@ def prepare():
         pm = pm.merge(embs, left_on=['tgt_id'], right_on=['label'])
 
 
-        
-        gs = pd.read_csv(CONFIGURATION.gold_mapping.raw_trainsets[0], sep="\t", header=None, encoding=CONFIGURATION.encoding)
-        gs.columns = ['src_id','tgt_id','target']
+
+        if os.path.isfile(CONFIGURATION.gold_mapping.raw_testsets[0]) and os.path.getsize(CONFIGURATION.gold_mapping.raw_testsets[0]) > 0:
+            gs = pd.read_csv(CONFIGURATION.gold_mapping.raw_trainsets[0], sep="\t", header=None, encoding=CONFIGURATION.encoding)
+            gs.columns = ['src_id','tgt_id','target']
+        else:
+            return None
         embs.columns = ["src_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if re.match('tgt_\d+', col) is not None]] + ['label']
         print(str(len(gs)))
         gs = gs.merge(embs, left_on=['src_id'], right_on=['label'])
@@ -392,6 +398,18 @@ def match(pm):
 #
     #married_matchinpm[['src_id','tgt_id']].to_csv(basedir+"married_matchinpm.csv", sep="\t")
     #PredictionToXMLConverter.interface(PipelineDataTuple(graph1, graph2), PipelineDataTuple('married_matchinpm.csv'), CONFIGURATION)
+
+
+    if pm is None:
+        CONFIGURATION.log("      --> Got nothing to match. Prefiltering-criteria might be too sharp (e.g. for the OAEI-conference-track).")
+        try:
+            os.remove(CONFIGURATION.rundir+"married_matchings.csv")
+        except:
+            pass
+        with open(CONFIGURATION.rundir+"married_matchings.csv", mode="w+", encoding=CONFIGURATION.encoding) as f:
+            f.write("\tsrc_id\ttgt_id")
+        PredictionToXMLConverter.interface(PipelineDataTuple(None, None), PipelineDataTuple('married_matchings.csv'), CONFIGURATION)
+        return
 
 
     CONFIGURATION.log("      --> Peforming stable marriage: 0% [active]", end="\r")

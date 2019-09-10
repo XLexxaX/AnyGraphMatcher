@@ -47,7 +47,8 @@ class Configuration:
             elif "0%" in text:
                 self.logs_.write(str(text))
                 self.logs_.flush()
-                print(text, end=end)
+                logging.info(text)
+                #print(text, end=end)
 
 
 

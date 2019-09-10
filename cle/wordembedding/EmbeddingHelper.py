@@ -152,7 +152,7 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
     # Number of threads to run in parallel.
     #more workers, faster we train
     CONFIGURATION.log(str(multiprocessing.cpu_count()))
-    num_workers = multiprocessing.cpu_count()*0.75
+    num_workers = int(multiprocessing.cpu_count()*0.75)
 
     # Context window length.
     context_size = window
