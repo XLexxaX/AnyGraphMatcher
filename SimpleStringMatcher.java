@@ -101,20 +101,25 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 	
 	@Override
 	public Alignment match(OntModel source, OntModel target, Alignment inputAlignment, Properties p) throws Exception {
-		// boolean hedc = false;
-		//String z = target.getGraph().toString().toLowerCase();
-		//if (!(z).contains("memory-beta"))
-		//	return new Alignment();
-			
-		// hedc = true;
+		//if (!source.getGraph().toString().contains("darkscape") || !target.getGraph().toString().contains("oldschoolrunescape")) {
+		//if (!source.getGraph().toString().contains("memoryalpha") || !target.getGraph().toString().contains("stexpanded")) {
+		if (!source.getGraph().toString().toLowerCase().contains("marvelcinematic")) {
+			System.out.println("Skipping ...");
+			Alignment alignment = new Alignment();
+			return alignment;
+		}
+		/*if 
+		 * (!source.getGraph().toString().contains("m arvelcinematicuniverse") || !target.getGraph().toString().contains("marvel")) {
+			System.out.println("Skipping ...");
+			Alignment alignment = new Alignment();
+			return alignment;
+		}*/
+		
 		HashMap<String, String> cased_values = new HashMap<String, String>(); 
 		this.logProgress("Starting matching\n");
 		Alignment alignment = new Alignment();
 
-		ProcessBuilder pb = new ProcessBuilder();// "python",
-													// "C:"+DSEP+"dev"+DSEP+"OntMatching"+DSEP+"ontMatching"+DSEP+"test.py",
-													// source.toString(), target.toString(), inputAlignment.toString());
-
+		ProcessBuilder pb = new ProcessBuilder();
 		Map<String, String> envs = pb.environment();
 		String PYTHONDIR = "";
 		String pythonname = "python";
@@ -167,20 +172,9 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		p = null;
 		System.gc();
 
-		List<String> activate_env_command = new ArrayList<>();
-		activate_env_command.add("conda");
-		activate_env_command.add("activate");
-		activate_env_command.add("py36");
+		
 		List<String> call_matcher_command = new ArrayList<>();
-		// call_matcher_command.add("C:"+DSEP+"Users"+DSEP+"Alexander"+DSEP+"Anaconda3"+DSEP+"envs"+DSEP+"py36"+DSEP+"python");
-		// call_matcher_command.add("C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"envs"+DSEP+"py36"+DSEP+"python");
-		// call_matcher_command.add(BASEDIR+DSEP+"DeepAnyMatch"+DSEP+"cle"+DSEP+"agm_cli.py");
-		// call_matcher_command.add("python");
-		// call_matcher_command.add("C:\\Users\\Bernd
-		// Lütke\\AppData\\Local\\Programs\\Python\\Python37\\python" + "");
 		call_matcher_command.add(PYTHONDIR + DSEP + pythonname);
-		// call_matcher_command.add("C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"python");
-		// call_matcher_command.add(AGMDIR+DSEP+"cle"+DSEP+"agm_cli.py");
 		call_matcher_command.add("agm_cli_lite.py");
 		call_matcher_command.add("-s");
 		call_matcher_command.add("" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
@@ -195,22 +189,9 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 		call_matcher_command.add("" + BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP
 				+ "artificial_gold_standard.csv" + "");
 
-		/*
-		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"); envs.put("Path",
-		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"); envs.put("Path",
-		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Library"+DSEP+"mingw-w64"+DSEP
-		 * +"bin"); envs.put("Path",
-		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Library"+DSEP+"usr"+DSEP+"bin"
-		 * ); envs.put("Path",
-		 * "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Library"+DSEP+"bin");
-		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"Scripts");
-		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"bin");
-		 * envs.put("Path", "C:"+DSEP+"ProgramData"+DSEP+"Anaconda3"+DSEP+"condabin");
-		 */
-
+		
 		pb.directory(new File(AGMDIR + DSEP + "cle"));
 
-		// pb.command(activate_env_command);
 		pb.command(call_matcher_command);
 
 		pb.redirectInput(Redirect.INHERIT); // no need because the process gets no further input than the process
@@ -234,6 +215,9 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			while ((line = br.readLine()) != null) {
 				System.err.print(line);
 			}
+		} catch(Exception e) {
+			this.logProgress("Matching-process has thrown an exception: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		Path path = Paths.get(AGMDIR + DSEP + "result_data" + DSEP + "cli_result" + DSEP + "married_matchings.csv");
@@ -244,10 +228,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			if (uris[0].length() > 0)
 				alignment.add(uris[1], uris[2]);
 		}
-		// if (hedc) {
-		// System.err.println("hedc");
-		// System.exit(0);
-		// }
+		
 		return alignment;
 	}
 
@@ -276,10 +257,9 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 	}
 
 	private void triplize(OntModel model, String datasetname, boolean indexed, Blocker blocker, HashMap<String, String> cased_values) {
-
+		
 		String folder = BASEDIR + DSEP + "oaei_track_cache" + DSEP + "tmpdata" + DSEP + "";
 		File f = new File(folder + "graph_triples_" + datasetname + ".nt");
-		// BufferedWriter ntwriter = null;
 		File f2 = new File(folder + "possible_matches.csv");
 		File f3 = new File(folder + "artificial_gold_standard.csv");
 		BufferedWriter blockedwriter = null;
@@ -301,22 +281,20 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			this.logProgress("\rTransforming data format: 0%\r");
 			RDFDataMgr.write(new FileOutputStream(f), model, RDFFormat.NTRIPLES_UTF8);
 			this.logProgress("Transforming data format: 100%\n");
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			this.logProgress("Data transformation has thrown an exception: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 
 		try {
-			//f.createNewFile();
 			f2.createNewFile();
 			f3.createNewFile();
-			// ntwriter = new BufferedWriter(new FileWriter(f));
 			blockedwriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f2, true), StandardCharsets.UTF_8));
 			gswriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f3, true), StandardCharsets.UTF_8));
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+		} catch (IOException e) {
+			this.logProgress("Raw-file creation has thrown an exception: " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		
@@ -351,6 +329,9 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 				Resource p = stmt.getPredicate();
 				RDFNode o = stmt.getObject();
 				
+				if (!s.isURIResource()) {
+					continue;
+				}
 				
 				String text = "";
 				if (o.isLiteral()) {
@@ -369,17 +350,20 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 							boolean useMatchForGS = false;
 							ArrayList<Tuple> result = blocker.searchFuzzyQuery(lit);
 							for (int i = 0; i < result.size(); i++) {
-
+								
+								
 								Tuple possibleMatch = result.get(i);
 								String uri = possibleMatch.uri;
 								uri = cased_values.get(uri);
 								float score = possibleMatch.score;
-								writeFile(blockedwriter, uri + "\t" + nid + "\n");
+								if (possibleMatch.score > 0.5) 
+									writeFile(blockedwriter, uri + "\t" + nid + "\n");
 								if (i == 0) {
-									if (score > 2.0f && result.size() > 1) {// ((this.calculate(uri, nid) / Math.min(15,
-																			// Math.max(uri.length(), nid.length()))) <
-																			// 0.05) {
-										if (result.get(i + 1).score / score < 0.5) {
+									if (score > 1.5f && result.size() > 1) {
+										if ((this.calculate(uri, nid) / Math.min(15,
+																			 Math.max(uri.length(), nid.length()))) <
+																			 0.05) {
+										//if (result.get(i + 1).score / score < 0.5) {
 											writeFile(gswriter, uri + "\t" + nid + "\t1\n");
 											useMatchForGS = true;
 										}
@@ -389,18 +373,17 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 								}
 							}
 						}
-				} else
-					text = "<" + s.getURI().toString() + "> <" + p.getURI().toString()
-							+ "> <" + o.asResource().getURI().toString() + "> .\n";
-
-				// writeFile(ntwriter, text);
+				}
 			}
 			if (indexed) {
 				this.logProgress("Indexing: 100%\n");
 			} else {
 				this.logProgress("Prefiltering: 100%\n");
 			}
-		} finally {
+		} catch(Exception e) {
+			this.logProgress("Indexing or pre-filtering has thrown an exception: " + e.getMessage());
+			e.printStackTrace();
+		}finally {
 			if (iter != null)
 				iter.close();
 		}
@@ -412,6 +395,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			gswriter.close();
 			// ntwriter.close();
 		} catch (Exception e) {
+			this.logProgress("Closing writers has thrown exception: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -468,6 +452,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 				indexwriter = new IndexWriter(ramDirectory, config);
 
 			} catch (Exception e) {
+				System.err.print("Initializing index has thrown an exception: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -480,7 +465,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 				idxSearcher = new IndexSearcher(idxReader);
 				// ramDirectory.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.print("Initializing index-tools has thrown an exception: " + e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -498,8 +483,9 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 			try {
 				createDoc(uri, label);
 
-			} catch (Exception ex) {
-				System.err.println("Exception : " + ex.getLocalizedMessage());
+			} catch (Exception e) {
+				System.err.print("Lucene-doc-creation has thrown an exception: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
@@ -522,16 +508,17 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 				for (ScoreDoc doc : docs.scoreDocs) {
 					Document thisDoc = idxSearcher.doc(doc.doc);
 					String l2 = thisDoc.get("label");
-					if (doc.score > 1.0)// (calculate(l1, l2) / Math.min(15, Math.max(l1.length(), l2.length())) < 0.3)
-						result.add(new Tuple(thisDoc.get("uri"), doc.score));
+					//if (doc.score > 0.8)// (calculate(l1, l2) / Math.min(15, Math.max(l1.length(), l2.length())) < 0.3)
+					result.add(new Tuple(thisDoc.get("uri"), doc.score));
 				}
 			} catch (IOException e) {
+				System.err.print("Index-search has thrown an exception: " + e.getMessage());
 				e.printStackTrace();
 			}
 			return result;
 		}
 
-		public int calculate(String x, String y) {
+		public int calculate(String x, String y) { 
 			x = x.substring(0, Math.min(x.length(), 15));
 			y = y.substring(0, Math.min(y.length(), 15));
 			int[][] dp = new int[x.length() + 1][y.length() + 1];

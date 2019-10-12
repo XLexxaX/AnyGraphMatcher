@@ -182,8 +182,9 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
 
     epochs = int(-0.237*(os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))+300.0) #int(((os.path.getsize(CONFIGURATION.rundir + "w2v_training_material.csv")/(10**6))**(-2))*675000)
     #epochs = int(epochs/2)
-    epochs = max(epochs, 10)
-    epochs = min(epochs, 250)
+    epochs = max(epochs, 50)
+    epochs = min(epochs, 500)
+    epochs = 500
 
     CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 0% [inactive]", end="\r")
     model.train(sentences, total_examples=total_examples, epochs=epochs)

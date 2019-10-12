@@ -16,6 +16,9 @@ from joblib import dump, load
 from sklearn.metrics.pairwise import *
 import re
 from gensim.models import Doc2Vec, Word2Vec
+from sklearn import preprocessing
+import numpy as np
+min_max_scaler = preprocessing.MinMaxScaler()
 
 
 global CONFIGURATION
@@ -59,13 +62,13 @@ def prepare():
         else:
             return None
         embs.columns = ["src_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if re.match('tgt_\d+', col) is not None]] + ['label']
-        print(str(len(gs)))
+
         gs = gs.merge(embs, left_on=['src_id'], right_on=['label'])
         embs.columns = ["tgt_" + str(col) for col in [re.search("\d+", col).group(0) for col in embs.columns if
                                                       re.match('src_\d+', col) is not None]] + ['label']
-        print(str(len(gs)))
+
         gs = gs.merge(embs, left_on=['tgt_id'], right_on=['label'])
-        print(str(len(gs)))
+
 
 
         CONFIGURATION.log("      --> Applying ontology restrictions: 0% [inactive]", end="\r")
@@ -221,12 +224,13 @@ def prepare():
         X, y = gs[cols], gs.target
         weight_ratio = float(len(y[y == 0]))/float(len(y[y == 1]))
         w_array = np.array([1]*y.shape[0])
-        w_array[y==1] = weight_ratio*2.0
+        w_array[y==1] = weight_ratio*1.0
         w_array[y==0] = ( 1 - weight_ratio )
         clf = XGBClassifier().fit(X, y, sample_weight=w_array)
         #random_state=0, solver='lbfgs', multi_class='ovr', class_weight={1:0.1,0:0.9}).fit(X, y)
         X = pm[cols]
         pm = pm.loc[clf.predict(X)==1]
+        pm = pm.loc[X.plus_diff < 0.15]
         CONFIGURATION.log("      --> Performing machine learning step: 100% [inactive]")
 
 
@@ -269,28 +273,53 @@ def prepare():
                         else:
                             x = pm.loc[inds].to_frame().transpose()
 
+
                         progress += 1
                         CONFIGURATION.log("      --> Calculating final scores: " + str(int(100*progress/total)) + "% [active]", end="\r")
 
 
+                        multiplier = len(x)
+
+
+
+                        #x['src_tgt_angle'] = min_max_scaler.fit_transform(tmp[['plus_diff']])
+                        #x['src_tgt_veclen'] = min_max_scaler.fit_transform(tmp[['plus_diff']])
+                        #x['plus_diff'] = min_max_scaler.fit_transform(tmp[['plus_diff']])
+
                         ctr = 1
-                        x = x.sort_values(by=['src_tgt_angle'], ascending=True)
+                        x = x.sort_values(by=['src_tgt_angle'], ascending=False)
                         for index, row in x.iterrows():
-                            cos_score[index] = row['cos_score'] + 1/ctr
+                            if multiplier == 1:
+                                cos_score[index] = row['cos_score'] + 0.5
+                            else:
+                                cos_score[index] = row['cos_score'] + (multiplier-ctr)*(1/(multiplier-1))#1/ctr
                             ctr += 1
 
                         x = x.sort_values(by=['src_tgt_veclen'], ascending=True)
                         ctr = 1
                         ##x.columns = ['euclid_sim' if col==0 else col for col in x.columns]
                         for index, row in x.iterrows():
-                            euclid_score[index] = row['euclid_score'] + 1/ctr
+                            if multiplier == 1:
+                                euclid_score[index] = row['euclid_score'] + 0.5#1/ctr
+                            else:
+                                euclid_score[index] = row['euclid_score'] + (multiplier-ctr)*(1/(multiplier-1))#1/ctr
                             ctr += 1
 
                         x = x.sort_values(by=['plus_diff'], ascending=True)
                         ctr = 1
                         ##x.columns = ['euclid_sim' if col==0 else col for col in x.columns]
+                        lastscore = -1
+                        lastvalue = -1
                         for index, row in x.iterrows():
-                            syntax_score[index] = row['syntax_score'] + 1/ctr
+                            if row['plus_diff'] == lastvalue:
+                                syntax_score[index] = row['syntax_score'] + lastscore
+                            elif multiplier == 1:
+                                syntax_score[index] = row['syntax_score'] + 0.5#1/ctr
+                                lastscore = 0.5
+                            else:
+                                syntax_score[index] = row['syntax_score'] + (multiplier-ctr)*(1/(multiplier-1))#1/ctr
+                                lastscore =  (multiplier-ctr)*(1/(multiplier-1))
+                            lastvalue = row['plus_diff']
                             ctr += 1
 
         pm.loc[:, 'syntax_score'] = syntax_score
@@ -320,28 +349,52 @@ def prepare():
                         else:
                             x = pm.loc[inds].to_frame().transpose()
 
+
                         progress += 1
                         CONFIGURATION.log("      --> Calculating final scores: " + str(int(100*progress/total)) + "% [active]", end="\r")
 
 
+                        multiplier = len(x)
+
+
+                        #x['src_tgt_angle'] = min_max_scaler.fit_transform(tmp[['plus_diff']])
+                        #x['src_tgt_veclen'] = min_max_scaler.fit_transform(tmp[['plus_diff']])
+                        #x['plus_diff'] = min_max_scaler.fit_transform(tmp[['plus_diff']])
+
                         ctr = 1
-                        x = x.sort_values(by=['src_tgt_angle'], ascending=True)
+                        x = x.sort_values(by=['src_tgt_angle'], ascending=False)
                         for index, row in x.iterrows():
-                            cos_score[index] = row['cos_score'] + 1/ctr
+                            if multiplier == 1:
+                                cos_score[index] = row['cos_score'] + 0.5
+                            else:
+                                cos_score[index] = row['cos_score'] + (multiplier-ctr)*(1/(multiplier-1))#1/ctr
                             ctr += 1
 
                         x = x.sort_values(by=['src_tgt_veclen'], ascending=True)
                         ctr = 1
                         ##x.columns = ['euclid_sim' if col==0 else col for col in x.columns]
                         for index, row in x.iterrows():
-                            euclid_score[index] = row['euclid_score'] + 1/ctr
+                            if multiplier == 1:
+                                euclid_score[index] = row['euclid_score'] + 0.5#1/ctr
+                            else:
+                                euclid_score[index] = row['euclid_score'] + (multiplier-ctr)*(1/(multiplier-1))#1/ctr
                             ctr += 1
 
                         x = x.sort_values(by=['plus_diff'], ascending=True)
                         ctr = 1
                         ##x.columns = ['euclid_sim' if col==0 else col for col in x.columns]
+                        lastscore = -1
+                        lastvalue = -1
                         for index, row in x.iterrows():
-                            syntax_score[index] = row['syntax_score'] + 1/ctr
+                            if row['plus_diff'] == lastvalue:
+                                syntax_score[index] = row['syntax_score'] + lastscore
+                            elif multiplier == 1:
+                                syntax_score[index] = row['syntax_score'] + 0.5#1/ctr
+                                lastscore = 0.5
+                            else:
+                                syntax_score[index] = row['syntax_score'] + (multiplier-ctr)*(1/(multiplier-1))#1/ctr
+                                lastscore =  (multiplier-ctr)*(1/(multiplier-1))
+                            lastvalue = row['plus_diff']
                             ctr += 1
 
 
@@ -350,8 +403,10 @@ def prepare():
         pm.loc[:, 'euclid_score'] = euclid_score
         pm.loc[:, 'probability_score'] = probability_score
         pm.loc[:, 'cos_score'] = cos_score
-        pm.loc[:, 'total_score'] = pm['syntax_score'] + pm['euclid_score'] + pm['probability_score'] + pm['confidence_score'] + \
-                                  pm['cos_score']
+        pm.loc[:, 'total_score'] = 3*pm['syntax_score'] + pm['euclid_score'] + 2*pm['cos_score'] #pm['probability_score'] + pm['confidence_score'] + \
+                                  #pm['cos_score']
+
+        pm.to_csv(CONFIGURATION.rundir + "fullfeatures.csv", encoding="UTF-8", sep="\t")
 
         CONFIGURATION.log("      --> Calculating final scores: 100% [active]")
         return pm
@@ -426,7 +481,7 @@ def match(pm):
         else:
             d3[row['tgt_id']] = [index]
 
-    pm.sort_values(by=['total_score', 'src_tgt_angle'], ascending=[False, True], inplace=True)
+    pm.sort_values(by=['total_score', 'plus_diff', 'src_tgt_angle'], ascending=[False, True, False], inplace=True)
     values = dict()
     inverted_values = dict()
     tmp = pm[['src_id', 'tgt_id']].values.tolist()
