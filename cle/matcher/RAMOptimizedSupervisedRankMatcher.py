@@ -230,7 +230,7 @@ def prepare():
         #random_state=0, solver='lbfgs', multi_class='ovr', class_weight={1:0.1,0:0.9}).fit(X, y)
         X = pm[cols]
         pm = pm.loc[clf.predict(X)==1]
-        #pm = pm.loc[X.plus_diff < 0.15]
+        pm = pm.loc[X.plus_diff < 0.15]
         CONFIGURATION.log("      --> Performing machine learning step: 100% [inactive]")
 
 
