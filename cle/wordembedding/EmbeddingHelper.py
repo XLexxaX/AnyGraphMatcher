@@ -172,7 +172,7 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
         size=num_features,
         min_count=min_word_count,
         window=context_size,
-        negative=1,
+        negative=20,
         ns_exponent=0.1
     )
 
@@ -184,7 +184,7 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
     #epochs = int(epochs/2)
     epochs = max(epochs, 50)
     epochs = min(epochs, 500)
-    epochs = 7500
+    epochs = 10
 
     CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 0% [inactive]", end="\r")
     model.train(sentences, total_examples=total_examples, epochs=epochs)

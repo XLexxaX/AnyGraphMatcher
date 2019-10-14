@@ -211,8 +211,8 @@ def prepare():
 
             return res
         #pm['syntactic_diff'] = pm.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
-        pm['plus_diff'] = pm.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
-        gs['plus_diff'] = gs.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
+        pm['plus_diff'] = pm.apply(lambda row: jacc(row['src_id'].str.lower(), row['tgt_id'].str.lower()), axis=1)
+        gs['plus_diff'] = gs.apply(lambda row: jacc(row['src_id'].str.lower(), row['tgt_id'].str.lower()), axis=1)
 
 
         CONFIGURATION.log("      --> Calculating implicit features: 100% [inactive]")
@@ -230,9 +230,23 @@ def prepare():
         #random_state=0, solver='lbfgs', multi_class='ovr', class_weight={1:0.1,0:0.9}).fit(X, y)
         X = pm[cols]
         pm = pm.loc[clf.predict(X)==1]
-        pm = pm.loc[X.plus_diff < 0.15]
+        pm = pm.loc[X.plus_diff < 0.01]
         CONFIGURATION.log("      --> Performing machine learning step: 100% [inactive]")
 
+
+
+        CONFIGURATION.log("      --> Performing 3-pair restriction: 0% [inactive]")
+        pm.loc[:, 'delete_flag'] = False
+        for nodeid in set(pm.src_id):
+                                x = pm.loc[pm.src_id==nodeid]
+                                x = x.sort_values(by=['plus_diff'], ascending=True)
+                                pm.loc[x[2:].index, 'delete_flag'] = True
+        for nodeid in set(pm.tgt_id):
+                                x = pm.loc[pm.tgt_id==nodeid]
+                                x = x.sort_values(by=['plus_diff'], ascending=True)
+                                pm.loc[x[2:].index, 'delete_flag'] = True
+        pm = pm.loc[pm.delete_flag==False]
+        CONFIGURATION.log("      --> Performing 3-pair restriction: 100% [inactive]")
 
         pm.loc[:, 'total_score'] = 0
         pm.loc[:, 'syntax_score'] = 0
@@ -273,6 +287,8 @@ def prepare():
                         else:
                             x = pm.loc[inds].to_frame().transpose()
 
+                        x = x.sort_values(by=['plus_diff'], ascending=True)
+                        x = x.head(3)
 
                         progress += 1
                         CONFIGURATION.log("      --> Calculating final scores: " + str(int(100*progress/total)) + "% [active]", end="\r")
@@ -350,6 +366,10 @@ def prepare():
                             x = pm.loc[inds].to_frame().transpose()
 
 
+                        x = x.sort_values(by=['plus_diff'], ascending=True)
+                        x = x.head(3)
+
+
                         progress += 1
                         CONFIGURATION.log("      --> Calculating final scores: " + str(int(100*progress/total)) + "% [active]", end="\r")
 
@@ -403,7 +423,7 @@ def prepare():
         pm.loc[:, 'euclid_score'] = euclid_score
         pm.loc[:, 'probability_score'] = probability_score
         pm.loc[:, 'cos_score'] = cos_score
-        pm.loc[:, 'total_score'] = 4*pm['syntax_score'] + 2*pm['euclid_score'] + pm['cos_score'] #pm['probability_score'] + pm['confidence_score'] + \
+        pm.loc[:, 'total_score'] = 4*pm['syntax_score'] + pm['euclid_score'] + 2*pm['cos_score'] #pm['probability_score'] + pm['confidence_score'] + \
                                   #pm['cos_score']
 
         pm.to_csv(CONFIGURATION.rundir + "fullfeatures.csv", encoding="UTF-8", sep="\t")
@@ -481,7 +501,7 @@ def match(pm):
         else:
             d3[row['tgt_id']] = [index]
 
-    pm.sort_values(by=['total_score', 'plus_diff', 'src_tgt_angle'], ascending=[False, True, False], inplace=True)
+    pm.sort_values(by=['plus_diff', 'src_tgt_angle', 'src_tgt_veclen'], ascending=[True, False, True], inplace=True)
     values = dict()
     inverted_values = dict()
     tmp = pm[['src_id', 'tgt_id']].values.tolist()
