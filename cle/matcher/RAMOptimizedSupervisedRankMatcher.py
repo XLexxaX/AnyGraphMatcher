@@ -19,12 +19,15 @@ from gensim.models import Doc2Vec, Word2Vec
 from sklearn import preprocessing
 import numpy as np
 min_max_scaler = preprocessing.MinMaxScaler()
+import pickle
 
 
 global CONFIGURATION
 
 def exec():
 
+    #with open(CONFIGURATION.rundir+'config_internal.pkl', 'w+') as cfgfile:
+#        pickle.dump(CONFIGURATION, cfgfile)
     match(prepare())
     return PipelineDataTuple(None)
 
@@ -177,8 +180,8 @@ def prepare():
 
 
         def jacc(s,t, n=3):
-            s = labels1[s]
-            t = labels2[t]
+            s = labels1[s].lower()
+            t = labels2[t].lower()
             t = set([t[i:i+n] for i in range(len(t)-n+1)])
             s = set([s[i:i+n] for i in range(len(s)-n+1)])
             return 1-len([gram for gram in s if gram in t])/max(len(s), len(t))
@@ -211,8 +214,8 @@ def prepare():
 
             return res
         #pm['syntactic_diff'] = pm.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
-        pm['plus_diff'] = pm.apply(lambda row: jacc(row['src_id'].str.lower(), row['tgt_id'].str.lower()), axis=1)
-        gs['plus_diff'] = gs.apply(lambda row: jacc(row['src_id'].str.lower(), row['tgt_id'].str.lower()), axis=1)
+        pm['plus_diff'] = pm.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
+        gs['plus_diff'] = gs.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
 
 
         CONFIGURATION.log("      --> Calculating implicit features: 100% [inactive]")
