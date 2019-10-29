@@ -44,7 +44,11 @@ def main(source, target, possible_matches, trainset):
     dim = 100
     model = LogisticRegression()#XGBClassifier()
     properties = InternalProperties({'src_labels': ["http://www.w3.org/2000/01/rdf-schema#label"],
+                                                    #"http://www.w3.org/2004/02/skos/core#altLabel"],
+                                                    #"http://dbkwik.webdatacommons.org/ontology/wikiPageWikiLinkText"],
                                      'tgt_labels': ["http://www.w3.org/2000/01/rdf-schema#label"],
+                                                    #"http://www.w3.org/2004/02/skos/core#altLabel"],
+                                                    #"http://dbkwik.webdatacommons.org/ontology/wikiPageWikiLinkText"],
                                      'category': "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                                      'class': "http://www.w3.org/2002/07/owl#class",
                                      'property': "http://www.w3.org/1999/02/22-rdf-syntax-ns#property"})

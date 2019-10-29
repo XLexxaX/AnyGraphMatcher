@@ -19,15 +19,12 @@ from gensim.models import Doc2Vec, Word2Vec
 from sklearn import preprocessing
 import numpy as np
 min_max_scaler = preprocessing.MinMaxScaler()
-import pickle
 
 
 global CONFIGURATION
 
 def exec():
 
-    #with open(CONFIGURATION.rundir+'config_internal.pkl', 'w+') as cfgfile:
-#        pickle.dump(CONFIGURATION, cfgfile)
     match(prepare())
     return PipelineDataTuple(None)
 
@@ -80,9 +77,15 @@ def prepare():
         categories1 = dict()
         with open(CONFIGURATION.src_triples, mode="r", encoding=CONFIGURATION.encoding) as f:
             for line in f:
-                if " <" + CONFIGURATION.properties.src_label_properties[0] + "> " in line:
-                    line = line.replace("<","").replace(">","").replace(" .\n","").split(" "+CONFIGURATION.properties.src_label_properties[0]+" ")
-                    labels1[line[0]] = line[1]
+                for label_property in CONFIGURATION.properties.src_label_properties:
+                    if " <" + label_property + "> " in line:
+                        line = line.replace("<","").replace(">","").replace(" .\n","").split(" "+label_property+" ")
+                        if line[0].lower() in labels1.keys():
+                            labels1[line[0].lower()][label_property] =  line[1]
+                        else:
+                            dct = dict()
+                            dct[label_property] = line[1]
+                            labels1[line[0].lower()] = dct
                 if " <" + CONFIGURATION.properties.category_property + "> " in line:
                     line = line.replace("<","").replace(">","").replace(" .\n","").split(" "+CONFIGURATION.properties.category_property+" ")
                     if line[1] not in [CONFIGURATION.properties.class_descriptor,CONFIGURATION.properties.property_descriptor]:
@@ -93,10 +96,15 @@ def prepare():
         categories2 = dict()
         with open(CONFIGURATION.tgt_triples, mode="r", encoding=CONFIGURATION.encoding) as f:
                     for line in f:
-                        if " <" + CONFIGURATION.properties.tgt_label_properties[0] + "> " in line:
-                            line = line.replace("<", "").replace(">", "").replace(" .\n", "").split(
-                                " " + CONFIGURATION.properties.tgt_label_properties[0] + " ")
-                            labels2[line[0]] = line[1]
+                        for label_property in CONFIGURATION.properties.tgt_label_properties:
+                            if " <" + label_property + "> " in line:
+                                line = line.replace("<","").replace(">","").replace(" .\n","").split(" "+label_property+" ")
+                                if line[0].lower() in labels2.keys():
+                                    labels2[line[0].lower()][label_property] =  line[1]
+                                else:
+                                    dct = dict()
+                                    dct[label_property] = line[1]
+                                    labels2[line[0].lower()] = dct
                         if " <" + CONFIGURATION.properties.category_property + "> " in line:
                             line = line.replace("<", "").replace(">", "").replace(" .\n", "").split(
                                 " " + CONFIGURATION.properties.category_property + " ")
@@ -180,11 +188,19 @@ def prepare():
 
 
         def jacc(s,t, n=3):
-            s = labels1[s].lower()
-            t = labels2[t].lower()
-            t = set([t[i:i+n] for i in range(len(t)-n+1)])
-            s = set([s[i:i+n] for i in range(len(s)-n+1)])
-            return 1-len([gram for gram in s if gram in t])/max(len(s), len(t))
+            s_prop = ""
+            t_prop = ""
+            min_sim = 1.0
+            for label_property in set(CONFIGURATION.properties.src_label_properties + CONFIGURATION.properties.tgt_label_properties):
+                if label_property in labels1[s].keys() and label_property in labels2[t].keys():
+                    s_prop = s_prop + labels1[s][label_property].lower()
+                    t_prop = t_prop + labels2[t][label_property].lower()
+                    tt = set([t_prop[i:i+n] for i in range(len(t_prop)-n+1)])
+                    ss = set([s_prop[i:i+n] for i in range(len(s_prop)-n+1)])
+                    min_sim = min(min_sim, 1-len([gram for gram in ss if gram in tt])/max(len(ss), len(tt)))
+                    s_prop = ""
+                    t_prop = ""
+            return min_sim
 
 
         memo = {}
@@ -214,8 +230,8 @@ def prepare():
 
             return res
         #pm['syntactic_diff'] = pm.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
-        pm['plus_diff'] = pm.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
-        gs['plus_diff'] = gs.apply(lambda row: jacc(row['src_id'], row['tgt_id']), axis=1)
+        pm['plus_diff'] = pm.apply(lambda row: jacc(row['src_id'].lower(), row['tgt_id'].lower()), axis=1)
+        gs['plus_diff'] = gs.apply(lambda row: jacc(row['src_id'].lower(), row['tgt_id'].lower()), axis=1)
 
 
         CONFIGURATION.log("      --> Calculating implicit features: 100% [inactive]")
@@ -426,7 +442,7 @@ def prepare():
         pm.loc[:, 'euclid_score'] = euclid_score
         pm.loc[:, 'probability_score'] = probability_score
         pm.loc[:, 'cos_score'] = cos_score
-        pm.loc[:, 'total_score'] = 4*pm['syntax_score'] + pm['euclid_score'] + 2*pm['cos_score'] #pm['probability_score'] + pm['confidence_score'] + \
+        pm.loc[:, 'total_score'] = 2*pm['syntax_score'] + pm['euclid_score'] + 2*pm['cos_score'] #pm['probability_score'] + pm['confidence_score'] + \
                                   #pm['cos_score']
 
         pm.to_csv(CONFIGURATION.rundir + "fullfeatures.csv", encoding="UTF-8", sep="\t")
@@ -504,7 +520,7 @@ def match(pm):
         else:
             d3[row['tgt_id']] = [index]
 
-    pm.sort_values(by=['plus_diff', 'src_tgt_angle', 'src_tgt_veclen'], ascending=[True, False, True], inplace=True)
+    pm.sort_values(by=['total_score', 'src_tgt_angle', 'src_tgt_veclen'], ascending=[False, False, True], inplace=True)
     values = dict()
     inverted_values = dict()
     tmp = pm[['src_id', 'tgt_id']].values.tolist()

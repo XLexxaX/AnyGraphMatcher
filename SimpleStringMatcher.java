@@ -103,7 +103,7 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 	public Alignment match(OntModel source, OntModel target, Alignment inputAlignment, Properties p) throws Exception {
 		//if (!source.getGraph().toString().contains("darkscape") || !target.getGraph().toString().contains("oldschoolrunescape")) {
 		//if (!source.getGraph().toString().contains("memoryalpha") || !target.getGraph().toString().contains("stexpanded")) {
-		if (!source.getGraph().toString().toLowerCase().contains("marvelcinematic")) {
+		if (!source.getGraph().toString().toLowerCase().contains("starwars")) {
 			System.out.println("Skipping ...");
 			Alignment alignment = new Alignment();
 			return alignment;
@@ -356,8 +356,8 @@ public class SimpleStringMatcher extends MatcherYAAAJena {
 								String uri = possibleMatch.uri;
 								uri = cased_values.get(uri);
 								float score = possibleMatch.score;
-								if (possibleMatch.score > 0.5) 
-									writeFile(blockedwriter, uri + "\t" + nid + "\n");
+								//if (possibleMatch.score > 0.5) 
+								writeFile(blockedwriter, uri + "\t" + nid + "\n");
 								if (i == 0) {
 									if (score > 1.5f && result.size() > 1) {
 										if ((this.calculate(uri, nid) / Math.min(15,
