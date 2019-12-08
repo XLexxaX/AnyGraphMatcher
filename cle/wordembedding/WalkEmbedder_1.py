@@ -8,7 +8,7 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 #from nltk.tokenize import word_tokenize
 from configurations.PipelineTools import PipelineDataTuple
 import numpy as np
-from gensim.models import Word2Vec
+from gensim.models import Word2Vec, Doc2Vec
 from itertools import chain
 
 import os
@@ -129,6 +129,6 @@ def broad_step(resource, i, maxdepth, graph, exclude_descriptor, ngrams=False):
     return sentence
 
 def train(documents, DIMENSIONS, ngrams=False):
-    from wordembedding import EmbeddingHelper
-    model = EmbeddingHelper.embed(documents, DIMENSIONS, CONFIGURATION, ngrams)
+    from wordembedding import EmbeddingHelper,D2VEmbeddingHelper
+    model = D2VEmbeddingHelper.embed(documents, DIMENSIONS, CONFIGURATION, ngrams)
     return model

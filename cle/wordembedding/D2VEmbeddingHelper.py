@@ -11,7 +11,7 @@ import pandas as pd
 
 def stem(CONFIGURATION, sents):
 
-    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+") as f:
+    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+", encoding=CONFIGURATION.encoding) as f:
         for sent in sents:
             tmp = list()
             for expression in sent:
@@ -39,7 +39,7 @@ def stem(CONFIGURATION, sents):
 
 
 def tuplize(sents, CONFIGURATION):
-    f = open(CONFIGURATION.rundir + "w2v_formatted_training_material.csv",'w+')
+    f = open(CONFIGURATION.rundir + "w2v_formatted_training_material.csv",'w+', encoding=CONFIGURATION.encoding)
     for sentence in sents:
         for j in range(0,len(sentence)):
             for k in range(j+1,len(sentence)):
@@ -83,7 +83,7 @@ def prepare_training_data(sentences, CONFIGURATION):
 
     #sentences = stem(CONFIGURATION, sentences)
     ctr = 0
-    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+") as f:
+    with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+", encoding=CONFIGURATION.encoding) as f:
         for sent in sentences:
             tmp = list()
             for expression in sent:
@@ -168,11 +168,11 @@ def embed(sentences, dim, CONFIGURATION, window=100):
     context_size = window
 
 
-    model = Doc2Vec(
+    model = Doc2Vec(dm=1,
         vector_size=num_features,
         min_count=min_word_count,
-        epochs=500,
-        negative=20,
+        epochs=1,
+        negative=0,
         ns_exponent=0.1,
         workers=num_workers)
     model.build_vocab(sentences)

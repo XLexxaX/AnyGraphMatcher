@@ -56,7 +56,6 @@ def prepare_data(graph):
             documents.append([descriptor, predicate, literal])
         for predicate, relation in resource.relations.items():
             documents.append([descriptor, predicate, relation.descriptor])
-
     return documents
 
 

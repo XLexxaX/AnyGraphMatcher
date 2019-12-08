@@ -12,7 +12,7 @@ import logging
 
 
 def stem(CONFIGURATION, sents, ngrams=False):
-
+    
     with open(CONFIGURATION.rundir + "w2v_training_material.csv", mode="w+", encoding=CONFIGURATION.encoding) as f:
         for sent in sents:
             tmp = list()
@@ -166,13 +166,13 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
     #deterministic, good for debugging
     seed = 1
     model = w2v.Word2Vec(
-        sg=1,
+        sg=0,
         seed=seed,
         workers=num_workers,
         size=num_features,
         min_count=min_word_count,
         window=context_size,
-        negative=20,
+        negative=0,
         ns_exponent=0.1
     )
 
@@ -184,7 +184,7 @@ def embed(sentences, dim, CONFIGURATION, ngrams = False, window=100):
     #epochs = int(epochs/2)
     epochs = max(epochs, 50)
     epochs = min(epochs, 500)
-    epochs = 5
+    epochs = 1
 
     CONFIGURATION.log("      --> Training embeddings with " + str(epochs) + " epochs: 0% [inactive]", end="\r")
     model.train(sentences, total_examples=total_examples, epochs=epochs)

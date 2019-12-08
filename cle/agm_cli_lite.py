@@ -10,8 +10,8 @@ from configurations.ConfigurationHandler import ConfigurationHandler
 from configurations.PipelineTools import Pipeline, PipelineDataTuple
 from loadkg.loadWithRdflib import load_kg_with_rdflib_ttl_interface
 from graphdatatools import RAMOptimizedGTbox
-from wordembedding import RAMOptimizedWalkEmbedder_1, concat_combiner
-    #W2VInterfaceWrapper, D2VInterfaceWrapper, PseudoD2VInterfaceWrapper, \
+from wordembedding import RAMOptimizedWalkEmbedder_1, RAMOptimizedDocWalkEmbedder_1, concat_combiner, TransE
+    #muse, W2VInterfaceWrapper, D2VInterfaceWrapper, PseudoD2VInterfaceWrapper, \
     #W2V_1InterfaceWrapper, #D2V_1InterfaceWrapper, PseudoD2V_1InterfaceWrapper, SimpleTriplesEmbedder, \
     #SimpleTriplesEmbedder_1, concat_combiner, ResourceRelationsEmbeddingWrapper, SimpleLiteralsEmbedder_1, \
     #, WalkD2V_1Embedder
@@ -70,8 +70,11 @@ def main(source, target, possible_matches, trainset):
     line_b = pipeline.append_step(RAMOptimizedGTbox.interface, PipelineDataTuple(line_b), PipelineDataTuple(tgt_triples))
     #line_b = pipeline.append_step(ReadSentencesInterfaceWrapper.interface, PipelineDataTuple(line_b),
     #                              PipelineDataTuple(tgt_corpus))
-    line_ab = pipeline.append_step(RAMOptimizedWalkEmbedder_1.interface, PipelineDataTuple(line_a, line_b),
+    line_ab = pipeline.append_step(RAMOptimizedDocWalkEmbedder_1.interface, PipelineDataTuple(line_a, line_b),
                                    PipelineDataTuple(dim, 'steps', False, 1))
+    line_ab = pipeline.append_step(TransE.interface, PipelineDataTuple(line_a, line_b),
+                                    PipelineDataTuple(dim))
+    #line_ab = pipeline.append_step(muse.interface, PipelineDataTuple(line_ab), PipelineDataTuple(gold_mapping))
 
     if len(trainset)>0:
         line_ab = pipeline.append_step(RAMOptimizedSupervisedRankMatcher.interface, PipelineDataTuple(line_ab), None)
@@ -98,7 +101,7 @@ def main(source, target, possible_matches, trainset):
 if __name__ == '__main__':
     #python agm_cli.py -s "../data/oaei_data/graph_triples_darkscape.nt" -t "../data/oaei_data/graph_triples_oldschoolrunescape.nt" -p "../data/oaei_data/possible_matches.csv" -g "../data/oaei_data/trainset.csv"
     #C:\ProgramData\Anaconda3\envs\py36\Python
-    #python agm_cli.py -s "C:\Users\Bernd Lütke\oaei_track_cache\tmpdata\graph_triples_source.nt" -t "C:\Users\Bernd Lütke\oaei_track_cache\tmpdata\graph_triples_target.nt" -p "C:\Users\Bernd Lütke\oaei_track_cache\tmpdata\possible_matches.csv"
+    #python agm_cli_lite.py -s "C:\Users\allue\oaei_track_cache\tmpdata\graph_triples_source.nt" -t "C:\Users\allue\oaei_track_cache\tmpdata\graph_triples_target.nt" -p "C:\Users\allue\oaei_track_cache\tmpdata\possible_matches.csv"
     #main("../data/oaei_data/graph_triples_darkscape.nt", "../data/oaei_data/graph_triples_oldschoolrunescape.nt", "../data/oaei_data/possible_matches.csv", None)# "../data/oaei_data/trainset.csv"
 
         from optparse import OptionParser, OptionGroup
