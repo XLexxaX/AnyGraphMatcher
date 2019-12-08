@@ -5,8 +5,8 @@ import numpy as np
 import os
 import shutil
 
-def load():
-    traindata ="C:/Users/allue/oaei_track_cache/tmpdata/"
+def load(traindata):
+    #traindata ="C:/Users/allue/oaei_track_cache/tmpdata/"
     #D:/Development/Code/melt/examples/simpleJavaMatcher/oaei-resources/AnyGraphMatcher/result_data/cli_task_2019_11_01_12_55_35_637929/
 
 
@@ -47,4 +47,9 @@ def load():
     #embedding2.load_state_dict({'weight': e2.loc[:, 1:].to_numpy()})
     #embedding2.weight.requires_grad = True
     #embedding2.weight = torch.nn.Parameter(pre_trained_embeddings_in_torch_format2)
+
+    rundir=traindata
+    shutil.copy(rundir+"entity2id.txt", rundir+"data/outputData/entity2id.txt")
+    shutil.copy(rundir+"relation2id.txt", rundir+"data/outputData/relation2id.txt")
+
     return embedding, embedding2
