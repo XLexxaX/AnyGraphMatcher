@@ -5,11 +5,32 @@ import pandas as pd
 import numpy as np
 import os
 import shutil
+import random
+import decimal
+
+def add_line_count(filepath):
+    with open(filepath, encoding="UTF-8", mode="r") as f:
+        e_ctr =0
+        for line in f:
+            e_ctr += 1
+    with open(filepath+".tmp", encoding="UTF-8", mode="r") as f:
+        with open(filepath, encoding="UTF-8", mode="w+") as f2:
+            f2.write(str(e_ctr)+"\n"+f.read())
+    os.remove(filepath+".tmp")
+
 
 def load(rundir, w2vmodelpath, source_triples_path,target_triples_path, transe_dir, dim):
-    #modelpath ="D:/Development/Code/melt/examples/simpleJavaMatcher/oaei-resources/AnyGraphMatcher/result_data/cli_task_2019_11_10_21_00_25_192916/w2v.model"
+    #modelpath ="D:\\Development\\Code\\melt\\examples\\simpleJavaMatcher\\oaei-resources\\AnyGraphMatcher\\result_data\\cli_task_2019_11_10_21_00_25_192916\\w2v.model"
     modelpath = w2vmodelpath
-    #D:/Development/Code/melt/examples/simpleJavaMatcher/oaei-resources/AnyGraphMatcher/result_data/cli_task_2019_11_01_12_55_35_637929/
+
+    os.mkdir(rundir+"data\\")
+    os.mkdir(rundir+"data\\FB15K\\")
+    os.mkdir(rundir+"data\\outputData\\")
+
+    rundir = rundir + "data\\FB15K\\"
+    #D:\\Development\\Code\\melt\\examples\\simpleJavaMatcher\\oaei-resources\\AnyGraphMatcher\\result_data\\cli_task_2019_11_01_12_55_35_637929\\
+
+
 
     m = gensim.models.Doc2Vec.load(modelpath)
 
@@ -22,9 +43,9 @@ def load(rundir, w2vmodelpath, source_triples_path,target_triples_path, transe_d
                 with open(source_triples_path, mode="r", encoding="UTF-8") as f:
                    for line in f:
                             line = line.replace("\n","").split(" ")
-                            s = "s_"+line[0]
-                            p = "p_"+line[1]
-                            o = ["o_"]+line[2:]
+                            s = "s/"+line[0]
+                            p = "p/"+line[1]
+                            o = ["o/"]+line[2:]
                             if not s in embeddings_vocab.keys():
                                 e_ctr=e_ctr+1
                                 embeddings_vocab[s] = e_ctr
@@ -37,7 +58,9 @@ def load(rundir, w2vmodelpath, source_triples_path,target_triples_path, transe_d
                                 e_ctr=e_ctr+1
                                 embeddings_vocab["".join(o)] = e_ctr
                                 f_e_embs.write(str(embeddings_vocab["".join(o)]) + "\t" + str(e_ctr) + "\t" +  "\t".join([str(x) for x in m.infer_vector(o)]) + "\n")
-                            f_resourcified.write(str(embeddings_vocab[s])+ " " + str(embeddings_vocab["".join(o)])+" "+str(embeddings_vocab[p]) + "\n")
+
+                            if (decimal.Decimal(random.randrange(0, 100))/100)> 0.0:
+                                f_resourcified.write(str(embeddings_vocab[s])+ " " + str(embeddings_vocab["".join(o)])+" "+str(embeddings_vocab[p]) + "\n")
 
                             if e_ctr%1000 == 0:
                                 print("Written "+str(e_ctr)+" docs", end="\r")
@@ -46,10 +69,10 @@ def load(rundir, w2vmodelpath, source_triples_path,target_triples_path, transe_d
             with open(target_triples_path, mode="r", encoding="UTF-8") as f:
                 with open(rundir + "train2id_tmp.txt", mode="a+", encoding="UTF-8") as f_resourcified:
                     for line in f:
-                        line = line.split(" ")
-                        s = "s_"+line[0]
-                        p = "p_"+line[1]
-                        o = ["o_"]+line[2:]
+                        line = line.replace("\n","").split(" ")
+                        s = "s/"+line[0]
+                        p = "p/"+line[1]
+                        o = ["o/"]+line[2:]
                         if not s in embeddings_vocab.keys():
                             e_ctr=e_ctr+1
                             embeddings_vocab[s] = e_ctr
@@ -62,26 +85,22 @@ def load(rundir, w2vmodelpath, source_triples_path,target_triples_path, transe_d
                             e_ctr=e_ctr+1
                             embeddings_vocab["".join(o)] = e_ctr
                             f_e_embs.write(str(embeddings_vocab["".join(o)]) + "\t" + str(e_ctr) + "\t" +  "\t".join([str(x) for x in m.infer_vector(o)]) + "\n")
-                        f_resourcified.write(str(embeddings_vocab[s])+ " " + str(embeddings_vocab["".join(o)])+" "+str(embeddings_vocab[p]) + "\n")
+                        if (decimal.Decimal(random.randrange(0, 100))/100)> 0.0:
+                            f_resourcified.write(str(embeddings_vocab[s])+ " " + str(embeddings_vocab["".join(o)])+" "+str(embeddings_vocab[p]) + "\n")
 
                         if e_ctr%1000 == 0:
                             print("Written "+str(e_ctr)+" docs", end="\r")
 
-    with open(rundir+"train2id_tmp.txt", encoding="UTF-8", mode="r") as f:
-        e_ctr =0
-        for line in f:
-            e_ctr += 1
-    with open(rundir+"train2id_tmp.txt", encoding="UTF-8", mode="r") as f:
-        with open(rundir+"train2id.txt", encoding="UTF-8", mode="w+") as f2:
-            f2.write(str(e_ctr)+"\n"+f.read())
-    os.remove(rundir+"train2id_tmp.txt")
 
-    os.mkdir(rundir+"data/")
-    os.mkdir(rundir+"data/FB15K/")
-    os.mkdir(rundir+"data/outputData/")
-    shutil.copy(rundir+"train2id.txt", rundir+"data/outputData/train2id.txt")
-    #shutil.copy(rundir+"entity2id.txt", rundir+"data/outputData/entity2id.txt")
-    #shutil.copy(rundir+"relation2id.txt", rundir+"data/outputData/relation2id.txt")
+    shutil.copy(rundir+"entity_embeddings.nt", rundir+"entity2id.txt")
+    shutil.copy(rundir+"relation_embeddings.nt", rundir+"relation2id.txt")
+    os.remove(rundir+"entity_embeddings.nt")
+    os.remove(rundir+"relation_embeddings.nt")
+
+    add_line_count(rundir+"train2id_tmp.txt")
+    add_line_count(rundir+"entity2id.txt")
+    add_line_count(rundir+"relation2id.txt")
+
 
     #os.remove(rundir+"train2id.txt")
     #os.remove(rundir+"entity2id.txt")

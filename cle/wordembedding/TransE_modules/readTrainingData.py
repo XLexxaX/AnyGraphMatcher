@@ -48,7 +48,7 @@ class readData:
     def readTrain2id(self):
         print( "-----Reading train2id.txt from " + self.inAdd + "/-----")
         count = 0
-        inputData = open(self.inAdd + "/train2id.txt", encoding="UTF-8")
+        inputData = open(self.inAdd + "\\train2id.txt", encoding="UTF-8")
         line = inputData.readline()
         self.numOfTriple = int(re.findall(r"\d+", line)[0])
         self.train2id["h"] = []
@@ -106,7 +106,7 @@ class readData:
     def readEntity2id(self):
         print( "-----Reading entity2id.txt from " + self.inAdd + "/-----")
         count = 0
-        inputData = open(self.inAdd + "/entity2id.txt", encoding="UTF-8")
+        inputData = open(self.inAdd + "\\entity2id.txt", encoding="UTF-8")
         line = inputData.readline()
         self.numOfEntity = int(re.findall(r"\d+", line)[0])
         line = inputData.readline()
@@ -132,7 +132,7 @@ class readData:
     def readRelation2id(self):
         print( "-----Reading relation2id.txt from " + self.inAdd + "/-----")
         count = 0
-        inputData = open(self.inAdd + "/relation2id.txt", encoding="UTF-8")
+        inputData = open(self.inAdd + "\\relation2id.txt", encoding="UTF-8")
         line = inputData.readline()
         self.numOfRelation = int(re.findall(r"\d+", line)[0])
         line = inputData.readline()

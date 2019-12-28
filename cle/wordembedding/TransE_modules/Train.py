@@ -13,12 +13,12 @@ from wordembedding.TransE_modules.generatePosAndCorBatch import generateBatches,
 class trainTransE:
 
     def __init__(self, rundir, dim):
-        self.inAdd = rundir+"data/FB15K"
-        self.outAdd = rundir+"data/outputData"
-        self.preAdd = rundir+"data/outputData"
+        self.inAdd = rundir+"data\\FB15K"
+        self.outAdd = rundir+"data\\outputData"
+        self.preAdd = rundir+"data\\outputData"
         self.preOrNot = False
-        self.entityDimension = dim
-        self.relationDimension = dim
+        self.entityDimension = 100
+        self.relationDimension = 100
         self.numOfEpochs = 1
         self.outputFreq = 50
         self.numOfBatches = 100
@@ -61,9 +61,9 @@ class trainTransE:
         self.numOfTestTriple = 0
 
         #if torch.cuda.is_available():
-        #    self.device = torch.device("cuda:0")
+        self.device = torch.device("cuda:0")
         #else:
-        self.device = torch.device("cpu")
+        #self.device = torch.device("cpu")
 
         self.start()
         self.train(rundir)
@@ -120,7 +120,7 @@ class trainTransE:
         optimizer = optim.SGD(transE.parameters(), lr=self.learningRate, weight_decay=self.weight_decay)
 
         dataSet = dataset(self.numOfTriple)
-        batchSize = int(self.numOfTriple / self.numOfBatches)
+        batchSize = max(1, int(self.numOfTriple / self.numOfBatches))
         dataLoader = DataLoader(dataSet, batchSize, True)
 
         patienceCount = 0
@@ -230,8 +230,8 @@ class trainTransE:
 
     def write(self):
         print("-----Writing Training Results to " + self.outAdd + "-----")
-        entity2vecAdd = self.outAdd + "/entity2vec.pickle"
-        relation2vecAdd = self.outAdd + "/relation2vec.pickle"
+        entity2vecAdd = self.outAdd + "\\entity2vec.pickle"
+        relation2vecAdd = self.outAdd + "\\relation2vec.pickle"
         entityOutput = open(entity2vecAdd, "wb")
         relationOutput = open(relation2vecAdd, "wb")
         pickle.dump(self.entityEmbedding, entityOutput)
@@ -241,8 +241,8 @@ class trainTransE:
 
     def preRead(self, transE):
         print("-----Reading Pre-Trained Results from " + self.preAdd + "-----")
-        entityInput = open(self.preAdd + "/entity2vec.pickle", "w")
-        relationInput = open(self.preAdd + "/relation2vec.pickle", "r")
+        entityInput = open(self.preAdd + "\\entity2vec.pickle", "w")
+        relationInput = open(self.preAdd + "\\relation2vec.pickle", "r")
         tmpEntityEmbedding = pickle.load(entityInput)
         tmpRelationEmbedding = pickle.load(relationInput)
         entityInput.close()
@@ -251,7 +251,7 @@ class trainTransE:
         transE.relation_embeddings.weight.data = tmpRelationEmbedding
 
     def readTestTriples(self):
-        fileName = "/test2id.txt"
+        fileName = "\\test2id.txt"
         print("-----Reading Test Triples from " + self.inAdd + fileName + "-----")
         count = 0
         self.test2id["h"] = []
@@ -286,7 +286,7 @@ class trainTransE:
             print("error in " + fileName)
 
     def readValidateTriples(self):
-        fileName = "/valid2id.txt"
+        fileName = "\\valid2id.txt"
         print("-----Reading Validation Triples from " + self.inAdd + fileName + "-----")
         count = 0
         self.validate2id["h"] = []

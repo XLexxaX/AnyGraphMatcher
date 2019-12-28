@@ -2,7 +2,6 @@
 import os
 import sys
 
-from StringMatching import StringMatcher_Interface
 from configurations.Configuration import Configuration
 from configurations.InternalGoldStandard import InternalGoldStandard
 from configurations.InternalProperties import InternalProperties
