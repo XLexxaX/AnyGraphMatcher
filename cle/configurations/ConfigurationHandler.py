@@ -21,7 +21,7 @@ class ConfigurationHandler:
             current_time_in_millis = int(round(time.time()))
 
 
-            configuration.logs_ = open(configuration.logfile, "a+")
+            configuration.logs_ = open(configuration.logfile, "a+", encoding="UTF-8")
             configuration.log("Starting '" + configuration.name + "'\n")
 
             configuration.log("Configuration as follows:")
@@ -49,7 +49,7 @@ class ConfigurationHandler:
 
                 #clean memory
                 step.input_step = None
-                
+
                 t = PipelineDataTuple(*x)
                 out = step.func(t, step.args, configuration)
 

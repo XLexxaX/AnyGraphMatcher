@@ -27,7 +27,10 @@ class TransE(nn.Module):
         #self.entity_embeddings = nn.Embedding(self.numOfEntity, self.entityDimension)
         #self.entity_embeddings.weight.data = torch.FloatTensor(self.numOfEntity, self.entityDimension).uniform_(-6./sqrtE, 6./sqrtE)
         #self.entity_embeddings.weight.data = F.normalize(self.entity_embeddings.weight.data, 2, 1)
-        self.entity_embeddings, self.relation_embeddings = load(rundir)
+        try:
+            self.entity_embeddings, self.relation_embeddings = load(rundir)
+        except:
+            pass
 
     def forward(self, positiveBatchHead, positiveBatchRelation, positiveBatchTail, corruptedBatchHead, corruptedBatchRelation, corruptedBatchTail):
         # print( positiveBatches

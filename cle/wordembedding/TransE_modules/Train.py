@@ -241,8 +241,8 @@ class trainTransE:
 
     def preRead(self, transE):
         print("-----Reading Pre-Trained Results from " + self.preAdd + "-----")
-        entityInput = open(self.preAdd + "\\entity2vec.pickle", "w")
-        relationInput = open(self.preAdd + "\\relation2vec.pickle", "r")
+        entityInput = open(self.preAdd + "\\entity2vec.pickle", "rb")
+        relationInput = open(self.preAdd + "\\relation2vec.pickle", "rb")
         tmpEntityEmbedding = pickle.load(entityInput)
         tmpRelationEmbedding = pickle.load(relationInput)
         entityInput.close()
